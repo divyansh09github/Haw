@@ -72,30 +72,60 @@ class Terms extends StatelessWidget {
             //   ),
             // ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 356,
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setInitialScreen('signUpQuestionsScreen');
-                          // Navigate to the next page when the button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUpQuestions()),
-                  );
-                    },
-                    style: ButtonStyle(
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     SizedBox(
+            //       width: 356,
+            //       height: 45,
+            //       child: ElevatedButton(
+            //         onPressed: () {
+            //           setInitialScreen('signUpQuestionsScreen');
+            //               // Navigate to the next page when the button is pressed
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => SignUpQuestions()),
+            //       );
+            //         },
+            //         style: ButtonStyle(
+            //
+            //           backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+            //           shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+            //         ),
+            //         child: Text('Next', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),),
+            //       ),
+            //     ),
+            //   ],
+            // ),
 
-                      backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: SizedBox(
+                      width: 360,
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: () async{
+                          setInitialScreen('signUpQuestionsScreen');
+                          //               // Navigate to the next page when the button is pressed
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SignUpQuestions()),
+                                );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+                        ),
+                        child: Text('Next', style: TextStyle(fontSize: 22.0, color: Colors.white),),
+                      ),
                     ),
-                    child: Text('Next', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
 
           ],

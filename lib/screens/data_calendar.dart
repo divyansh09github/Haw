@@ -155,6 +155,7 @@ class _DataCalendarState extends State<DataCalendar> {
           maxDate: DateTime.now().add(Duration(days: 90)),
 
 
+
           // initialSelectedDate: DateTime.now(),
           // initialDisplayDate: DateTime.now(),
           // initialSelectedDates: [
@@ -205,6 +206,19 @@ class _DataCalendarState extends State<DataCalendar> {
           monthViewSettings: DateRangePickerMonthViewSettings(enableSwipeSelection: false),
 
           navigationDirection: DateRangePickerNavigationDirection.vertical,
+
+          onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+            if (args.value is PickerDateRange) {
+              // Get the selected date
+              final selectedDate = args.value.startDate;
+
+              print(args.value);
+              // Navigate to the appropriate screen, passing the selected date if needed
+              Navigator.pushNamed(context, '/homePeriod', arguments: selectedDate);
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePeriod()));
+            }
+          },
+
 
 
           cellBuilder: (context, cellDetails) {

@@ -190,10 +190,15 @@ class _HomePeriodState extends State<HomePeriod> {
                   style: TextStyle(fontSize: 36, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: 10),
-                Text(
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
+                },
+                  child: Text(
                   symptomsText,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
+          ),
               ],
             ),
           ),

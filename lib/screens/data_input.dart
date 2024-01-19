@@ -289,11 +289,25 @@ class _DataInputState extends State<DataInput> {
       // feelingsIndexes[feelingsIndexes.indexOf(index)] = [];
       livelinessIndexes.removeAt(livelinessIndexes.indexOf(index));
     }
-    else{
+    else if (livelinessIndexes.length < 5){
       setState(() {
         livelinessIndexes.add(index);
         boolFeelings = true;
       }
+      );
+    } else {
+      // Handle limit reached, e.g., display a message or feedback
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.startToEnd,
+          padding: EdgeInsets.all(10),
+          content: Text('You can only select up to 5 Liveliness'),
+          backgroundColor: Color(0xBAFF608B),
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 4),
+          margin: EdgeInsets.all(15),
+        ),
       );
     }
   }
@@ -388,21 +402,47 @@ class _DataInputState extends State<DataInput> {
     {'imagePath': 'assets/images/Tired.png', 'label': 'Tired'},
   ];
 
-  void _onTapFeelings(int index){
-    // print("clicked");
-    if(feelingsIndexes.contains(index))
-    {
-      // feelingsIndexes[feelingsIndexes.indexOf(index)] = [];
+  // void _onTapFeelings(int index){
+  //   // print("clicked");
+  //   if(feelingsIndexes.contains(index))
+  //   {
+  //     // feelingsIndexes[feelingsIndexes.indexOf(index)] = [];
+  //     feelingsIndexes.removeAt(feelingsIndexes.indexOf(index));
+  //   }
+  //   else{
+  //     setState(() {
+  //       feelingsIndexes.add(index);
+  //       boolFeelings = true;
+  //     }
+  //     );
+  //   }
+  // }
+
+  void _onTapFeelings(int index) {
+    if (feelingsIndexes.contains(index)) {
       feelingsIndexes.removeAt(feelingsIndexes.indexOf(index));
-    }
-    else{
+    } else if (feelingsIndexes.length < 5) { // Check if limit is not reached
       setState(() {
         feelingsIndexes.add(index);
         boolFeelings = true;
-      }
+      });
+    } else {
+      // Handle limit reached, e.g., display a message or feedback
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.startToEnd,
+          padding: EdgeInsets.all(10),
+          content: Text('You can only select up to 5 feelings'),
+          backgroundColor: Color(0xBAFF608B),
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 4),
+          margin: EdgeInsets.all(15),
+        ),
       );
     }
   }
+
 
   Widget buildFeelingsButton(Map<String, dynamic> data, int index)
   {
@@ -582,7 +622,7 @@ class _DataInputState extends State<DataInput> {
                           fontSize: 24,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w700,
-                          color: Colors.black),
+                          color: Colors.black87),
                     ),
                     SizedBox(width: 8), // Add some spacing between text and icon
                     Padding(
@@ -590,7 +630,7 @@ class _DataInputState extends State<DataInput> {
                       child: Icon(
                         size: 20,
                         Icons.edit,
-                        color: Colors.blue,
+                        color: Color(0xFFFF608B),
                       ),
                     ),
                   ],
@@ -3570,18 +3610,29 @@ class _DataInputState extends State<DataInput> {
                         height: 35,
                         child: enableSave ? ElevatedButton(
                           onPressed: () {
-                            // saveFunction();
+                            saveFunction();
                             print("hello");
+                            const snackDemo = SnackBar(
+                              dismissDirection: DismissDirection.startToEnd,
+                              padding: EdgeInsets.all(10),
+                              content: Text('Data Saved'),
+                              backgroundColor: Color(0xBAFF608B),
+                              elevation: 10,
+                              behavior: SnackBarBehavior.floating,
+                              duration: Duration(seconds: 2),
+                              margin: EdgeInsets.all(15),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackDemo);
                           },
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)),
                             shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                             elevation: MaterialStateProperty.all(12),  // Add elevation for shadow
                             shadowColor: MaterialStateProperty.all(Color(0xFFFF608B)),  // Customize shadow color
                           ),
-                          child: Text('Save', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Color(0xFFFF608B))),
+                          child: Text('Save', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white)),
                         ) : Opacity(
-                          opacity: 0.3,
+                          opacity: 0.5,
                           child: ElevatedButton(
                             onPressed: () {
                               // saveFunction();

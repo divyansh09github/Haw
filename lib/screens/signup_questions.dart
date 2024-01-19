@@ -250,17 +250,21 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction, // Validate on every change
                       controller: _name,
+                      textCapitalization: TextCapitalization.characters,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Name is Required';
                         } else if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
                           return 'Please enter only letters and spaces';
+                        }else if (value.length > 24) { // Check for character limit
+                          return 'Name cannot exceed 25 characters';
                         }
                         return null;
                       },
                       readOnly: false,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]')),
+                        LengthLimitingTextInputFormatter(25), // Enforce character limit during input
                       ],
                       decoration: InputDecoration(
                         filled: true,
@@ -521,10 +525,13 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     elevation: 10, // Increase elevation for a more pronounced shadow
                     borderRadius: BorderRadius.circular(15),
                     child: TextFormField(
-
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                       controller: _height,
 
                       decoration: InputDecoration(
+
                         filled: true,
                         fillColor: Colors.white,
                         hintText: 'Height (in cms)',

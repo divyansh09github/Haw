@@ -136,7 +136,7 @@ class _SignUpState extends State<SignUp> {
                               'Sign in with Google',
                               style: TextStyle(
                                 fontSize: 22.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                                 color: Colors.white, // Adjust text color as needed
                               ),
                             ),
@@ -180,7 +180,7 @@ class _SignUpState extends State<SignUp> {
                               'Sign in with Facebook',
                               style: TextStyle(
                                 fontSize: 22.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                                 color: Colors.white, // Adjust text color as needed
                               ),
                             ),
@@ -224,7 +224,7 @@ class _SignUpState extends State<SignUp> {
                               'Sign in with OTP',
                               style: TextStyle(
                                 fontSize: 22.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                                 color: Colors.white, // Adjust text color as needed
                               ),
                             ),

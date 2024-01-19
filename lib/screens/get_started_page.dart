@@ -97,7 +97,7 @@ void setInitialScreen(String value) async{
                               backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
                               shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
                             ),
-                            child: Text('Get Started', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),),
+                            child: Text('Get Started', style: TextStyle(fontSize: 22.0, color: Colors.white),),
                           ),
                         ),
                       ),
