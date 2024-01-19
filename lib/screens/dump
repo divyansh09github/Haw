@@ -1,0 +1,1204 @@
+children:  <Widget>[
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(0);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/happy.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Calm"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(1);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(1)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Loved.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Loved"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(2);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(2)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Neutral.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Neutral"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Calm.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Calm"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/sad.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Sad"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Excited.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Excited"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Cry.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Cry"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Exhausted.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Exhausted"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Delighted.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Delighted"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Angry.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Angry"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Annoyed.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Annoyed"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Anxious.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Anxious"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Insecure.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Insecure"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Bored.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Bored"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Alone.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Alone"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Empty.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Empty"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Confused.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Confused"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Depressed.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Depressed"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Neglected.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Neglected"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Scared.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Scared"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 65, // Set fixed width to 200 pixels
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.5), // Change color as needed
+                                        spreadRadius: 0,
+                                        blurRadius: 8,
+                                        offset: Offset(0,
+                                            2), // Adjust offset for shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {_onTapFeelings(3);},
+                                    style: ButtonStyle(
+                                      padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(3)) {
+                                            return feelingsBtnBorderColorSelected; // Change background color on press
+                                          }
+                                          return Colors.white; // Normal background color
+                                        },
+                                      ),
+                                      foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
+                                      shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+                                            (Set<MaterialState> states) {
+                                          if (feelingsIndexes.contains(0)) {
+                                            return RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                              side: BorderSide(color: feelingsBtnBorderColorSelected, width: 4), // Pressed border color
+                                            );
+                                          }
+                                          return RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15),
+                                            side: BorderSide(color: feelingsBtnBorderColor, width: 4), // Normal border color
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Tired.png', // Replace with your image path
+                                      fit: BoxFit
+                                          .cover, // Adjust image fit as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10), // Adjust spacing as needed
+                                Text("Tired"),
+                              ],
+                            ),
+                            SizedBox(width: 30),
+                          ],
+
+
+
+
