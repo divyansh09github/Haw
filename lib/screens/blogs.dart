@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
+import 'package:haw/screens/nav_bar.dart';
 import 'package:haw/services/get_api.dart';
 
 class Blogs extends StatefulWidget {
@@ -28,14 +29,44 @@ class _BlogsState extends State<Blogs> {
 
   }
 
+  loadingProcess(){
+    Future.delayed(Duration(seconds: 5), () {
+      // After 10 seconds, show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.startToEnd,
+          padding: EdgeInsets.all(10),
+          content: Text('Low internet Connection'),
+          backgroundColor: Color(0xBAFF608B),
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 4),
+          margin: EdgeInsets.all(15),
+        ),
+      );
+
+      // Navigate to another page after 8 seconds (5 seconds for loading + 3 seconds for snackbar)
+      Future.delayed(Duration(seconds: 3), () {
+        // Replace 'YourNextPage()' with the actual page you want to navigate to
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NavBar()));
+      });
+    });
+  }
+
   _getBlogsList() async{
     try {
       final data = await GetAPIService().fetchBlogsList();
-      setState(() {
-        blogsData = data;
-        showPage = true;
-        error = '';
-      });
+      if(data.isNotEmpty){
+        setState(() {
+          blogsData = data;
+          showPage = true;
+          error = '';
+        });
+      }
+      else{
+        loadingProcess();
+      }
+
     } catch (e) {
       setState(() {
         showPage = false;

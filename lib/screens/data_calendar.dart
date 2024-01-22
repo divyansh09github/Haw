@@ -72,23 +72,53 @@ class _DataCalendarState extends State<DataCalendar> {
 
     try {
       final data = await GetAPIService().fetchPrediction();
-      setState(() {
-        predictionData = data;
-        // isLoading = false;
-        error = '';
-      });
+      if(data.isNotEmpty){
+        setState(() {
+          predictionData = data;
+          showCalendar = true;
+          error = '';
+        });
+      }
+      else{
+        loadingProcess();
+      }
+
     } catch (e) {
       setState(() {
-        // isLoading = false;
+        showCalendar = false;
         error = 'Failed to fetch Prediction: $e';
       });
     }
 
-    setState(() {
-      showCalendar = true;
-    });
-    print(predictionData['predictions']);
+    // setState(() {
+    //   showCalendar = true;
+    // });
+    print(predictionData);
 
+  }
+
+  loadingProcess(){
+    Future.delayed(Duration(seconds: 5), () {
+      // After 10 seconds, show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.startToEnd,
+          padding: EdgeInsets.all(10),
+          content: Text('Low internet Connection'),
+          backgroundColor: Color(0xBAFF608B),
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 4),
+          margin: EdgeInsets.all(15),
+        ),
+      );
+
+      // Navigate to another page after 8 seconds (5 seconds for loading + 3 seconds for snackbar)
+      // Future.delayed(Duration(seconds: 3), () {
+      //   // Replace 'YourNextPage()' with the actual page you want to navigate to
+      //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => NavBar()));
+      // });
+    });
   }
 
 
@@ -282,7 +312,16 @@ class _DataCalendarState extends State<DataCalendar> {
             );
           },
 
-        ) : SizedBox(width: 10, height: 10),
+        ) : Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(160.0),
+              child: Image.network("https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+            ),
+          ],
+        ),
 
       ),
         bottomNavigationBar: BottomNavBar()
