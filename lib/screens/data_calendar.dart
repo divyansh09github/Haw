@@ -33,6 +33,7 @@ class _DataCalendarState extends State<DataCalendar> {
   DateTime? endDate2;
   int periodDuration = 0;
   bool showCalendar = false;
+  late List<PickerDateRange> _selectedRanges;
 
   @override
   void initState(){
@@ -43,7 +44,7 @@ class _DataCalendarState extends State<DataCalendar> {
   }
 
   List<int> dt = [1,3,5];
-
+  DateRangePickerController _controller = DateRangePickerController();
   late Map<String, dynamic> predictionData = {};
   String error = '';
 
@@ -93,7 +94,15 @@ class _DataCalendarState extends State<DataCalendar> {
     // setState(() {
     //   showCalendar = true;
     // });
-    print(predictionData);
+    // print(predictionData);
+    _selectedRanges = <PickerDateRange>[
+      PickerDateRange(DateTime.parse(predictionData['predictions'][0]['start_date']), DateTime.parse(predictionData['predictions'][0]['end_date'])),
+      PickerDateRange(DateTime.parse(predictionData['predictions'][1]['start_date']), DateTime.parse(predictionData['predictions'][1]['end_date'])),
+      PickerDateRange(DateTime.parse(predictionData['predictions'][2]['start_date']), DateTime.parse(predictionData['predictions'][2]['end_date'])),
+      PickerDateRange(DateTime.parse(predictionData['predictions'][3]['start_date']), DateTime.parse(predictionData['predictions'][3]['end_date'])),
+      PickerDateRange(DateTime.parse(predictionData['predictions'][4]['start_date']), DateTime.parse(predictionData['predictions'][4]['end_date'])),
+      PickerDateRange(DateTime.parse(predictionData['predictions'][5]['start_date']), DateTime.parse(predictionData['predictions'][5]['end_date'])),
+    ];
 
   }
 
@@ -166,6 +175,16 @@ class _DataCalendarState extends State<DataCalendar> {
   //   weekdayStart: DateTime.monday,
   // );
 
+  Widget buildDateCard(){
+    return Card(
+      child: Container(
+        color: Colors.amber,
+        height: 100,
+        width: 100,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,7 +196,7 @@ class _DataCalendarState extends State<DataCalendar> {
       body: Container(
         padding: EdgeInsets.all(20),
         child: showCalendar ? SfDateRangePicker(
-          // controller: _sfCalendarController,
+          controller: _controller,
           // view: DateRangePickerView.month,
           selectionMode: DateRangePickerSelectionMode.multiRange,
           // initialSelectedDates: _initialSelectedDates, // Use the initialized list
@@ -208,6 +227,7 @@ class _DataCalendarState extends State<DataCalendar> {
           ],
 
 
+
           rangeSelectionColor: Color(0xFFf788a6),
           selectionColor: Color(0xFFFF608B),
           endRangeSelectionColor: Color(0xFFFF608B),
@@ -215,40 +235,38 @@ class _DataCalendarState extends State<DataCalendar> {
           todayHighlightColor: Color(0xFFFF608B),
           // monthCellStyle: DateRangePickerMonthCellStyle(cellDecoration: BoxDecoration(shape: BoxShape.circle), textStyle: TextStyle(fontSize: 18)),
 
-          monthCellStyle: DateRangePickerMonthCellStyle(
-            blackoutDatesDecoration: BoxDecoration(
-                color: Colors.red,
-                border: Border.all(color: const Color(0xFFF44436), width: 1),
-                shape: BoxShape.circle),
-            weekendDatesDecoration: BoxDecoration(
-                color: const Color(0xFFDFDFDF),
-                border: Border.all(color: const Color(0xFFB6B6B6), width: 1),
-                shape: BoxShape.circle),
-            specialDatesDecoration: BoxDecoration(
-                color: Colors.green,
-                border: Border.all(color: const Color(0xFF2B732F), width: 1),
-                shape: BoxShape.circle),
-            blackoutDateTextStyle: TextStyle(color: Colors.white, decoration: TextDecoration.lineThrough),
-            specialDatesTextStyle: const TextStyle(color: Colors.white),
-          ),
+          // monthCellStyle: DateRangePickerMonthCellStyle(
+          //   blackoutDatesDecoration: BoxDecoration(
+          //       color: Colors.red,
+          //       border: Border.all(color: const Color(0xFFF44436), width: 1),
+          //       shape: BoxShape.circle),
+          //   weekendDatesDecoration: BoxDecoration(
+          //       color: const Color(0xFFDFDFDF),
+          //       border: Border.all(color: const Color(0xFFB6B6B6), width: 1),
+          //       shape: BoxShape.circle),
+          //   specialDatesDecoration: BoxDecoration(
+          //       color: Colors.green,
+          //       border: Border.all(color: const Color(0xFF2B732F), width: 1),
+          //       shape: BoxShape.circle),
+          //   blackoutDateTextStyle: TextStyle(color: Colors.white, decoration: TextDecoration.lineThrough),
+          //   specialDatesTextStyle: const TextStyle(color: Colors.white),
+          // ),
+
+
 
           headerStyle: DateRangePickerHeaderStyle(textStyle: TextStyle(fontSize: 25)),
           monthViewSettings: DateRangePickerMonthViewSettings(enableSwipeSelection: false),
 
           navigationDirection: DateRangePickerNavigationDirection.vertical,
 
-          onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-            if (args.value is PickerDateRange) {
-              // Get the selected date
-              final selectedDate = args.value.startDate;
+          onSelectionChanged: selectionChanged,
 
-              print(args.value);
-              // Navigate to the appropriate screen, passing the selected date if needed
-              Navigator.pushNamed(context, '/homePeriod', arguments: selectedDate);
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePeriod()));
-            }
-          },
 
+          // cellBuilder: (context, cellDetails) {
+          //   return Container(
+          //     height: 2,
+          //   );
+          // },
 
 
           cellBuilder: (context, cellDetails) {
@@ -260,7 +278,7 @@ class _DataCalendarState extends State<DataCalendar> {
             // }
 
             return Container(
-              // decoration: BoxDecoration(border: Border.all(color: Colors.black12, width: 1), borderRadius: BorderRadius.all(Radius.circular(10))),
+              // decoration: BoxDecoration(shape: BoxShape.circle,border: Border.all(color: Colors.black12, width: 1)),
               // decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
               child: Column(
                 // mainAxisSize: MainAxisSize.min,
@@ -531,5 +549,41 @@ class _DataCalendarState extends State<DataCalendar> {
     //   ),
     //
     // );
+  }
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    // _controller.selectedRanges = _selectedRanges;
+    // var abc = args.value[args.value.length-1];
+    // print(abc);
+    // // print(args.value.length-1);
+    // // Navigator.push(context,MaterialPageRoute(builder: (context) => DataInput()),);
+
+    if (args.value.isNotEmpty && args.value.last is PickerDateRange) {
+      var selectedDate = (args.value.last as PickerDateRange).startDate;
+      print('Selected Date: $selectedDate');
+
+      if(selectedDate!.isBefore(DateTime.now())) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DataInput()),
+        );
+        // Navigator.pushNamed(context, '/homePeriod', arguments: selectedDate);
+      }
+      else{
+        _controller.selectedRanges = _selectedRanges;
+        // const snackDemo = SnackBar(
+        //   dismissDirection: DismissDirection.down,
+        //   padding: EdgeInsets.all(10),
+        //   content: Text("You can't choose future date"),
+        //   backgroundColor: Color(0xBAFF608B),
+        //   elevation: 10,
+        //   behavior: SnackBarBehavior.floating,
+        //   duration: Duration(seconds: 2),
+        //   margin: EdgeInsets.all(15),
+        // );
+        // ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+      }
+
+    }
   }
 }

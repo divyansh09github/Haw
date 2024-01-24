@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/screens/abc.dart';
+import 'package:haw/screens/abc123.dart';
 import 'package:haw/screens/analysis.dart';
+import 'package:haw/screens/calender.dart';
+import 'package:haw/screens/cycle.dart';
 import 'package:haw/screens/data_calendar.dart';
 import 'package:haw/screens/data_calendar_1.dart';
 // import 'package:haw/screens/data_calendar_1.dart';
 import 'package:haw/screens/data_input.dart';
+import 'package:haw/screens/get_started_page.dart';
 import 'package:haw/screens/homePeriod.dart';
 import 'package:haw/screens/nav_bar.dart';
+import 'package:haw/screens/period_duration.dart';
+import 'package:haw/screens/sign_up.dart';
+import 'package:haw/screens/signup_questions.dart';
+import 'package:haw/screens/terms&conditions.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -15,11 +25,76 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-
   Color bottombgcolor = const Color(0xFFFF608B);
+
+  // @override
+  // initState() {
+  //   super.initState();
+  //   _initialScreen();
+  // }
+
+  // _initialScreen() async{
+  //   String? screenString = await PreferencesManager.getInitialScreen();
+  //
+  //   switch (screenString) {
+  //     case 'homePeriodScreen':
+  //       {
+  //         // Navigator.push(
+  //         //     context, MaterialPageRoute(builder: (context) => HomePage()));  // navigate to getStarted Screen
+  //         break;
+  //       }
+  //     case 'signUpScreen':
+  //       {
+  //         Navigator.push(
+  //             context, MaterialPageRoute(builder: (context) => SignUp()));
+  //         break;
+  //       }
+  //     case 'termsAndConditionScreen':
+  //       {
+  //         Navigator.push(
+  //             context, MaterialPageRoute(builder: (context) => Terms()));
+  //         break;
+  //       }
+  //     case 'signUpQuestionsScreen':
+  //       {
+  //         Navigator.push(
+  //             context, MaterialPageRoute(builder: (context) => SignUpQuestions()));
+  //         break;
+  //       }
+  //     case 'calendarScreen':
+  //       {
+  //         Navigator.push(
+  //             context, MaterialPageRoute(builder: (context) => Calendar()));
+  //         break;
+  //       }
+  //     case 'cycleScreen':
+  //       {
+  //         Navigator.push(
+  //             context, MaterialPageRoute(builder: (context) => Cycle()));
+  //         break;
+  //       }
+  //     case 'periodScreen':
+  //       {
+  //         Navigator.push(
+  //             context, MaterialPageRoute(builder: (context) => PeriodDuration()));
+  //         break;
+  //       }
+  //     default :{
+  //       Navigator.push(
+  //           context, MaterialPageRoute(builder: (context) => HomePage()));  // navigate to getStarted Screen
+  //       break;
+  //     }
+  //   }
+  //
+  //   // setState(() {
+  //   //   screen = screenString;
+  //   // });
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
+
     return BottomAppBar(
           color: bottombgcolor,
           height: MediaQuery.of(context).size.height * 0.09,
@@ -56,7 +131,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onTap: () {
                   // Perform actions when the image is tapped
                   Navigator.push(context,MaterialPageRoute(builder: (context) => DataCalendar()),);
-                  // Navigator.push(context,MaterialPageRoute(builder: (context) => DCalendar()),);
+                  // Navigator.push(context,MaterialPageRoute(builder: (context) => DateSelection()),);
 
                 },
                 child: Column(
@@ -154,5 +229,49 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         );
 
+    // return MaterialApp(
+    //   home: DefaultTabController(
+    //     length: 5,
+    //     child: Scaffold(
+    //       bottomNavigationBar: TabBar(
+    //         tabs: [
+    //           Tab(
+    //             child: Column(
+    //               children: [
+    //                 Image.asset(
+    //                   width: 30,
+    //                   height: 30,
+    //                   'assets/images/cycleIcon.png', // Replace with your image path
+    //                   fit: BoxFit.cover, // Adjust image fit as needed
+    //                   semanticLabel: "Cycle",
+    //                 ),
+    //                 Text(
+    //                   "Cycle",
+    //                   style: TextStyle(
+    //                       fontSize: 10,
+    //                       fontWeight: FontWeight.w700,
+    //                       color: Colors.white),
+    //                 ), // Add text below the image
+    //               ],
+    //             ),
+    //           ),
+    //           Tab(icon: Icon(Icons.music_video)),
+    //           Tab(icon: Icon(Icons.camera_alt)),
+    //           Tab(icon: Icon(Icons.grade)),
+    //           Tab(icon: Icon(Icons.email)),
+    //         ],
+    //       ), // TabBar,
+    //       body: const TabBarView(
+    //         children: [
+    //           HomePeriod(),
+    //           DataCalendar(),
+    //           DataInput(),
+    //           Analysis(),
+    //           NavBar(),
+    //         ],
+    //       ), // TabBarView
+    //     ), // Scaffold
+    //   ), // DefaultTabController
+    // ); // MaterialApp
   }
 }

@@ -56,7 +56,7 @@ class _DataInputState extends State<DataInput> {
         isLoading = false;
         error = '';
       });
-    } catch (e) {
+    } catch (e){
       setState(() {
         isLoading = false;
         error = 'Failed to fetch symptoms: $e';
@@ -578,6 +578,7 @@ class _DataInputState extends State<DataInput> {
 
   @override
   Widget build(BuildContext context) {
+    // PopScope(child: child, onWillPop: onWillPop),
     return Scaffold(
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,

@@ -43,7 +43,7 @@ class AppRoutes {
     calendarScreen: (context) => Calendar(),
     // cycleScreen: (context) => Cycle(data: ,),
     reminderScreen: (context) => Reminder(),
-    // homePeriodScreen: (context) => HomePeriod(),
+    homePeriodScreen: (context) => HomePeriod(),
     getStartedScreen: (context) => HomePage(),
     signUpScreen: (context) => SignUp(),
     termsAndConditionsScreen: (context) => Terms(),

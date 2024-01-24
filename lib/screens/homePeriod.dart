@@ -192,7 +192,8 @@ class _HomePeriodState extends State<HomePeriod> {
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
+
                 },
                   child: Text(
                   symptomsText,
