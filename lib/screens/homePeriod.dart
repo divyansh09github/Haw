@@ -192,20 +192,65 @@ class _HomePeriodState extends State<HomePeriod> {
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
-
-                },
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
+                  },
                   child: Text(
                   symptomsText,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                  ),
                 ),
-          ),
-              ],
+              ], // Children
             ),
           ),
         ),
 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showTipsBottomSheet(context);
+        },
+        tooltip: 'Show Tips',
+        child: Icon(Icons.lightbulb_outline),
+      ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
         bottomNavigationBar: BottomNavBar(),
+    );
+  }
+  void _showTipsBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      enableDrag: true,
+      showDragHandle: true,
+      context: context,
+      builder: (context) {
+        return Container(
+          width: MediaQuery.of(context).size.width * 0.96,
+          height: MediaQuery.of(context).size.height * 0.6,
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Tips',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              // Add your tips content here
+              // SizedBox(height: 16),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              //   child: Text('Close'),
+              // ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -331,283 +331,562 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    
+    void editProfileDrawer(BuildContext context){
+      showModalBottomSheet(
+        elevation: 10,
+        isScrollControlled: true,
+        enableDrag: true,
+        showDragHandle: true,
+        backgroundColor: Colors.transparent,  // Set the background color to transparent
+          context: context,
+          builder: (context) {
+            return Container(
+              decoration: BoxDecoration(
+                color: backgroundColor,  // Set your desired background color
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40.0),  // Adjust the radius as needed
+                  topRight: Radius.circular(40.0),  // Adjust the radius as needed
+                ),
+              ),
+              height: MediaQuery.of(context).size.height * 0.8,
+
+            );
+      },
+      );
+    }
+    
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(8.0),
-        scrollDirection: Axis.vertical,
-        child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Align children to the top
-        // crossAxisAlignment: CrossAxisAlignment.center,
+
+      body:
+        // SingleChildScrollView(
+        // // padding: EdgeInsets.all(8.0),
+        // scrollDirection: Axis.vertical,
+        // child:
+        Column(
+
         children: [
-          SizedBox(height: 30,),
-          //Image
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          // SizedBox(height: 30,),
+          // Row(
+          //   children: [
+          //     Image.asset(
+          //       width: MediaQuery.of(context).size.width,
+          //       'assets/images/profile_header_img.png', // Replace with your image path
+          //       fit: BoxFit.cover, // Adjust image fit as needed
+          //     ),
+          //   ],
+          // ),
+          // //Image
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     //Image
+          //     Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: Image.asset(
+          //         'assets/images/cil_user-female.png', // Replace with your image path
+          //         fit: BoxFit.cover, // Adjust image fit as needed
+          //       ),
+          //     ),
+          //   ],
+          // ),
+
+          Stack(
             children: [
-              //Image
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(bottom: 80),
                 child: Image.asset(
-                  'assets/images/cil_user-female.png', // Replace with your image path
-                  fit: BoxFit.cover, // Adjust image fit as needed
+                  'assets/images/profile_header_img.png', // Replace with your first image path
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                bottom: 30, // Adjust the bottom position as needed
+                left: (MediaQuery.of(context).size.width - 120) / 2,
+                child: Column(
+                  children: [
+                    Text("Username", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400)),
+                    SizedBox(height: 20,),
+                    Container(
+                      width: 120,
+                      decoration: BoxDecoration( shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 4)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Image.asset(
+                          'assets/images/profileimage.png', // Replace with your second image path
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
 
-          SizedBox(height: 50,),
+
+          // SizedBox(height: 5,),
           //Fields
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  'username',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  '13/10/2000',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  '23',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  'Single',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  'Punjab',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  '166',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  '52',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  '1111111111',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  'usermail@gmail.com',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  'userfacebook@gmail.com',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 40),
-                child: Text(
-                  'Reminder 2 days before',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                    letterSpacing: 1.20,
-                  ),
-                ),
-              ),
-              //Pencil Edit icon
-              // Icon(Icons.edit, size: 20,color: Color(0xFFFF608B)),
-            ],
-          ),
-          SizedBox(height: 50),
-          //Edit butoon
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 356,
-                height: 45,
-                child: ElevatedButton(
-                  onPressed: () {
-                      // Navigate to the next page when the button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileEdit()),
-                  );
-                  },
-                  style: ButtonStyle(
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Container(
+          //       padding: EdgeInsets.only(left: 40),
+          //       child: Text(
+          //         'username',
+          //         style: TextStyle(
+          //           color: Colors.black,
+          //           fontSize: 20,
+          //           fontFamily: 'Inria Sans',
+          //           fontWeight: FontWeight.w700,
+          //           height: 0,
+          //           letterSpacing: 1.20,
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(height: 20,),
 
-                    backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+
+
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+            children: [
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/calendarIcon.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          '13/10/2000',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Text('Next', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),),
-                ),
+                ],
               ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+
+              //Age Row
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Container(
+              //       padding: EdgeInsets.only(left: 40),
+              //       child: Row(
+              //         children: [
+              //           SizedBox(
+              //             height: 25,
+              //             width: 25,
+              //             child: Image.asset(
+              //               "assets/images/calendarIcon.png",
+              //               fit: BoxFit.cover, // Adjust image fit as needed
+              //             ),
+              //           ),
+              //           SizedBox(width: 20,),
+              //           Text(
+              //             '23',
+              //             style: TextStyle(
+              //               color: Colors.black,
+              //               fontSize: 16,
+              //               fontFamily: 'Inria Sans',
+              //               fontWeight: FontWeight.w300,
+              //               height: 0,
+              //               letterSpacing: 0.96,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 5,),
+              // SizedBox(
+              //     width: MediaQuery.of(context).size.width * 0.9,
+              //     child: Divider()
+              // ),
+              // SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/status.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          'Single',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/region.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          'Punjab',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/height.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          '166',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/weight.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          '52',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/phonenumber.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          '1111111111',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/mail.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          'usermail@gmail.com',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/facebook.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          'userfacebook@gmail.com',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Image.asset(
+                            "assets/images/reminder.png",
+                            fit: BoxFit.cover, // Adjust image fit as needed
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          'Reminder 2 days before',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'Inria Sans',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.96,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Icon(
+                            size: 20,
+                            Icons.edit,
+                            color: Color(0xFFFF608B),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //Pencil Edit icon
+                  // Icon(Icons.edit, size: 20,color: Color(0xFFFF608B)),
+                ],
+              ),
+              SizedBox(height: 5,),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Divider()
+              ),
+              SizedBox(height: 20,),
+              //Edit button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 356,
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Navigate to the next page when the button is pressed
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => ProfileEdit()),
+                        // );
+
+                        editProfileDrawer(context);
+
+                      },
+                      style: ButtonStyle(
+                        elevation: MaterialStatePropertyAll(8),
+
+                        backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+                      ),
+                      child: Text('Edit Profile', style: TextStyle(fontSize: 24.0, color: Colors.white),),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 30),
             ],
           ),
+              ),
+              ),
+
         ],
       ),
-    ),
+    // ),
       bottomNavigationBar: BottomNavBar(),
     );
   }

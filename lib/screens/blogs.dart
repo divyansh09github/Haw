@@ -261,13 +261,13 @@ class _BlogsState extends State<Blogs> {
         ),
       ),
 
-      endDrawer: Drawer(
-        child: Column(
-          children: [
-            Text("data"),
-          ],
-        ),
-      ),
+      // endDrawer: Drawer(
+      //   child: Column(
+      //     children: [
+      //       Text("data"),
+      //     ],
+      //   ),
+      // ),
       bottomNavigationBar: BottomNavBar(),
     )
     : Scaffold(

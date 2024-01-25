@@ -525,6 +525,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     elevation: 10, // Increase elevation for a more pronounced shadow
                     borderRadius: BorderRadius.circular(15),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -565,6 +566,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     elevation: 10, // Increase elevation for a more pronounced shadow
                     borderRadius: BorderRadius.circular(15),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       controller: _weight,
 
                       inputFormatters: [
