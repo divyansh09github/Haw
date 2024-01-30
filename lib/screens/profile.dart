@@ -332,29 +332,29 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     
-    void editProfileDrawer(BuildContext context){
-      showModalBottomSheet(
-        elevation: 10,
-        isScrollControlled: true,
-        enableDrag: true,
-        showDragHandle: true,
-        backgroundColor: Colors.transparent,  // Set the background color to transparent
-          context: context,
-          builder: (context) {
-            return Container(
-              decoration: BoxDecoration(
-                color: backgroundColor,  // Set your desired background color
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40.0),  // Adjust the radius as needed
-                  topRight: Radius.circular(40.0),  // Adjust the radius as needed
-                ),
-              ),
-              height: MediaQuery.of(context).size.height * 0.8,
-
-            );
-      },
-      );
-    }
+    // void editProfileDrawer(BuildContext context){
+    //   showModalBottomSheet(
+    //     elevation: 10,
+    //     isScrollControlled: true,
+    //     enableDrag: true,
+    //     showDragHandle: true,
+    //     backgroundColor: Colors.transparent,  // Set the background color to transparent
+    //       context: context,
+    //       builder: (context) {
+    //         return Container(
+    //           decoration: BoxDecoration(
+    //             color: backgroundColor,  // Set your desired background color
+    //             borderRadius: BorderRadius.only(
+    //               topLeft: Radius.circular(40.0),  // Adjust the radius as needed
+    //               topRight: Radius.circular(40.0),  // Adjust the radius as needed
+    //             ),
+    //           ),
+    //           height: MediaQuery.of(context).size.height * 0.8,
+    //
+    //         );
+    //   },
+    //   );
+    // }
     
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -400,6 +400,23 @@ class _ProfileState extends State<Profile> {
                   'assets/images/profile_header_img.png', // Replace with your first image path
                   width: MediaQuery.of(context).size.width,
                   fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 60,
+                left: 20,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset("assets/images/backArrowWhite.png",
+                        height: 25,
+                        width: 25,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Positioned(
@@ -859,12 +876,12 @@ class _ProfileState extends State<Profile> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Navigate to the next page when the button is pressed
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => ProfileEdit()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfileEdit()),
+                        );
 
-                        editProfileDrawer(context);
+                        // editProfileDrawer(context);
 
                       },
                       style: ButtonStyle(
@@ -887,7 +904,7 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     // ),
-      bottomNavigationBar: BottomNavBar(),
+    //   bottomNavigationBar: BottomNavBar(),
     );
   }
 }

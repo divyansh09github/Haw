@@ -196,12 +196,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           ),
                           Text("Analysis", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
                         ],
+
                       ),
                     ),
                   ],
                 ),
               ),
               GestureDetector(
+
                 onTap: () {
                   // Perform actions when the image is tapped
                   Navigator.push(context,MaterialPageRoute(builder: (context) => NavBar()),);

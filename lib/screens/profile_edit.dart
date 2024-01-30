@@ -555,8 +555,6 @@
 //   }
 // }
 
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/analysis.dart';
@@ -572,7 +570,6 @@ class ProfileEdit extends StatefulWidget {
 }
 
 class _ProfileEditState extends State<ProfileEdit> {
-
   Color bottombgcolor = const Color(0xFFFF608B);
   Color backgroundColor = const Color(0xFFFFDFE9);
   DateTime _selectedDate = DateTime.now();
@@ -581,84 +578,158 @@ class _ProfileEditState extends State<ProfileEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(8.0),
-        scrollDirection: Axis.vertical,
-        child: Column(
 
-          children: [
-            SizedBox(height: 30,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //Image
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/images/cil_user-female.png', // Replace with your image path
-                    fit: BoxFit.cover, // Adjust image fit as needed
-                  ),
+      body:
+          // SingleChildScrollView(
+          // // padding: EdgeInsets.all(8.0),
+          // scrollDirection: Axis.vertical,
+          // child:
+          Column(
+        children: [
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 100),
+                child: Image.asset(
+                  'assets/images/profile_header_img.png', // Replace with your first image path
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: 60,
+                left: 20,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset("assets/images/backArrowWhite.png",
+                        height: 25,
+                        width: 25,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 30, // Adjust the bottom position as needed
+                left: (MediaQuery.of(context).size.width - 120) / 2,
+                child: Column(
+                  children: [
+                    // Text("Username", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400)),
+                    // SizedBox(height: 20,),
+                    Container(
+                      width: 120,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 4)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Image.asset(
+                          'assets/images/profileimage.png', // Replace with your second image path
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("Change Picture",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-            Column(
-              children: [
-                SizedBox(height: 50,),
-
-                //Username textfeild
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(15),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: 'Username',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                15), // Match border radius with material
-                            borderSide:
-                            BorderSide.none, // Remove the default border
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Username",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: SizedBox(
+                      width:
+                          MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 30, // Set height
+                      child: Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(8),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Username',
+                            // labelText: '100',
+                            // labelStyle: const TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  15), // Match border radius with material
+                              borderSide:
+                                  BorderSide.none, // Remove the default border
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, right: 10.0),
                           ),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, right: 10.0),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20,),
+                  SizedBox(height: 20),
 
-                //DOB
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                        elevation: 5,
-                        borderRadius: BorderRadius.circular(15),
-                        child:
-                        TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            labelText:  "${DateTime.now()}",
-                            labelStyle: const TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15), // Match border radius with material
-                              borderSide: BorderSide.none, // Remove the default border
-                            ),
-                            contentPadding: const EdgeInsets.only(left: 20.0, top: 10.0, right: 10.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Date Of Birth",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 30, // Set height
+                      child: Material(
+                          elevation: 2,
+                          borderRadius: BorderRadius.circular(8),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: '13/10/2000',
+                              // labelText: '100',
+                              // labelStyle: const TextStyle(color: Colors.black),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    15), // Match border radius with material
+                                borderSide: BorderSide
+                                    .none, // Remove the default border
+                              ),
+                              contentPadding: const EdgeInsets.only(
+                                  left: 20.0, top: 10.0, right: 10.0),
 // Use IntrinsicHeight to wrap the column widget
 //                             suffixIcon: IntrinsicHeight(
 //                               child: Column(
@@ -675,301 +746,811 @@ class _ProfileEditState extends State<ProfileEdit> {
 //                                 ],
 //                               ),
 //                             ),
-                          ),
-                        )
+                            ),
+                          )),
                     ),
                   ),
-                ),
-                SizedBox(height: 20,),
 
-                //Age
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  SizedBox(height: 20),
 
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(15),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: '23',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                15), // Match border radius with material
-                            borderSide:
-                            BorderSide.none, // Remove the default border
-                          ),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, right: 10.0),
-                        ),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Marital Status",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                   ),
-                ),
-                SizedBox(height: 20,),
-
-                //Marital status
-                Container(
-
-                  height: 30, // increase the height of the dropdown
-                  width: 300, // increase the width of the dropdown
-                  // set the background color of the dropdown
-                  decoration: BoxDecoration(
-                    color: Colors.white, // the background color of the decoration
-                    border: Border.all(color: Colors.white, width: 1), // the border of the decoration
-                    borderRadius: BorderRadius.circular(15), // the border radius of the decoration
-                    boxShadow: [ // the box shadow of the decoration
-                      BoxShadow(
-                        color: Colors.grey, // the color of the shadow
-                        offset: Offset(0, 2), // the offset of the shadow
-                        blurRadius: 4, // the blur radius of the shadow
-                      ),
-                    ],
+                  SizedBox(
+                    height: 10,
                   ),
-                  child: DropdownButton(
-                    value: "Married",
-                    items: [
-                      DropdownMenuItem(value: "Married", child: Text("Married")),
-                      DropdownMenuItem(value: "Unmarried", child: Text("Unmarried")),
-                    ],
-                    onChanged: (value) { // the callback function when an item is selected
-// do something with the value
-                    },
-                    isExpanded: true, // make the dropdown take the full width of the container
-                    underline: Container(),
-                    padding: const EdgeInsets.symmetric(horizontal: 15),// remove the default underline of the dropdown
-                  ),
-                ),
-                SizedBox(height: 20,),
-
-                //State dropdown
-                Container(
-                  height: 30, // increase the height of the dropdown
-                  width: 300, // increase the width of the dropdown
-                  // set the background color of the dropdown
-                  decoration: BoxDecoration(
-                    color: Colors.white, // the background color of the decoration
-                    border: Border.all(color: Colors.white, width: 1), // the border of the decoration
-                    borderRadius: BorderRadius.circular(15), // the border radius of the decoration
-                    boxShadow: [ // the box shadow of the decoration
-                      BoxShadow(
-                        color: Colors.grey, // the color of the shadow
-                        offset: Offset(0, 2), // the offset of the shadow
-                        blurRadius: 4, // the blur radius of the shadow
-                      ),
-                    ],
-                  ),
-                  child: DropdownButton(
-                    value: "Punjab",
-                    items: [
-                      DropdownMenuItem(value: "Punjab", child: Text("Punjab")),
-                      DropdownMenuItem(value: "Region 2", child: Text("Region 2")),
-                    ],
-                    onChanged: (value) { // the callback function when an item is selected
-// do something with the value
-                    },
-                    isExpanded: true, // make the dropdown take the full width of the container
-                    underline: Container(),
-                    padding: const EdgeInsets.symmetric(horizontal: 15),// remove the default underline of the dropdown
-                  ),
-                ),
-                SizedBox(height: 20,),
-
-                //height
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(15),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: '123',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                15), // Match border radius with material
-                            borderSide:
-                            BorderSide.none, // Remove the default border
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Container(
+                    //
+                      height: 30, // increase the height of the dropdown
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      // set the background color of the dropdown
+                      decoration: BoxDecoration(
+                        color: Colors
+                            .white, // the background color of the decoration
+                        border: Border.all(
+                            color: Colors.white,
+                            width: 1), // the border of the decoration
+                        borderRadius: BorderRadius.circular(
+                            8), // the border radius of the decoration
+                        boxShadow: [
+                          // the box shadow of the decoration
+                          BoxShadow(
+                            color: Colors.grey, // the color of the shadow
+                            offset: Offset(0, 2), // the offset of the shadow
+                            blurRadius: 4, // the blur radius of the shadow
                           ),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, right: 10.0),
-                        ),
+                        ],
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-
-                //weight
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(15),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: '100',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                15), // Match border radius with material
-                            borderSide:
-                            BorderSide.none, // Remove the default border
-                          ),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, right: 10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-
-                //Phone textfeild
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(15),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: '1234567890',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                15), // Match border radius with material
-                            borderSide:
-                            BorderSide.none, // Remove the default border
-                          ),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, right: 10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-
-                //Gmail textfeild
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(15),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: 'usermail@gmail.com',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                15), // Match border radius with material
-                            borderSide:
-                            BorderSide.none, // Remove the default border
-                          ),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, right: 10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-
-                //facebook textfeild
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-
-                  child: SizedBox(
-                    width: 300, // Set width
-                    height: 30, // Set height
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(15),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: 'userfacebook@gmail.com',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                15), // Match border radius with material
-                            borderSide:
-                            BorderSide.none, // Remove the default border
-                          ),
-                          contentPadding: const EdgeInsets.only(
-                              left: 20.0, top: 10.0, right: 10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 25,),
-
-                //Save butoon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 356,
-                      height: 45,
-                      child: ElevatedButton(
-                        onPressed: () {
-// Navigate to the next page when the button is pressed
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => Detail()),
-//                   );
+                      child: DropdownButton(
+                        value: "Married",
+                        items: [
+                          DropdownMenuItem(
+                              value: "Married", child: Text("Married")),
+                          DropdownMenuItem(
+                              value: "Unmarried", child: Text("Unmarried")),
+                        ],
+                        onChanged: (value) {
+                          // the callback function when an item is selected
+                    // do something with the value
                         },
-                        style: ButtonStyle(
-
-                          backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
-                        ),
-                        child: Text('Save', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),),
+                        isExpanded:
+                            true, // make the dropdown take the full width of the container
+                        underline: Container(),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal:
+                                15), // remove the default underline of the dropdown
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                  ),
 
-        ),
+                  SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Region",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Container(
+                      height: 30, // increase the height of the dropdown
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      // set the background color of the dropdown
+                      decoration: BoxDecoration(
+                        color: Colors
+                            .white, // the background color of the decoration
+                        border: Border.all(
+                            color: Colors.white,
+                            width: 1), // the border of the decoration
+                        borderRadius: BorderRadius.circular(
+                            8), // the border radius of the decoration
+                        boxShadow: [
+                          // the box shadow of the decoration
+                          BoxShadow(
+                            color: Colors.grey, // the color of the shadow
+                            offset: Offset(0, 2), // the offset of the shadow
+                            blurRadius: 4, // the blur radius of the shadow
+                          ),
+                        ],
+                      ),
+                      child: DropdownButton(
+                        // elevation: 2,
+                        value: "Punjab",
+                        items: [
+                          DropdownMenuItem(
+                              value: "Punjab", child: Text("Punjab")),
+                          DropdownMenuItem(
+                              value: "Region 2", child: Text("Region 2")),
+                        ],
+                        onChanged: (value) {
+                          // the callback function when an item is selected
+                    // do something with the value
+                        },
+                        isExpanded:
+                            true, // make the dropdown take the full width of the container
+                        underline: Container(),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal:
+                                15), // remove the default underline of the dropdown
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Height",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 30, // Set height
+                      child: Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(15),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: '123',
+                            // labelText: '100',
+                            // labelStyle: const TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  8), // Match border radius with material
+                              borderSide:
+                                  BorderSide.none, // Remove the default border
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, right: 10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Weight",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 30, // Set height
+                      child: Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(15),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Weight',
+                            // labelText: '100',
+                            // labelStyle: const TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  8), // Match border radius with material
+                              borderSide:
+                                  BorderSide.none, // Remove the default border
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, right: 10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Phone Number",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 30, // Set height
+                      child: Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(8),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: '1234567890',
+                            // labelText: '1234567890',
+                            // labelStyle: const TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  15), // Match border radius with material
+                              borderSide:
+                                  BorderSide.none, // Remove the default border
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, right: 10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Email",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 30, // Set height
+                      child: Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(8),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'usermail@gmail.com',
+                            // labelText: 'usermail@gmail.com',
+                            // labelStyle: const TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  15), // Match border radius with material
+                              borderSide:
+                                  BorderSide.none, // Remove the default border
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, right: 10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      "Facebook",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 30, // Set height
+                      child: Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(8),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'userfacebook@gmail.com',
+                            // labelText: 'userfacebook@gmail.com',
+                            // labelStyle: const TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  15), // Match border radius with material
+                              borderSide:
+                                  BorderSide.none, // Remove the default border
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, right: 10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 30,),
+                  // // Row(
+                  // //   mainAxisAlignment: MainAxisAlignment.center,
+                  // //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 30),
+                  //       child: SizedBox(
+                  //         width:
+                  //         MediaQuery.of(context).size.width * 0.8, // Set width
+                  //         height: 45,
+                  //         child: ElevatedButton(
+                  //           onPressed: () {
+                  //             // Navigate to the next page when the button is pressed
+                  //             // Navigator.push(
+                  //             //   context,
+                  //             //   MaterialPageRoute(builder: (context) => ProfileEdit()),
+                  //             // );
+                  //
+                  //             // editProfileDrawer(context);
+                  //
+                  //           },
+                  //           style: ButtonStyle(
+                  //             elevation: MaterialStatePropertyAll(8),
+                  //
+                  //             backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+                  //             shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+                  //           ),
+                  //           child: Text('Save', style: TextStyle(fontSize: 24.0, color: Colors.white),),
+                  //         ),
+                  //       ),
+                  //     ),
+                  // //   ],
+                  // // ),
+                  //
+                  // SizedBox(height: 50,),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 20,),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: SizedBox(
+              width: 356,
+              height: 45,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Navigate to the next page when the button is pressed
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => ProfileEdit()),
+                  // );
+
+                  // editProfileDrawer(context);
+
+                },
+                style: ButtonStyle(
+                  elevation: MaterialStatePropertyAll(8),
+
+                  backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+                ),
+                child: Text('Save', style: TextStyle(fontSize: 24.0, color: Colors.white),),
+              ),
+            ),
+          ),
+          //   ],
+          // ),
+
+          SizedBox(height: 30,),
+        ],
       ),
-      bottomNavigationBar: BottomNavBar(),
+      // ),
+      // bottomNavigationBar: BottomNavBar(),
     );
+
+//     return Scaffold(
+//       backgroundColor: backgroundColor,
+//       body: SingleChildScrollView(
+//         padding: EdgeInsets.all(8.0),
+//         scrollDirection: Axis.vertical,
+//         child: Column(
+//
+//           children: [
+//             SizedBox(height: 30,),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 //Image
+//                 Padding(
+//                   padding: const EdgeInsets.all(8.0),
+//                   child: Image.asset(
+//                     'assets/images/cil_user-female.png', // Replace with your image path
+//                     fit: BoxFit.cover, // Adjust image fit as needed
+//                   ),
+//                 ),
+//               ],
+//             ),
+//
+//             Column(
+//               children: [
+//                 SizedBox(height: 50,),
+//
+//                 //Username textfeild
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                       elevation: 5,
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           labelText: 'Username',
+//                           labelStyle: const TextStyle(color: Colors.black),
+//                           border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(
+//                                 15), // Match border radius with material
+//                             borderSide:
+//                             BorderSide.none, // Remove the default border
+//                           ),
+//                           contentPadding: const EdgeInsets.only(
+//                               left: 20.0, top: 10.0, right: 10.0),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //DOB
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                         elevation: 5,
+//                         borderRadius: BorderRadius.circular(15),
+//                         child:
+//                         TextField(
+//                           decoration: InputDecoration(
+//                             filled: true,
+//                             fillColor: Colors.white,
+//                             labelText:  "${DateTime.now()}",
+//                             labelStyle: const TextStyle(color: Colors.black),
+//                             border: OutlineInputBorder(
+//                               borderRadius: BorderRadius.circular(15), // Match border radius with material
+//                               borderSide: BorderSide.none, // Remove the default border
+//                             ),
+//                             contentPadding: const EdgeInsets.only(left: 20.0, top: 10.0, right: 10.0),
+// // Use IntrinsicHeight to wrap the column widget
+// //                             suffixIcon: IntrinsicHeight(
+// //                               child: Column(
+// //                                 mainAxisSize: MainAxisSize.min,
+// //                                 children: <Widget>[
+// //
+// //                                   // SizedBox(height: 20.0),
+// //
+// //                                   IconButton(
+// //                                       onPressed: () => _selectedDate,
+// //                                       icon: Icon(Icons.calendar_month, size: 24.0,color: Color(0xFFFF608B))
+// //                                   ),
+// //
+// //                                 ],
+// //                               ),
+// //                             ),
+//                           ),
+//                         )
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //Age
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                       elevation: 5,
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           labelText: '23',
+//                           labelStyle: const TextStyle(color: Colors.black),
+//                           border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(
+//                                 15), // Match border radius with material
+//                             borderSide:
+//                             BorderSide.none, // Remove the default border
+//                           ),
+//                           contentPadding: const EdgeInsets.only(
+//                               left: 20.0, top: 10.0, right: 10.0),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //Marital status
+//                 Container(
+//
+//                   height: 30, // increase the height of the dropdown
+//                   width: 300, // increase the width of the dropdown
+//                   // set the background color of the dropdown
+//                   decoration: BoxDecoration(
+//                     color: Colors.white, // the background color of the decoration
+//                     border: Border.all(color: Colors.white, width: 1), // the border of the decoration
+//                     borderRadius: BorderRadius.circular(15), // the border radius of the decoration
+//                     boxShadow: [ // the box shadow of the decoration
+//                       BoxShadow(
+//                         color: Colors.grey, // the color of the shadow
+//                         offset: Offset(0, 2), // the offset of the shadow
+//                         blurRadius: 4, // the blur radius of the shadow
+//                       ),
+//                     ],
+//                   ),
+//                   child: DropdownButton(
+//                     value: "Married",
+//                     items: [
+//                       DropdownMenuItem(value: "Married", child: Text("Married")),
+//                       DropdownMenuItem(value: "Unmarried", child: Text("Unmarried")),
+//                     ],
+//                     onChanged: (value) { // the callback function when an item is selected
+// // do something with the value
+//                     },
+//                     isExpanded: true, // make the dropdown take the full width of the container
+//                     underline: Container(),
+//                     padding: const EdgeInsets.symmetric(horizontal: 15),// remove the default underline of the dropdown
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //State dropdown
+//                 Container(
+//                   height: 30, // increase the height of the dropdown
+//                   width: 300, // increase the width of the dropdown
+//                   // set the background color of the dropdown
+//                   decoration: BoxDecoration(
+//                     color: Colors.white, // the background color of the decoration
+//                     border: Border.all(color: Colors.white, width: 1), // the border of the decoration
+//                     borderRadius: BorderRadius.circular(15), // the border radius of the decoration
+//                     boxShadow: [ // the box shadow of the decoration
+//                       BoxShadow(
+//                         color: Colors.grey, // the color of the shadow
+//                         offset: Offset(0, 2), // the offset of the shadow
+//                         blurRadius: 4, // the blur radius of the shadow
+//                       ),
+//                     ],
+//                   ),
+//                   child: DropdownButton(
+//                     value: "Punjab",
+//                     items: [
+//                       DropdownMenuItem(value: "Punjab", child: Text("Punjab")),
+//                       DropdownMenuItem(value: "Region 2", child: Text("Region 2")),
+//                     ],
+//                     onChanged: (value) { // the callback function when an item is selected
+// // do something with the value
+//                     },
+//                     isExpanded: true, // make the dropdown take the full width of the container
+//                     underline: Container(),
+//                     padding: const EdgeInsets.symmetric(horizontal: 15),// remove the default underline of the dropdown
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //height
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                       elevation: 5,
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           labelText: '123',
+//                           labelStyle: const TextStyle(color: Colors.black),
+//                           border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(
+//                                 15), // Match border radius with material
+//                             borderSide:
+//                             BorderSide.none, // Remove the default border
+//                           ),
+//                           contentPadding: const EdgeInsets.only(
+//                               left: 20.0, top: 10.0, right: 10.0),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //weight
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                       elevation: 5,
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           labelText: '100',
+//                           labelStyle: const TextStyle(color: Colors.black),
+//                           border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(
+//                                 15), // Match border radius with material
+//                             borderSide:
+//                             BorderSide.none, // Remove the default border
+//                           ),
+//                           contentPadding: const EdgeInsets.only(
+//                               left: 20.0, top: 10.0, right: 10.0),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //Phone textfeild
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                       elevation: 5,
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           labelText: '1234567890',
+//                           labelStyle: const TextStyle(color: Colors.black),
+//                           border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(
+//                                 15), // Match border radius with material
+//                             borderSide:
+//                             BorderSide.none, // Remove the default border
+//                           ),
+//                           contentPadding: const EdgeInsets.only(
+//                               left: 20.0, top: 10.0, right: 10.0),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //Gmail textfeild
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                       elevation: 5,
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           labelText: 'usermail@gmail.com',
+//                           labelStyle: const TextStyle(color: Colors.black),
+//                           border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(
+//                                 15), // Match border radius with material
+//                             borderSide:
+//                             BorderSide.none, // Remove the default border
+//                           ),
+//                           contentPadding: const EdgeInsets.only(
+//                               left: 20.0, top: 10.0, right: 10.0),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20,),
+//
+//                 //facebook textfeild
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 50),
+//
+//                   child: SizedBox(
+//                     width: 300, // Set width
+//                     height: 30, // Set height
+//                     child: Material(
+//                       elevation: 5,
+//                       borderRadius: BorderRadius.circular(15),
+//                       child: TextField(
+//                         decoration: InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           labelText: 'userfacebook@gmail.com',
+//                           labelStyle: const TextStyle(color: Colors.black),
+//                           border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(
+//                                 15), // Match border radius with material
+//                             borderSide:
+//                             BorderSide.none, // Remove the default border
+//                           ),
+//                           contentPadding: const EdgeInsets.only(
+//                               left: 20.0, top: 10.0, right: 10.0),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 25,),
+//
+//                 //Save butoon
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     SizedBox(
+//                       width: 356,
+//                       height: 45,
+//                       child: ElevatedButton(
+//                         onPressed: () {
+// // Navigate to the next page when the button is pressed
+// //                   Navigator.push(
+// //                     context,
+// //                     MaterialPageRoute(builder: (context) => Detail()),
+// //                   );
+//                         },
+//                         style: ButtonStyle(
+//
+//                           backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+//                           shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+//                         ),
+//                         child: Text('Save', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ],
+//
+//         ),
+//       ),
+//       bottomNavigationBar: BottomNavBar(),
+//     );
   }
 }
-
-
-

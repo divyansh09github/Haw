@@ -218,11 +218,14 @@ class _HomePeriodState extends State<HomePeriod> {
   }
   void _showTipsBottomSheet(BuildContext context) {
     showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.white.withOpacity(0),
       enableDrag: true,
-      showDragHandle: true,
+      // showDragHandle: true,
       context: context,
       builder: (context) {
         return Container(
+          decoration: BoxDecoration(color: Colors.white),
           width: MediaQuery.of(context).size.width * 0.96,
           height: MediaQuery.of(context).size.height * 0.6,
           padding: EdgeInsets.all(16.0),
