@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
@@ -13,7 +12,6 @@ import 'package:haw/screens/period_duration.dart';
 import 'package:haw/screens/sign_up.dart';
 import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/screens/terms&conditions.dart';
-import 'package:local_auth/local_auth.dart';
 
 class HomePeriod extends StatefulWidget {
   const HomePeriod({super.key});
@@ -25,7 +23,7 @@ class HomePeriod extends StatefulWidget {
   State<HomePeriod> createState() => _HomePeriodState();
 }
 
-class _HomePeriodState extends State<HomePeriod> with WidgetsBindingObserver {
+class _HomePeriodState extends State<HomePeriod> {
   Color bottombgcolor = const Color(0xFFFF608B);
   var _currentValue = 01;
   String todayStr = "";
@@ -47,12 +45,6 @@ class _HomePeriodState extends State<HomePeriod> with WidgetsBindingObserver {
   @override
   initState() {
     super.initState();
-
-    // Add this to register the observer
-    WidgetsBinding.instance?.addObserver(this);
-
-    _authenticate();
-
     showScreen = false;
     // String screenStr = _initialScreen() as String;
 
@@ -81,47 +73,6 @@ class _HomePeriodState extends State<HomePeriod> with WidgetsBindingObserver {
     //     periodText = "You are in";
     //   });
     // }
-  }
-
-  @override
-  void dispose() {
-    // Add this line to remove the observer when the widget is disposed
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      // The app has come to the foreground, trigger authentication
-      _authenticate();
-    }
-  }
-
-  final LocalAuthentication localAuth = LocalAuthentication();
-
-  Future<void> _authenticate() async {
-    try {
-      bool isAuthenticated = await localAuth.authenticate(
-          localizedReason: 'Authenticate to access the app',
-          options: AuthenticationOptions(
-            useErrorDialogs: true,
-            stickyAuth: true,
-          )
-      );
-
-      if (isAuthenticated) {
-        // Authentication successful, proceed to the app
-        print('Authentication successful');
-      } else {
-        // Authentication failed
-        SystemNavigator.pop();
-        print('Authentication failed');
-      }
-    } catch (e) {
-      // Handle errors
-      print('Error: $e');
-    }
   }
 
   String? screen;

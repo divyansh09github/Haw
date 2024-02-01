@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
+import 'package:haw/screens/data_calendar_list.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/homePeriod.dart';
 import 'package:haw/screens/nav_bar.dart';
@@ -190,7 +191,7 @@ class _DataCalendarState extends State<DataCalendar> {
     return Scaffold(
         appBar: AppBar(
               centerTitle: true,
-              title: const Text('Calender'),
+              title: const Text('Calender', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),),
             ),
 
       body: Container(
@@ -202,6 +203,8 @@ class _DataCalendarState extends State<DataCalendar> {
           // initialSelectedDates: _initialSelectedDates, // Use the initialized list
           minDate: DateTime.utc(2023),
           maxDate: DateTime.now().add(Duration(days: 90)),
+
+
 
 
 
@@ -254,10 +257,10 @@ class _DataCalendarState extends State<DataCalendar> {
 
 
 
-          headerStyle: DateRangePickerHeaderStyle(textStyle: TextStyle(fontSize: 25)),
+          headerStyle: DateRangePickerHeaderStyle(textStyle: TextStyle(fontSize: 20)),
           monthViewSettings: DateRangePickerMonthViewSettings(enableSwipeSelection: false),
 
-          navigationDirection: DateRangePickerNavigationDirection.vertical,
+          navigationDirection: DateRangePickerNavigationDirection.horizontal,
 
           onSelectionChanged: selectionChanged,
 
@@ -269,66 +272,66 @@ class _DataCalendarState extends State<DataCalendar> {
           // },
 
 
-          cellBuilder: (context, cellDetails) {
-
-            bool showSpecialWidgets = false; // Set this to true for specific dates
-            // if (cellDetails.date.day == 15 && cellDetails.date.month == 1 && cellDetails.date.year == 2024) {
-            //   // Condition to show special widgets on a specific date (e.g., January 15, 2023)
-            //   showSpecialWidgets = true;
-            // }
-
-            return Container(
-              // decoration: BoxDecoration(shape: BoxShape.circle,border: Border.all(color: Colors.black12, width: 1)),
-              // decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
-              child: Column(
-                // mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    cellDetails.date.day.toString(),
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 5,),
-                  if (showSpecialWidgets) Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        height: 5,
-                        width: 5,
-                        child: Container(
-                          color: Color(0xFFFB8A97),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                        width: 5,
-                        child: Container(
-                          color: Color(0xFF00B8AD),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                        width: 5,
-                        child: Container(
-                          color: Color(0xFFFFE28C),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                        width: 5,
-                        child: Container(
-                          color: Color(0xFFA3B971),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          },
+          // cellBuilder: (context, cellDetails) {
+          //
+          //   bool showSpecialWidgets = false; // Set this to true for specific dates
+          //   // if (cellDetails.date.day == 15 && cellDetails.date.month == 1 && cellDetails.date.year == 2024) {
+          //   //   // Condition to show special widgets on a specific date (e.g., January 15, 2023)
+          //   //   showSpecialWidgets = true;
+          //   // }
+          //
+          //   return Container(
+          //     // decoration: BoxDecoration(shape: BoxShape.circle,border: Border.all(color: Colors.black12, width: 1)),
+          //     // decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1))),
+          //     child: Column(
+          //       // mainAxisSize: MainAxisSize.min,
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         Text(
+          //           cellDetails.date.day.toString(),
+          //           style: TextStyle(
+          //             fontSize: 13,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //         SizedBox(height: 5,),
+          //         if (showSpecialWidgets) Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: [
+          //             SizedBox(
+          //               height: 5,
+          //               width: 5,
+          //               child: Container(
+          //                 color: Color(0xFFFB8A97),
+          //               ),
+          //             ),
+          //             SizedBox(
+          //               height: 5,
+          //               width: 5,
+          //               child: Container(
+          //                 color: Color(0xFF00B8AD),
+          //               ),
+          //             ),
+          //             SizedBox(
+          //               height: 5,
+          //               width: 5,
+          //               child: Container(
+          //                 color: Color(0xFFFFE28C),
+          //               ),
+          //             ),
+          //             SizedBox(
+          //               height: 5,
+          //               width: 5,
+          //               child: Container(
+          //                 color: Color(0xFFA3B971),
+          //               ),
+          //             ),
+          //           ],
+          //         )
+          //       ],
+          //     ),
+          //   );
+          // },
 
         ) : Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -562,11 +565,15 @@ class _DataCalendarState extends State<DataCalendar> {
       var selectedDate = (args.value.last as PickerDateRange).startDate;
       print('Selected Date: $selectedDate');
 
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DataCalendarList()),
+      );
       if(selectedDate!.isBefore(DateTime.now())) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DataInput()),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => DataCalendarList()),
+        // );
         // Navigator.pushNamed(context, '/homePeriod', arguments: selectedDate);
       }
       else{

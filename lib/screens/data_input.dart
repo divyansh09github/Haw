@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/homePeriod.dart';
@@ -31,7 +32,7 @@ class _DataInputState extends State<DataInput> {
   bool toDatePicked = false;
   DateTime currentDate = DateTime.now();
 
-  late Map<String, dynamic> symptomsData = {};
+
   bool isLoading = true;
   String error = '';
   @override
@@ -44,16 +45,20 @@ class _DataInputState extends State<DataInput> {
     enableSave = false;
 
     _fetchSymptoms();
+    _fetchIcons();
 
 
   }
 
+
+
+  late Map<String, dynamic> symptomsData = {};
   _fetchSymptoms() async {
     try {
       final data = await GetAPIService().fetchSymptoms(currentDate);
       setState(() {
         symptomsData = data;
-        isLoading = false;
+        isLoading = true;
         error = '';
       });
     } catch (e){
@@ -62,12 +67,6 @@ class _DataInputState extends State<DataInput> {
         error = 'Failed to fetch symptoms: $e';
       });
     }
-
-    // print(symptomsData);
-    // print(symptomsData['show_symptoms']['menstrual_flow']);
-    // print(symptomsData['show_symptoms']['energy']);
-    // print(symptomsData['show_symptoms']['symptoms'][0]);
-    // print(symptomsData['show_symptoms']['emotions'][1]);
 
     List<int> symptoms = [];
     for(var i in symptomsData['show_symptoms']['symptoms'])
@@ -83,7 +82,6 @@ class _DataInputState extends State<DataInput> {
       feelings.add(int.tryParse(i) ?? 0);
     }
 
-
     setState(() {
       selectedFlowIndex = symptomsData['show_symptoms']['menstrual_flow'];
       selectedEnergyIndex = symptomsData['show_symptoms']['energy'];
@@ -93,6 +91,37 @@ class _DataInputState extends State<DataInput> {
     });
 
   // print((symptomsData['show_symptoms']['symptoms']).runtimeType);
+
+  }
+
+  late Map<String, dynamic> energyData = {};
+  late Map<String, dynamic> livelinessData = {};
+  late Map<String, dynamic> feelingsData = {};
+  late Map<String, dynamic> flowData = {};
+  bool showIcons = false;
+  _fetchIcons() async{
+
+    try {
+      final data1 = await GetAPIService().fetchEnergies();
+      final data2 = await GetAPIService().fetchLiveliness();
+      final data3 = await GetAPIService().fetchFeelings();
+      final data4 = await GetAPIService().fetchFlow();
+      setState(() {
+        energyData = data1;
+        livelinessData = data2;
+        feelingsData = data3;
+        flowData = data4;
+        showIcons = true;
+        error = '';
+      });
+    } catch (e){
+      setState(() {
+        showIcons = false;
+        error = 'Failed to fetch energies: $e';
+      });
+    }
+    
+    print('$apiUrl/public/${feelingsData['show_disorders'][0]['icon']}');
 
   }
 
@@ -181,13 +210,13 @@ class _DataInputState extends State<DataInput> {
 
 
   var selectedEnergyIndex = -1;
-  List<Map<String, dynamic>> energyData = [
-    {'imagePath': 'assets/images/veryLowEnergy.png', 'label': 'Very Low'},
-    {'imagePath': 'assets/images/lowEnergy.png', 'label': 'Low'},
-    {'imagePath': 'assets/images/mediumEnergy.png', 'label': 'Medium'},
-    {'imagePath': 'assets/images/highEnergy.png', 'label': 'High'},
-    {'imagePath': 'assets/images/veryHighEnergy.png', 'label': 'Very High'},
-  ];
+  // List<Map<String, dynamic>> energyData = [
+  //   {'imagePath': 'assets/images/veryLowEnergy.png', 'label': 'Very Low'},
+  //   {'imagePath': 'assets/images/lowEnergy.png', 'label': 'Low'},
+  //   {'imagePath': 'assets/images/mediumEnergy.png', 'label': 'Medium'},
+  //   {'imagePath': 'assets/images/highEnergy.png', 'label': 'High'},
+  //   {'imagePath': 'assets/images/veryHighEnergy.png', 'label': 'Very High'},
+  // ];
 
   void _onTapEnergy(int index){
     if(selectedEnergyIndex == index)
@@ -233,6 +262,7 @@ class _DataInputState extends State<DataInput> {
                       : Colors.white;
                 },
               ),
+
               foregroundColor: MaterialStateProperty.all(Colors.white),
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
@@ -241,14 +271,16 @@ class _DataInputState extends State<DataInput> {
                 ),
               ),
             ),
-            child: Image.asset(
-              data['imagePath'],
-              fit: BoxFit.cover,
-            ),
+            child:
+              Image.network('$apiUrl/public/${data['icon']}',fit: BoxFit.cover,)
+            // Image.asset(
+            //   data['icon'],
+            //   fit: BoxFit.cover,
+            // ),
           ),
         ),
         SizedBox(height: 10),
-        Text(data['label']),
+        Text(data['name']),
       ],
     );
   }
@@ -259,29 +291,29 @@ class _DataInputState extends State<DataInput> {
   List<int> livelinessIndexes = [];
   var boolLiveliness = false;
 
-  List<Map<String, dynamic>> livelinessData = [
-    {'imagePath': 'assets/images/noPain.png', 'label': 'No Pain'},
-    {'imagePath': 'assets/images/acnne.png', 'label': 'Acne'},
-    {'imagePath': 'assets/images/jointPain.png', 'label': 'Joint pain'},
-    {'imagePath': 'assets/images/backache.png', 'label': 'Backache'},
-    {'imagePath': 'assets/images/headache.png', 'label': 'Headache'},
-
-    {'imagePath': 'assets/images/migrane.png', 'label': 'Migrane'},
-    {'imagePath': 'assets/images/abdomenPain.png', 'label': 'Abdomen Pain'},
-    {'imagePath': 'assets/images/bodyache.png', 'label': 'Body Ache'},
-    {'imagePath': 'assets/images/cramps.png', 'label': 'Cramps'},
-    {'imagePath': 'assets/images/hotFlashes.png', 'label': 'Hot Flashes'},
-
-    {'imagePath': 'assets/images/chills.png', 'label': 'Chills'},
-    {'imagePath': 'assets/images/bloating.png', 'label': 'Bloating'},
-    {'imagePath': 'assets/images/lowAppetite.png', 'label': 'Low Appetite'},
-    {'imagePath': 'assets/images/increaseAppetite.png', 'label': 'Increase Appetite'},
-    {'imagePath': 'assets/images/constipation.png', 'label': 'Constipation'},
-
-    {'imagePath': 'assets/images/itching.png', 'label': 'Itching'},
-    {'imagePath': 'assets/images/insomnia.png', 'label': 'Insomnia'},
-    {'imagePath': 'assets/images/painfulUrination.png', 'label': 'Painful Urination'},
-  ];
+  // List<Map<String, dynamic>> livelinessData = [
+  //   {'imagePath': 'assets/images/noPain.png', 'label': 'No Pain'},
+  //   {'imagePath': 'assets/images/acnne.png', 'label': 'Acne'},
+  //   {'imagePath': 'assets/images/jointPain.png', 'label': 'Joint pain'},
+  //   {'imagePath': 'assets/images/backache.png', 'label': 'Backache'},
+  //   {'imagePath': 'assets/images/headache.png', 'label': 'Headache'},
+  //
+  //   {'imagePath': 'assets/images/migrane.png', 'label': 'Migrane'},
+  //   {'imagePath': 'assets/images/abdomenPain.png', 'label': 'Abdomen Pain'},
+  //   {'imagePath': 'assets/images/bodyache.png', 'label': 'Body Ache'},
+  //   {'imagePath': 'assets/images/cramps.png', 'label': 'Cramps'},
+  //   {'imagePath': 'assets/images/hotFlashes.png', 'label': 'Hot Flashes'},
+  //
+  //   {'imagePath': 'assets/images/chills.png', 'label': 'Chills'},
+  //   {'imagePath': 'assets/images/bloating.png', 'label': 'Bloating'},
+  //   {'imagePath': 'assets/images/lowAppetite.png', 'label': 'Low Appetite'},
+  //   {'imagePath': 'assets/images/increaseAppetite.png', 'label': 'Increase Appetite'},
+  //   {'imagePath': 'assets/images/constipation.png', 'label': 'Constipation'},
+  //
+  //   {'imagePath': 'assets/images/itching.png', 'label': 'Itching'},
+  //   {'imagePath': 'assets/images/insomnia.png', 'label': 'Insomnia'},
+  //   {'imagePath': 'assets/images/painfulUrination.png', 'label': 'Painful Urination'},
+  // ];
 
   void _onTapLiveliness(int index){
     if(livelinessIndexes.contains(index))
@@ -355,15 +387,15 @@ class _DataInputState extends State<DataInput> {
                 ),
               ),
             ),
-            child: Image.asset(
-              data['imagePath'], // Replace with your image path
+            child: Image.network(
+              '$apiUrl/public/${data['icon']}', // Replace with your image path
               fit: BoxFit
                   .cover, // Adjust image fit as needed
             ),
           ),
         ),
         SizedBox(height: 10), // Adjust spacing as needed
-        Text(data['label']),
+        Text(data['name']),
       ],
     );
   }
@@ -374,33 +406,33 @@ class _DataInputState extends State<DataInput> {
   List<int> feelingsIndexes = [];
   var boolFeelings = false;
 
-  List<Map<String, dynamic>> feelingsData = [
-    {'imagePath': 'assets/images/happy.png', 'label': 'Calm'},
-    {'imagePath': 'assets/images/Loved.png', 'label': 'Loved'},
-    {'imagePath': 'assets/images/Neutral.png', 'label': 'Neutral'},
-    {'imagePath': 'assets/images/Calm.png', 'label': 'Calm'},
-    {'imagePath': 'assets/images/sad.png', 'label': 'Sad'},
-
-    {'imagePath': 'assets/images/Excited.png', 'label': 'Excited'},
-    {'imagePath': 'assets/images/Cry.png', 'label': 'Cry'},
-    {'imagePath': 'assets/images/Exhausted.png', 'label': 'Exhausted'},
-    {'imagePath': 'assets/images/Delighted.png', 'label': 'Delighted'},
-    {'imagePath': 'assets/images/Angry.png', 'label': 'Angry'},
-
-    {'imagePath': 'assets/images/Annoyed.png', 'label': 'Annoyed'},
-    {'imagePath': 'assets/images/Anxious.png', 'label': 'Anxious'},
-    {'imagePath': 'assets/images/Insecure.png', 'label': 'Insecure'},
-    {'imagePath': 'assets/images/Bored.png', 'label': 'Bored'},
-    {'imagePath': 'assets/images/Alone.png', 'label': 'Alone'},
-
-    {'imagePath': 'assets/images/Empty.png', 'label': 'Empty'},
-    {'imagePath': 'assets/images/insomnia.png', 'label': 'insomnia'},
-    {'imagePath': 'assets/images/Depressed.png', 'label': 'Depressed'},
-
-    {'imagePath': 'assets/images/Neglected.png', 'label': 'Neglected'},
-    {'imagePath': 'assets/images/Scared.png', 'label': 'Scared'},
-    {'imagePath': 'assets/images/Tired.png', 'label': 'Tired'},
-  ];
+  // List<Map<String, dynamic>> feelingsData = [
+  //   {'imagePath': 'assets/images/happy.png', 'label': 'Calm'},
+  //   {'imagePath': 'assets/images/Loved.png', 'label': 'Loved'},
+  //   {'imagePath': 'assets/images/Neutral.png', 'label': 'Neutral'},
+  //   {'imagePath': 'assets/images/Calm.png', 'label': 'Calm'},
+  //   {'imagePath': 'assets/images/sad.png', 'label': 'Sad'},
+  //
+  //   {'imagePath': 'assets/images/Excited.png', 'label': 'Excited'},
+  //   {'imagePath': 'assets/images/Cry.png', 'label': 'Cry'},
+  //   {'imagePath': 'assets/images/Exhausted.png', 'label': 'Exhausted'},
+  //   {'imagePath': 'assets/images/Delighted.png', 'label': 'Delighted'},
+  //   {'imagePath': 'assets/images/Angry.png', 'label': 'Angry'},
+  //
+  //   {'imagePath': 'assets/images/Annoyed.png', 'label': 'Annoyed'},
+  //   {'imagePath': 'assets/images/Anxious.png', 'label': 'Anxious'},
+  //   {'imagePath': 'assets/images/Insecure.png', 'label': 'Insecure'},
+  //   {'imagePath': 'assets/images/Bored.png', 'label': 'Bored'},
+  //   {'imagePath': 'assets/images/Alone.png', 'label': 'Alone'},
+  //
+  //   {'imagePath': 'assets/images/Empty.png', 'label': 'Empty'},
+  //   {'imagePath': 'assets/images/insomnia.png', 'label': 'insomnia'},
+  //   {'imagePath': 'assets/images/Depressed.png', 'label': 'Depressed'},
+  //
+  //   {'imagePath': 'assets/images/Neglected.png', 'label': 'Neglected'},
+  //   {'imagePath': 'assets/images/Scared.png', 'label': 'Scared'},
+  //   {'imagePath': 'assets/images/Tired.png', 'label': 'Tired'},
+  // ];
 
   // void _onTapFeelings(int index){
   //   // print("clicked");
@@ -480,6 +512,11 @@ class _DataInputState extends State<DataInput> {
                   return Colors.white; // Normal background color
                 },
               ),
+              // backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              //       (Set<MaterialState> states) {
+              //      return Colors.white; // Normal background color
+              //   },
+              // ),
               foregroundColor: MaterialStateProperty.all(Colors.white), // Keep text color consistent
               shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
                     (Set<MaterialState> states) {
@@ -496,15 +533,12 @@ class _DataInputState extends State<DataInput> {
                 },
               ),
             ),
-            child: Image.asset(
-              data['imagePath'], // Replace with your image path
-              fit: BoxFit
-                  .cover, // Adjust image fit as needed
-            ),
+            child: feelingsIndexes.contains(index) ? Image.network('$apiUrl/public/${data['icon_two']}',fit: BoxFit.cover,)
+            : Image.network('$apiUrl/public/${data['icon']}',fit: BoxFit.cover,),
           ),
         ),
         SizedBox(height: 10), // Adjust spacing as needed
-        Text(data['label']),
+        Text(data['name']),
       ],
     );
   }
@@ -565,6 +599,7 @@ class _DataInputState extends State<DataInput> {
       // print(formattedDate);
       // print(_toDate);
       // print(toDatePicked);
+
     });
 
 
@@ -579,7 +614,7 @@ class _DataInputState extends State<DataInput> {
   @override
   Widget build(BuildContext context) {
     // PopScope(child: child, onWillPop: onWillPop),
-    return Scaffold(
+    return isLoading ? Scaffold(
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
@@ -655,7 +690,7 @@ class _DataInputState extends State<DataInput> {
                       ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
+                        child: showIcons ? Row(
                           // mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Center the buttons within the row
                           children: <Widget>[
@@ -706,8 +741,9 @@ class _DataInputState extends State<DataInput> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: Image.asset(
-                                        'assets/images/medium.png', // Replace with your image path
+                                      child: Image.network(
+                                        // 'assets/images/medium.png', // Replace with your image path
+                                        "$apiUrl/public/${flowData['show_disorders'][0]['icon']}",
                                         fit: BoxFit
                                             .cover, // Adjust image fit as needed
                                       ),
@@ -716,7 +752,8 @@ class _DataInputState extends State<DataInput> {
                                 ),
                                 SizedBox(height: 10), // Adjust spacing as needed
                                 Text(
-                                  "Light", // Replace with your desired text
+                                  // "Light", // Replace with your desired text
+                                    flowData['show_disorders'][0]['name'],
                                   style: TextStyle(
                                       fontSize:
                                       16), // Adjust text style as needed
@@ -768,8 +805,9 @@ class _DataInputState extends State<DataInput> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(
-                                        'assets/images/medium.png', // Replace with your image path
+                                      child: Image.network(
+                                        // 'assets/images/medium.png', // Replace with your image path
+                                        "$apiUrl/public/${flowData['show_disorders'][1]['icon']}",
                                         fit: BoxFit
                                             .cover, // Adjust image fit as needed
                                       ),
@@ -778,7 +816,8 @@ class _DataInputState extends State<DataInput> {
                                 ),
                                 SizedBox(height: 10), // Adjust spacing as needed
                                 Text(
-                                  "Medium", // Replace with your desired text
+                                  // "Medium", // Replace with your desired text
+                                  flowData['show_disorders'][1]['name'],
                                   style: TextStyle(
                                       fontSize:
                                       16), // Adjust text style as needed
@@ -830,8 +869,9 @@ class _DataInputState extends State<DataInput> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(5.0),
-                                      child: Image.asset(
-                                        'assets/images/medium.png', // Replace with your image path
+                                      child: Image.network(
+                                        // 'assets/images/medium.png', // Replace with your image path
+                                        "$apiUrl/public/${flowData['show_disorders'][2]['icon']}",
                                         fit: BoxFit
                                             .cover, // Adjust image fit as needed
                                       ),
@@ -840,7 +880,8 @@ class _DataInputState extends State<DataInput> {
                                 ),
                                 SizedBox(height: 10),// Adjust spacing as needed
                                 Text(
-                                  "Heavy", // Replace with your desired text
+                                  // "Heavy", // Replace with your desired text
+                                  flowData['show_disorders'][2]['name'],
                                   style: TextStyle(
                                       fontSize:
                                       16), // Adjust text style as needed
@@ -892,17 +933,15 @@ class _DataInputState extends State<DataInput> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(3.0),
-                                      child: Image.asset(
-                                        'assets/images/medium.png', // Replace with your image path
-                                        fit: BoxFit
-                                            .cover, // Adjust image fit as needed
-                                      ),
+                                      child: selectedFlowIndex == 3 ? Image.network("$apiUrl/public/${flowData['show_disorders'][3]['icon_two']}",fit: BoxFit.cover,)
+                                          : Image.network("$apiUrl/public/${flowData['show_disorders'][3]['icon']}",fit: BoxFit.cover,),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 10), // Adjust spacing as needed
                                 Text(
-                                  "Super heavy", // Replace with your desired text
+                                  // "Super heavy", // Replace with your desired text
+                                  flowData['show_disorders'][3]['name'],
                                   style: TextStyle(
                                       fontSize:
                                       16), // Adjust text style as needed
@@ -951,15 +990,14 @@ class _DataInputState extends State<DataInput> {
                                         ),
                                       ),
                                     ),
-                                    child: Image.asset(
-                                      'assets/images/spotting.png', // Replace with your image path
-                                      fit: BoxFit.cover, // Adjust image fit as needed
-                                    ),
+                                    child: selectedFlowIndex == 4 ? Image.network("$apiUrl/public/${flowData['show_disorders'][4]['icon_two']}",fit: BoxFit.cover,)
+                                        : Image.network("$apiUrl/public/${flowData['show_disorders'][4]['icon']}",fit: BoxFit.cover,),
                                   ),
                                 ),
                                 SizedBox(height: 10), // Adjust spacing as needed
                                 Text(
-                                  "Spotting", // Replace with your desired text
+                                  // "Spotting", // Replace with your desired text
+                                  flowData['show_disorders'][4]['name'],
                                   style: TextStyle(fontSize: 16), // Adjust text style as needed
                                 ),
                               ],
@@ -1007,16 +1045,15 @@ class _DataInputState extends State<DataInput> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(3.0),
-                                      child: Image.asset(
-                                        'assets/images/whiteDrop.png', // Replace with your image path
-                                        fit: BoxFit.cover, // Adjust image fit as needed
-                                      ),
+                                      child: selectedFlowIndex == 5 ? Image.network("$apiUrl/public/${flowData['show_disorders'][5]['icon_two']}",fit: BoxFit.cover,)
+                                          : Image.network("$apiUrl/public/${flowData['show_disorders'][5]['icon']}",fit: BoxFit.cover,),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 10), // Adjust spacing as needed
                                 Text(
-                                  "White", // Replace with your desired text
+                                  // "White", // Replace with your desired text
+                                  flowData['show_disorders'][5]['name'],
                                   style: TextStyle(fontSize: 16), // Adjust text style as needed
                                 ),
                               ],
@@ -1062,20 +1099,35 @@ class _DataInputState extends State<DataInput> {
                                         ),
                                       ),
                                     ),
-                                    child: Image.asset(
-                                      'assets/images/WhiteSpotting.png', // Replace with your image path
-                                      fit: BoxFit.cover, // Adjust image fit as needed
-                                    ),
+                                    child: selectedFlowIndex == 6 ? Image.network("$apiUrl/public/${flowData['show_disorders'][6]['icon_two']}",fit: BoxFit.cover,)
+                                        : Image.network("$apiUrl/public/${flowData['show_disorders'][6]['icon']}",fit: BoxFit.cover,),
                                   ),
                                 ),
                                 SizedBox(height: 10), // Adjust spacing as needed
                                 Text(
-                                  "Clear Ovulation", // Replace with your desired text
+                                  // "Clear Ovulation", // Replace with your desired text
+                                  flowData['show_disorders'][6]['name'],
                                   style: TextStyle(fontSize: 16), // Adjust text style as needed
                                 ),
                               ],
                             ),
                             SizedBox(width: 30),
+                          ],
+                        )
+                        : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Padding(
+                            //   padding: const EdgeInsets.all(180.0),
+                            //   child:
+                              SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: Image.network(
+                                    "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+                              ),
+                            // ),
                           ],
                         ),
                       ),
@@ -1101,16 +1153,16 @@ class _DataInputState extends State<DataInput> {
                       // ElevatedButton(onPressed: () {}, child: Text("Light")),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
+                        child: showIcons ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
                           children: [
                             SizedBox(width: 15),
-                            for(int i = 0; i < feelingsData.length; i++)
+                            for(int i = 0; i < feelingsData['show_disorders'].length; i++)
                               Row(
                                 children: [
                                   SizedBox(width: 15),
-                                  buildFeelingsButton(feelingsData[i], i),
+                                  buildFeelingsButton(feelingsData['show_disorders'][i], i),
                                   SizedBox(width: 15),
                                 ],
                               ),
@@ -2317,6 +2369,21 @@ class _DataInputState extends State<DataInput> {
                           //   ),
                           //   SizedBox(width: 30),
                           // ],
+                        ) : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Padding(
+                            //   padding: const EdgeInsets.all(180.0),
+                            //   child:
+                            SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Image.network(
+                                  "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+                            ),
+                            // ),
+                          ],
                         ),
                       ),
                     ],
@@ -2340,7 +2407,7 @@ class _DataInputState extends State<DataInput> {
                       ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
+                        child: showIcons ? Row(
                           mainAxisAlignment: MainAxisAlignment
                               .spaceEvenly,
                           // Center the buttons within the row
@@ -3283,15 +3350,30 @@ class _DataInputState extends State<DataInput> {
                           // ],
                           children: [
                             SizedBox(width: 15),
-                            for(int i = 0; i < livelinessData.length; i++)
+                            for(int i = 0; i < livelinessData['show_disorders'].length; i++)
                               Row(
                                   children: [
                                     SizedBox(width: 15),
-                                    buildLivelinessButton(livelinessData[i], i),
+                                    buildLivelinessButton(livelinessData['show_disorders'][i], i),
                                     SizedBox(width: 15),
                                   ],
                               ),
                             SizedBox(width: 15),
+                          ],
+                        ) : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Padding(
+                            //   padding: const EdgeInsets.all(180.0),
+                            //   child:
+                            SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Image.network(
+                                  "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+                            ),
+                            // ),
                           ],
                         ),
                       ),
@@ -3316,7 +3398,7 @@ class _DataInputState extends State<DataInput> {
                       ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
+                        child: showIcons ? Row(
                           mainAxisAlignment: MainAxisAlignment
                               .spaceEvenly,
                           // Center the buttons within the row
@@ -3584,16 +3666,31 @@ class _DataInputState extends State<DataInput> {
                           // ],
                           children: [
                             SizedBox(width: 15),
-                            for (int i = 0; i < energyData.length; i++)
+                            for (int i = 0; i < energyData['show_disorders'].length; i++)
                               Row(
                                 children: [
                                   SizedBox(width: 15),
-                                  buildEnergyButton(energyData[i], i),
+                                  buildEnergyButton(energyData['show_disorders'][i], i),
                                   SizedBox(width: 15),
                                 ],
                               ),
                               // buildEnergyButton(energyData[i], i),
                             SizedBox(width: 15),
+                          ],
+                        ) : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Padding(
+                            //   padding: const EdgeInsets.all(180.0),
+                            //   child:
+                            SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Image.network(
+                                  "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+                            ),
+                            // ),
                           ],
                         ),
                       ),
@@ -3612,7 +3709,7 @@ class _DataInputState extends State<DataInput> {
                         child: enableSave ? ElevatedButton(
                           onPressed: () {
                             saveFunction();
-                            print("hello");
+                            // print("hello");
                             const snackDemo = SnackBar(
                               dismissDirection: DismissDirection.startToEnd,
                               padding: EdgeInsets.all(10),
@@ -3661,7 +3758,27 @@ class _DataInputState extends State<DataInput> {
               ),
             ),
             bottomNavigationBar: BottomNavBar(),
-        );
+        )
+    : Scaffold(
+      //Implement loader
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(180.0),
+                child: Image.network(
+                    "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
 
   }
 }

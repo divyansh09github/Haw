@@ -18,9 +18,11 @@ class SignUpQuestions extends StatefulWidget {
 class _SignUpQuestionsState extends State<SignUpQuestions> {
 
   late Map<String, dynamic> statesData = {};
+  late Map<String, dynamic> maritalData = {};
   String error = '';
 
   List<String> states = [];
+  List<String> marital = [];
 
   @override
   void initState() {
@@ -47,8 +49,10 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
   _getStates() async{
     try {
       final data = await GetAPIService().fetchStates();
+      final data1 = await GetAPIService().fetchMaritalStatus();
       setState(() {
         statesData = data;
+        maritalData = data1;
         // isLoading = false;
         error = '';
       });
@@ -59,11 +63,15 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
       });
     }
 
-    // print(statesData['show_states']['state'][1]);
+    print(maritalData['show_marital_status'][0]['marital_status']);
 
     for(var i=0; i<statesData['show_states']['state'].length ; i++)
       {
         states.add(statesData['show_states']['state'][i]['state_name'].toString());
+      }
+    for(var i=0; i<maritalData['show_marital_status'].length ; i++)
+      {
+        marital.add(maritalData['show_marital_status'][i]['marital_status'].toString());
       }
 
   }
@@ -515,7 +523,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                                 _selectedMaritalStatus = newValue;
                               });
                             },
-                            items: <String>[marriedOption, unmarriedOption]
+                            items: marital
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

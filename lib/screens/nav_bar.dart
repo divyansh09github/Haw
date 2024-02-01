@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/blogs.dart';
+import 'package:haw/screens/pinput_screen.dart';
 import 'package:haw/screens/profile.dart';
 
 class NavBar extends StatefulWidget {
@@ -14,6 +15,8 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar>{
 
   Color backgroundColor = const Color(0xFFFFDFE9);
+
+  bool _appLockEnabled = false;
 
   @override
   void initState(){
@@ -157,31 +160,33 @@ class _NavBarState extends State<NavBar>{
             ),
           ),
           Divider(color: Color(0xFFFF608B)),
-          ListTile(
-            leading: Image.asset("assets/images/settingsnavbaricon.png",
-              width: 25,
-              height: 25,
-            ),
+          ExpansionTile(
+            leading: Image.asset("assets/images/settingsnavbaricon.png", width: 25, height: 25),
             iconColor: Color(0xFFFF608B),
             title: Text('Settings'),
-            onTap: () {},
-            // trailing: ClipOval(
-            //   child: Container(
-            //     color: Color(0xFFFF608B),
-            //     width: 20,
-            //     height: 20,
-            //     child: Center(
-            //       child: Text(
-            //         '8',
-            //         style: TextStyle(
-            //           color: Colors.white,
-            //           fontSize: 12,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            children: [
+              ListTile(
+                title: Text('App Lock'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PinputExample()),
+                  );
+                },
+                // trailing: Switch(
+                //   activeColor: Color(0xFFFF608B),
+                //   value: _appLockEnabled, // Replace with your app lock state variable
+                //   onChanged: (value) => setState(() => _appLockEnabled = value), // Update app lock state
+                // ),
+              ),
+              ListTile(
+                title: Text('Dummy Setting'),
+                onTap: () { },
+              ),
+              // Add more options as needed ...
+            ],
           ),
+
           ListTile(
             title: Text('SignOut'),
             leading: Image.asset("assets/images/signoutnavbaricon.png",

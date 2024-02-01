@@ -316,6 +316,7 @@ import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/nav_bar.dart';
 import 'package:haw/screens/profile_edit.dart';
+import 'package:haw/services/get_api.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -329,8 +330,43 @@ class _ProfileState extends State<Profile> {
   Color bottombgcolor = const Color(0xFFFF608B);
   Color backgroundColor = const Color(0xFFFFDFE9);
 
+  late Map<String, dynamic> profileData = {};
+  String error = '';
+  bool isLoading = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    _getProfile();
+
+  }
+
+  _getProfile() async{
+    try {
+      final data = await GetAPIService().fetchProfile();
+      setState(() {
+        profileData = data;
+        isLoading = true;
+        error = '';
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        error = 'Failed to fetch Profile: $e';
+      });
+    }
+
+    print(profileData['show_user'][0]);
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
     
     // void editProfileDrawer(BuildContext context){
     //   showModalBottomSheet(
@@ -356,7 +392,7 @@ class _ProfileState extends State<Profile> {
     //   );
     // }
     
-    return Scaffold(
+    return isLoading ? Scaffold(
       backgroundColor: backgroundColor,
 
       body:
@@ -424,7 +460,7 @@ class _ProfileState extends State<Profile> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text("Username", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400)),
+                    Text(profileData?['show_user']?[0]?['name'] ?? 'Username', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400)),
                     SizedBox(height: 20,),
                     Container(
                       width: 120,
@@ -432,7 +468,7 @@ class _ProfileState extends State<Profile> {
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child: Image.asset(
-                          'assets/images/profileimage.png', // Replace with your second image path
+                          profileData?['show_user']?[0]?['image'] ?? 'assets/images/profileimage.png', // Replace with your second image path
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -491,7 +527,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          '13/10/2000',
+                          profileData?['show_user']?[0]?['dob'] ?? 'DOB',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -569,7 +605,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          'Single',
+                          profileData?['show_user']?[0]?['marital_status'] ?? 'Marital Status',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -645,7 +681,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          '166',
+                          profileData?['show_user']?[0]?['height'] ?? 'height',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -683,7 +719,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          '52',
+                          profileData?['show_user']?[0]?['weight'] ?? 'Weight',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -759,7 +795,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          'usermail@gmail.com',
+                          profileData?['show_user']?[0]?['email'] ?? 'Email',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -774,98 +810,105 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
+
+              //Reminder is for Paid
+
+
+
+              // SizedBox(height: 5,),
+              // SizedBox(
+              //     width: MediaQuery.of(context).size.width * 0.9,
+              //     child: Divider()
+              // ),
+              // SizedBox(height: 5,),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Container(
+              //       padding: EdgeInsets.only(left: 40),
+              //       child: Row(
+              //         children: [
+              //           SizedBox(
+              //             height: 25,
+              //             width: 25,
+              //             child: Image.asset(
+              //               "assets/images/facebook.png",
+              //               fit: BoxFit.cover, // Adjust image fit as needed
+              //             ),
+              //           ),
+              //           SizedBox(width: 20,),
+              //           Text(
+              //             'userfacebook@gmail.com',
+              //             style: TextStyle(
+              //               color: Colors.black,
+              //               fontSize: 16,
+              //               fontFamily: 'Inria Sans',
+              //               fontWeight: FontWeight.w300,
+              //               height: 0,
+              //               letterSpacing: 0.96,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 5,),
+              // SizedBox(
+              //     width: MediaQuery.of(context).size.width * 0.9,
+              //     child: Divider()
+              // ),
+              // SizedBox(height: 5,),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Container(
+              //       padding: EdgeInsets.only(left: 40),
+              //       child: Row(
+              //         children: [
+              //           SizedBox(
+              //             height: 25,
+              //             width: 25,
+              //             child: Image.asset(
+              //               "assets/images/reminder.png",
+              //               fit: BoxFit.cover, // Adjust image fit as needed
+              //             ),
+              //           ),
+              //           SizedBox(width: 20,),
+              //           Text(
+              //             'Reminder 2 days before',
+              //             style: TextStyle(
+              //               color: Colors.black,
+              //               fontSize: 16,
+              //               fontFamily: 'Inria Sans',
+              //               fontWeight: FontWeight.w300,
+              //               height: 0,
+              //               letterSpacing: 0.96,
+              //             ),
+              //           ),
+              //           Padding(
+              //             padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              //             child: Icon(
+              //               size: 20,
+              //               Icons.edit,
+              //               color: Color(0xFFFF608B),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //     //Pencil Edit icon
+              //     // Icon(Icons.edit, size: 20,color: Color(0xFFFF608B)),
+              //   ],
+              // ),
+
+
               SizedBox(height: 5,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
               ),
-              SizedBox(height: 5,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 40),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: 25,
-                          width: 25,
-                          child: Image.asset(
-                            "assets/images/facebook.png",
-                            fit: BoxFit.cover, // Adjust image fit as needed
-                          ),
-                        ),
-                        SizedBox(width: 20,),
-                        Text(
-                          'userfacebook@gmail.com',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontFamily: 'Inria Sans',
-                            fontWeight: FontWeight.w300,
-                            height: 0,
-                            letterSpacing: 0.96,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 5,),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: Divider()
-              ),
-              SizedBox(height: 5,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 40),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: 25,
-                          width: 25,
-                          child: Image.asset(
-                            "assets/images/reminder.png",
-                            fit: BoxFit.cover, // Adjust image fit as needed
-                          ),
-                        ),
-                        SizedBox(width: 20,),
-                        Text(
-                          'Reminder 2 days before',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontFamily: 'Inria Sans',
-                            fontWeight: FontWeight.w300,
-                            height: 0,
-                            letterSpacing: 0.96,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          child: Icon(
-                            size: 20,
-                            Icons.edit,
-                            color: Color(0xFFFF608B),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //Pencil Edit icon
-                  // Icon(Icons.edit, size: 20,color: Color(0xFFFF608B)),
-                ],
-              ),
-              SizedBox(height: 5,),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: Divider()
-              ),
-              SizedBox(height: 20,),
+              SizedBox(height: 100,),
               //Edit button
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -905,6 +948,21 @@ class _ProfileState extends State<Profile> {
       ),
     // ),
     //   bottomNavigationBar: BottomNavBar(),
+    )
+    : Scaffold(
+      //Implement loader
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(180.0),
+            child: Image.network(
+                "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+          ),
+        ],
+      ),
     );
+
   }
 }

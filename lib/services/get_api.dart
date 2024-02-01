@@ -103,6 +103,29 @@ class GetAPIService{
 
   }
 
+  Future<Map<String, dynamic>> fetchMaritalStatus() async{
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/marital-status"));
+
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
+
   Future<Map<String, dynamic>> fetchBlogsList() async{
 
     try {
@@ -150,6 +173,121 @@ class GetAPIService{
 
   }
 
+  Future<Map<String, dynamic>> fetchProfile() async{
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/show-users/"
+              "23"));
+
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
+
+  Future<Map<String, dynamic>> fetchEnergies() async{
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/show-disorders/4"));
+
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
+
+  Future<Map<String, dynamic>> fetchLiveliness() async{
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/show-disorders/2"));
+
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
+
+  Future<Map<String, dynamic>> fetchFeelings() async{
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/show-disorders/3"));
+
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
+
+  Future<Map<String, dynamic>> fetchFlow() async{
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/show-disorders/1"));
+
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
 
 
 
