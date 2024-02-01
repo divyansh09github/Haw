@@ -3757,7 +3757,7 @@ class _DataInputState extends State<DataInput> {
                 // )
               ),
             ),
-            bottomNavigationBar: BottomNavBar(),
+            // bottomNavigationBar: BottomNavBar(),
         )
     : Scaffold(
       //Implement loader

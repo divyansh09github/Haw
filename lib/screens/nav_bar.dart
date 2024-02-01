@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/blogs.dart';
+import 'package:haw/screens/lock_screen.dart';
 import 'package:haw/screens/pinput_screen.dart';
 import 'package:haw/screens/profile.dart';
 
@@ -170,7 +171,7 @@ class _NavBarState extends State<NavBar>{
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PinputExample()),
+                    MaterialPageRoute(builder: (context) => LockScreen()),
                   );
                 },
                 // trailing: Switch(

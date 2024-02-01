@@ -27,11 +27,11 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   Color bottombgcolor = const Color(0xFFFF608B);
 
-  // @override
-  // initState() {
-  //   super.initState();
-  //   _initialScreen();
-  // }
+  @override
+  initState() {
+    super.initState();
+    // _initialScreen();
+  }
 
   // _initialScreen() async{
   //   String? screenString = await PreferencesManager.getInitialScreen();
@@ -94,186 +94,278 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-
-    return BottomAppBar(
-          color: bottombgcolor,
-          height: MediaQuery.of(context).size.height * 0.09,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  // Perform actions when the image is tapped
-                  // Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod()),);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePeriod()));
-                },
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            width: 30,
-                            height: 30,
-                            'assets/images/cycleIcon.png', // Replace with your image path
-                            fit: BoxFit.cover, // Adjust image fit as needed
-                            semanticLabel: "Cycle",
-                          ),
-                          Text("Cycle", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Perform actions when the image is tapped
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => DataCalendar()),);
-                  // Navigator.push(context,MaterialPageRoute(builder: (context) => DateSelection()),);
-
-                },
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            width: 30,
-                            height: 30,
-                            'assets/images/pepicons-pop_calendar.png', // Replace with your image path
-                            fit: BoxFit.cover, // Adjust image fit as needed
-                          ),
-                          Text("Calendar", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Perform actions when the image is tapped
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => DataInput()),);
-                },
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            width: 30,
-                            height: 30,
-                            'assets/images/streamline_interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing.png', // Replace with your image path
-                            fit: BoxFit.cover, // Adjust image fit as needed
-                          ),
-                          Text("Track", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Perform actions when the image is tapped
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => Analysis()),);
-                },
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            width: 30,
-                            height: 30,
-                            'assets/images/analysisIcon.png', // Replace with your image path
-                            fit: BoxFit.cover, // Adjust image fit as needed
-                          ),
-                          Text("Analysis", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
-                        ],
-
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-
-                onTap: () {
-                  // Perform actions when the image is tapped
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => NavBar()),);
-                },
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            width: 30,
-                            height: 30,
-                            'assets/images/line-md_menu.png', // Replace with your image path
-                            fit: BoxFit.cover, // Adjust image fit as needed
-                          ),
-                          Text("Menu", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-
-    // return MaterialApp(
-    //   home: DefaultTabController(
-    //     length: 5,
-    //     child: Scaffold(
-    //       bottomNavigationBar: TabBar(
-    //         tabs: [
-    //           Tab(
+    // return BottomAppBar(
+    //       color: bottombgcolor,
+    //       height: MediaQuery.of(context).size.height * 0.09,
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           GestureDetector(
+    //             onTap: () {
+    //               // Perform actions when the image is tapped
+    //               // Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod()),);
+    //               Navigator.push(context, MaterialPageRoute(builder: (context) => HomePeriod()));
+    //             },
     //             child: Column(
     //               children: [
-    //                 Image.asset(
-    //                   width: 30,
-    //                   height: 30,
-    //                   'assets/images/cycleIcon.png', // Replace with your image path
-    //                   fit: BoxFit.cover, // Adjust image fit as needed
-    //                   semanticLabel: "Cycle",
+    //                 Padding(
+    //                   padding: const EdgeInsets.all(2.0),
+    //                   child: Column(
+    //                     children: [
+    //                       Image.asset(
+    //                         width: 30,
+    //                         height: 30,
+    //                         'assets/images/cycleIcon.png', // Replace with your image path
+    //                         fit: BoxFit.cover, // Adjust image fit as needed
+    //                         semanticLabel: "Cycle",
+    //                       ),
+    //                       Text("Cycle", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
+    //                     ],
+    //                   ),
     //                 ),
-    //                 Text(
-    //                   "Cycle",
-    //                   style: TextStyle(
-    //                       fontSize: 10,
-    //                       fontWeight: FontWeight.w700,
-    //                       color: Colors.white),
-    //                 ), // Add text below the image
     //               ],
     //             ),
     //           ),
-    //           Tab(icon: Icon(Icons.music_video)),
-    //           Tab(icon: Icon(Icons.camera_alt)),
-    //           Tab(icon: Icon(Icons.grade)),
-    //           Tab(icon: Icon(Icons.email)),
+    //           GestureDetector(
+    //             onTap: () {
+    //               // Perform actions when the image is tapped
+    //               Navigator.push(context,MaterialPageRoute(builder: (context) => DataCalendar()),);
+    //               // Navigator.push(context,MaterialPageRoute(builder: (context) => DateSelection()),);
+    //
+    //             },
+    //             child: Column(
+    //               children: [
+    //                 Padding(
+    //                   padding: const EdgeInsets.all(2.0),
+    //                   child: Column(
+    //                     children: [
+    //                       Image.asset(
+    //                         width: 30,
+    //                         height: 30,
+    //                         'assets/images/pepicons-pop_calendar.png', // Replace with your image path
+    //                         fit: BoxFit.cover, // Adjust image fit as needed
+    //                       ),
+    //                       Text("Calendar", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           GestureDetector(
+    //             onTap: () {
+    //               // Perform actions when the image is tapped
+    //               Navigator.push(context,MaterialPageRoute(builder: (context) => DataInput()),);
+    //             },
+    //             child: Column(
+    //               children: [
+    //                 Padding(
+    //                   padding: const EdgeInsets.all(2.0),
+    //                   child: Column(
+    //                     children: [
+    //                       Image.asset(
+    //                         width: 30,
+    //                         height: 30,
+    //                         'assets/images/streamline_interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing.png', // Replace with your image path
+    //                         fit: BoxFit.cover, // Adjust image fit as needed
+    //                       ),
+    //                       Text("Track", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           GestureDetector(
+    //             onTap: () {
+    //               // Perform actions when the image is tapped
+    //               Navigator.push(context,MaterialPageRoute(builder: (context) => Analysis()),);
+    //             },
+    //             child: Column(
+    //               children: [
+    //                 Padding(
+    //                   padding: const EdgeInsets.all(2.0),
+    //                   child: Column(
+    //                     children: [
+    //                       Image.asset(
+    //                         width: 30,
+    //                         height: 30,
+    //                         'assets/images/analysisIcon.png', // Replace with your image path
+    //                         fit: BoxFit.cover, // Adjust image fit as needed
+    //                       ),
+    //                       Text("Analysis", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
+    //                     ],
+    //
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           GestureDetector(
+    //
+    //             onTap: () {
+    //               // Perform actions when the image is tapped
+    //               Navigator.push(context,MaterialPageRoute(builder: (context) => NavBar()),);
+    //             },
+    //             child: Column(
+    //               children: [
+    //                 Padding(
+    //                   padding: const EdgeInsets.all(2.0),
+    //                   child: Column(
+    //                     children: [
+    //                       Image.asset(
+    //                         width: 30,
+    //                         height: 30,
+    //                         'assets/images/line-md_menu.png', // Replace with your image path
+    //                         fit: BoxFit.cover, // Adjust image fit as needed
+    //                       ),
+    //                       Text("Menu", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.white),), // Add text below the image
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
     //         ],
-    //       ), // TabBar,
-    //       body: const TabBarView(
-    //         children: [
-    //           HomePeriod(),
-    //           DataCalendar(),
-    //           DataInput(),
-    //           Analysis(),
-    //           NavBar(),
-    //         ],
-    //       ), // TabBarView
-    //     ), // Scaffold
-    //   ), // DefaultTabController
-    // ); // MaterialApp
+    //       ),
+    //     );
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 5,
+        child: Scaffold(
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height * 0.08,
+            color: bottombgcolor,
+            child: TabBar(
+
+              tabs: [
+                Tab(
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          width: 30,
+                          height: 30,
+                          'assets/images/cycleIcon.png', // Replace with your image path
+                          fit: BoxFit.cover, // Adjust image fit as needed
+                          semanticLabel: "Cycle",
+                        ),
+                        Text(
+                          "Cycle",
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ), // Add text below the image
+                      ],
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          width: 30,
+                          height: 30,
+                          'assets/images/pepicons-pop_calendar.png', // Replace with your image path
+                          fit: BoxFit.cover, // Adjust image fit as needed
+                        ),
+                        Text(
+                          "Calendar",
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ), // Add text below the image
+                      ],
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          width: 30,
+                          height: 30,
+                          'assets/images/streamline_interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing.png', // Replace with your image path
+                          fit: BoxFit.cover, // Adjust image fit as needed
+                        ),
+                        Text(
+                          "Track",
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ), // Add text below the image
+                      ],
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          width: 30,
+                          height: 30,
+                          'assets/images/analysisIcon.png', // Replace with your image path
+                          fit: BoxFit.cover, // Adjust image fit as needed
+                        ),
+                        Text(
+                          "Analysis",
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ), // Add text below the image
+                      ],
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          width: 30,
+                          height: 30,
+                          'assets/images/line-md_menu.png', // Replace with your image path
+                          fit: BoxFit.cover, // Adjust image fit as needed
+                        ),
+                        Text(
+                          "Menu",
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ), // Add text below the image
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ), // TabBar,
+          body: const TabBarView(
+            children: [
+              HomePeriod(),
+              DataCalendar(),
+              DataInput(),
+              Analysis(),
+              NavBar(),
+            ],
+          ), // TabBarView
+        ), // Scaffold
+      ), // DefaultTabController
+    ); // MaterialApp
   }
 }

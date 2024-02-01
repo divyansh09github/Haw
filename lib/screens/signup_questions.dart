@@ -63,7 +63,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
       });
     }
 
-    print(maritalData['show_marital_status'][0]['marital_status']);
+    // print(maritalData['show_marital_status'][0]['marital_status']);
 
     for(var i=0; i<statesData['show_states']['state'].length ; i++)
       {
@@ -73,6 +73,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
       {
         marital.add(maritalData['show_marital_status'][i]['marital_status'].toString());
       }
+    // print(marital);
 
   }
 

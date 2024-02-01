@@ -48,7 +48,7 @@ class _HomePeriodState extends State<HomePeriod> {
     showScreen = false;
     // String screenStr = _initialScreen() as String;
 
-    _initialScreen();
+    // _initialScreen();
 
 
     kuchBhi();
@@ -213,7 +213,7 @@ class _HomePeriodState extends State<HomePeriod> {
       ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
-        bottomNavigationBar: BottomNavBar(),
+        // bottomNavigationBar: BottomNavBar(),
     );
   }
   void _showTipsBottomSheet(BuildContext context) {

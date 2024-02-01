@@ -744,7 +744,7 @@ class _AnalysisState extends State<Analysis>  with TickerProviderStateMixin {
           ),
         ),
     ),
-      bottomNavigationBar: BottomNavBar(),
+      // bottomNavigationBar: BottomNavBar(),
     );
 
 

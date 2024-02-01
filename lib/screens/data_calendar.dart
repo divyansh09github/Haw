@@ -191,11 +191,14 @@ class _DataCalendarState extends State<DataCalendar> {
     return Scaffold(
         appBar: AppBar(
               centerTitle: true,
-              title: const Text('Calender', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),),
+              title: Padding(
+                padding: const EdgeInsets.only(top: 40.0),
+                child: const Text('Calender', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),),
+              ),
             ),
 
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
         child: showCalendar ? SfDateRangePicker(
           controller: _controller,
           // view: DateRangePickerView.month,
@@ -231,7 +234,7 @@ class _DataCalendarState extends State<DataCalendar> {
 
 
 
-          rangeSelectionColor: Color(0xFFf788a6),
+          rangeSelectionColor: Color(0xFFFF608B),
           selectionColor: Color(0xFFFF608B),
           endRangeSelectionColor: Color(0xFFFF608B),
           startRangeSelectionColor: Color(0xFFFF608B),
@@ -255,12 +258,15 @@ class _DataCalendarState extends State<DataCalendar> {
           //   specialDatesTextStyle: const TextStyle(color: Colors.white),
           // ),
 
+          monthCellStyle: DateRangePickerMonthCellStyle(textStyle: TextStyle(fontSize: 17)),
 
 
-          headerStyle: DateRangePickerHeaderStyle(textStyle: TextStyle(fontSize: 20)),
+          headerStyle: DateRangePickerHeaderStyle(textStyle: TextStyle(fontSize: 24), textAlign: TextAlign.center),
           monthViewSettings: DateRangePickerMonthViewSettings(enableSwipeSelection: false),
 
-          navigationDirection: DateRangePickerNavigationDirection.horizontal,
+
+
+          navigationDirection: DateRangePickerNavigationDirection.vertical,
 
           onSelectionChanged: selectionChanged,
 
@@ -345,7 +351,7 @@ class _DataCalendarState extends State<DataCalendar> {
         ),
 
       ),
-        bottomNavigationBar: BottomNavBar()
+        // bottomNavigationBar: BottomNavBar()
 
         // BottomAppBar(
         //       color: bottombgcolor,

@@ -643,7 +643,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          'Punjab',
+                          profileData?['show_user']?[0]?['state_name'] ?? 'State',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -757,7 +757,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          '1111111111',
+                          profileData?['show_user']?[0]?['phone_number'].toString() ?? 'Phone Number',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
