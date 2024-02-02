@@ -160,11 +160,13 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
     // PreferencesManager.setSignUpVariables(name: _name.text, dob: _dob.text, age: _age.text, maritalStatus: _selectedMaritalStatus.toString(), region: _selectedRegion.toString());
 
     if(_formKey.currentState!.validate()){
-      await PreferencesManager.setSignUpVariables(name: _name.text,
+      await PreferencesManager.setSignUpVariables(
+          name: _name.text,
           dob: _dob.text, age: _age.text,
           maritalStatus: _selectedMaritalStatus.toString(),
           region: _selectedRegion.toString(),
-          height: _height.text, weight : _weight.text);
+          height: _height.text,
+          weight : _weight.text);
       PostAPIService().saveSignUpQuestions();
       navigate();
     }
@@ -788,46 +790,46 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                   ),
                   SizedBox(height: 20),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Facebook",
-                      style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: SizedBox(
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
-                      height: 40, // Set height
-                      child: Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(8),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'userfacebook@gmail.com',
-                            // labelText: 'userfacebook@gmail.com',
-                            // labelStyle: const TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                  15), // Match border radius with material
-                              borderSide:
-                              BorderSide.none, // Remove the default border
-                            ),
-                            contentPadding: const EdgeInsets.only(
-                                left: 20.0, top: 10.0, right: 10.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 30),
+                  //   child: Text(
+                  //     "Facebook",
+                  //     style:
+                  //     TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 30),
+                  //   child: SizedBox(
+                  //     width:
+                  //     MediaQuery.of(context).size.width * 0.8, // Set width
+                  //     height: 40, // Set height
+                  //     child: Material(
+                  //       elevation: 2,
+                  //       borderRadius: BorderRadius.circular(8),
+                  //       child: TextField(
+                  //         decoration: InputDecoration(
+                  //           filled: true,
+                  //           fillColor: Colors.white,
+                  //           hintText: 'userfacebook@gmail.com',
+                  //           // labelText: 'userfacebook@gmail.com',
+                  //           // labelStyle: const TextStyle(color: Colors.black),
+                  //           border: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(
+                  //                 15), // Match border radius with material
+                  //             borderSide:
+                  //             BorderSide.none, // Remove the default border
+                  //           ),
+                  //           contentPadding: const EdgeInsets.only(
+                  //               left: 20.0, top: 10.0, right: 10.0),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
 
                   // SizedBox(
                   //   height: 45,

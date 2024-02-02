@@ -569,33 +569,33 @@ class _DataCalendarState extends State<DataCalendar> {
 
     if (args.value.isNotEmpty && args.value.last is PickerDateRange) {
       var selectedDate = (args.value.last as PickerDateRange).startDate;
-      print('Selected Date: $selectedDate');
+      print('Selected Date1: $selectedDate');
 
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => DataCalendarList()),
       );
-      if(selectedDate!.isBefore(DateTime.now())) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => DataCalendarList()),
-        // );
-        // Navigator.pushNamed(context, '/homePeriod', arguments: selectedDate);
-      }
-      else{
-        _controller.selectedRanges = _selectedRanges;
-        // const snackDemo = SnackBar(
-        //   dismissDirection: DismissDirection.down,
-        //   padding: EdgeInsets.all(10),
-        //   content: Text("You can't choose future date"),
-        //   backgroundColor: Color(0xBAFF608B),
-        //   elevation: 10,
-        //   behavior: SnackBarBehavior.floating,
-        //   duration: Duration(seconds: 2),
-        //   margin: EdgeInsets.all(15),
-        // );
-        // ScaffoldMessenger.of(context).showSnackBar(snackDemo);
-      }
+      // if(selectedDate!.isBefore(DateTime.now())) {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => DataCalendarList()),
+      //   );
+      //   Navigator.pushNamed(context, '/homePeriod', arguments: selectedDate);
+      // }
+      // else{
+      //   _controller.selectedRanges = _selectedRanges;
+      //   // const snackDemo = SnackBar(
+      //   //   dismissDirection: DismissDirection.down,
+      //   //   padding: EdgeInsets.all(10),
+      //   //   content: Text("You can't choose future date"),
+      //   //   backgroundColor: Color(0xBAFF608B),
+      //   //   elevation: 10,
+      //   //   behavior: SnackBarBehavior.floating,
+      //   //   duration: Duration(seconds: 2),
+      //   //   margin: EdgeInsets.all(15),
+      //   // );
+      //   // ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+      // }
 
     }
   }

@@ -73,10 +73,8 @@ class PreferencesManager{
     await prefs.setString('predicted_date', predictedDate.toIso8601String());
   }
 
-  // static Future<void> setSignUpQuestions(Map<String, String> formData) async{
-  //     final prefs = await SharedPreferences.getInstance();
-  //
-  // }
+  // Signup Screen
+
   static Future<void> setSignUpVariables({
     required String name,
     required String dob,
@@ -106,6 +104,46 @@ class PreferencesManager{
 
   }
   static Future<Map<String, dynamic>?> getSignUpVariables() async{
+    final prefs = await SharedPreferences.getInstance();
+    final String? encodedVariables = prefs.getString('name');
+    if (encodedVariables != null) {
+      return jsonDecode(encodedVariables) as Map<String, dynamic>;
+    } else {
+      return null;
+    }
+  }
+
+  //Profile screen
+
+  static Future<void> setProfileVariables({
+    required String name,
+    required String dob,
+    required String maritalStatus,
+    required String region,
+    required String height,
+    required String weight,
+    required String phone,
+  }) async {
+    final Map<String, dynamic> variablesMap = {
+      'name': name,
+      'dob': dob,
+      'maritalStatus': maritalStatus,
+      'region': region,
+      'height': height,
+      'weight': weight,
+      'phone' : phone,
+    };
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', jsonEncode(variablesMap));
+    await prefs.setString('dob', jsonEncode(variablesMap));
+    await prefs.setString('maritalStatus', jsonEncode(variablesMap));
+    await prefs.setString('region', jsonEncode(variablesMap));
+    await prefs.setString('height', jsonEncode(variablesMap));
+    await prefs.setString('weight', jsonEncode(variablesMap));
+    await prefs.setString('phone', jsonEncode(variablesMap));
+
+  }
+  static Future<Map<String, dynamic>?> getProfileVariables() async{
     final prefs = await SharedPreferences.getInstance();
     final String? encodedVariables = prefs.getString('name');
     if (encodedVariables != null) {

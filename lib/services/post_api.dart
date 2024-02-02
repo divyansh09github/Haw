@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/constants/constants.dart';
 import 'package:http/http.dart' as http;
@@ -63,6 +64,22 @@ class PostAPIService{
         headers: {"Content-Type": "application/json"}
     );
     print(response.body);
+  }
+
+  Future saveProfileEdit() async{
+    var signUpVariables = await PreferencesManager.getProfileVariables();
+    print(signUpVariables);
+
+    print("need to implement API");
+
+    // final response = await http.post(Uri.parse(
+    //     '$apiUrl/api/save-deatils?'
+    //         'id=23'
+    //         '&token=0DNQu1MISfxorcfpECunNqPgyZRhpzIRlcwuic47te9XfrNjZxKRCgng0cq7fqie&age=26'
+    // ),
+    //     headers: {"Content-Type": "application/json"}
+    // );
+    // print(response.body);
   }
 
   Future saveTrackSymptoms() async{

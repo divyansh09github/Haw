@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/homePeriod.dart';
+import 'package:haw/screens/home_tab_screen.dart';
 import 'package:haw/screens/reminder.dart';
 import 'package:haw/services/post_api.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -153,7 +154,7 @@ class _PeriodDurationState extends State<PeriodDuration> {
                   await PreferencesManager.setPeriodDuration(periodLength);
                   PostAPIService().savePeriodDuration();
                   // Navigator.push(context,MaterialPageRoute(builder: (context) => Reminder()),);
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod()),);
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => HomeTabScreen()),);
                 },
                 child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
               ),

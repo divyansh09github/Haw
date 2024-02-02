@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/blog_content.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/nav_bar.dart';
@@ -77,106 +78,106 @@ class _BlogsState extends State<Blogs> {
     setState(() {
       blogLen = blogsData['show_blogs']['blogs'].length;
     });
-    // print(blogsData);
+    // print('abc $apiUrl/public/${blogsData['image']}');
   }
 
-  _getBlogSlides(int blogId) async {
-    try {
-      final data = await GetAPIService().fetchBlogSlides(blogId);
-      setState(() {
-        blogSlideData = data;
-        // showPage = true;
-        error = '';
-      });
-    } catch (e) {
-      setState(() {
-        // showPage = false;
-        error = 'Failed to fetch blog slides: $e';
-      });
-    }
+  // _getBlogSlides(int blogId) async {
+  //   try {
+  //     final data = await GetAPIService().fetchBlogSlides(blogId);
+  //     setState(() {
+  //       blogSlideData = data;
+  //       // showPage = true;
+  //       error = '';
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       // showPage = false;
+  //       error = 'Failed to fetch blog slides: $e';
+  //     });
+  //   }
+  //
+  //   setState(() {
+  //     slideLen = blogSlideData['show_blogs_slides']['blogs_slides'].length;
+  //   });
+  // }
 
-    setState(() {
-      slideLen = blogSlideData['show_blogs_slides']['blogs_slides'].length;
-    });
-  }
+  // Widget buildBottomDrawer(int blogId) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.only(
+  //           topLeft: Radius.circular(20), topRight: Radius.circular(15)),
+  //       color: Colors.black12,
+  //     ),
+  //     height: MediaQuery.of(context).size.height *
+  //         0.8, // Adjust the height as needed
+  //     width: MediaQuery.of(context).size.width * 1,
+  //     // color: Colors.deepOrange, // Customize the bottom sheet background color
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         Flexible(
+  //           // Or Expanded
+  //           child: SingleChildScrollView(
+  //             child: Column(
+  //               children: [
+  //                 // for(var i=0; i<80; i++)
+  //                 //   Text("data"),
+  //                 SingleChildScrollView(
+  //                   scrollDirection: Axis.horizontal,
+  //                   child: Row(
+  //                     children: [
+  //                       for (var i = 0; i < slideLen; i++)
+  //                         Row(
+  //                           children: [
+  //                             SizedBox(width: 15),
+  //                             buildBlogSlide(i),
+  //                             SizedBox(width: 15),
+  //                           ],
+  //                         ),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget buildBottomDrawer(int blogId) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(15)),
-        color: Colors.black12,
-      ),
-      height: MediaQuery.of(context).size.height *
-          0.8, // Adjust the height as needed
-      width: MediaQuery.of(context).size.width * 1,
-      // color: Colors.deepOrange, // Customize the bottom sheet background color
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            // Or Expanded
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // for(var i=0; i<80; i++)
-                  //   Text("data"),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        for (var i = 0; i < slideLen; i++)
-                          Row(
-                            children: [
-                              SizedBox(width: 15),
-                              buildBlogSlide(i),
-                              SizedBox(width: 15),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildBlogSlide(int slideId) {
-    return Container(
-      decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          border: Border.all(color: Colors.black)),
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.7,
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Column(
-          //   children: [
-          Container(
-            height: 50,
-            width: 50,
-            child: Image.asset(
-              // "assets/images/veryLowEnergy.png",
-              blogSlideData['show_blogs_slides']['blogs_slides'][slideId]
-                  ['slide_image'],
-              fit: BoxFit.contain,
-            ),
-          ),
-          Text(blogSlideData['show_blogs_slides']['blogs_slides'][slideId]
-              ['slide_title']),
-          // ],
-          // ),
-        ],
-      ),
-    );
-  }
+  // Widget buildBlogSlide(int slideId) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //         shape: BoxShape.rectangle,
+  //         borderRadius: BorderRadius.all(Radius.circular(15)),
+  //         border: Border.all(color: Colors.black)),
+  //     width: MediaQuery.of(context).size.width * 0.9,
+  //     height: MediaQuery.of(context).size.height * 0.7,
+  //     child: Column(
+  //       // mainAxisAlignment: MainAxisAlignment.center,
+  //       // crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         // Column(
+  //         //   children: [
+  //         Container(
+  //           height: 50,
+  //           width: 50,
+  //           child: Image.asset(
+  //             // "assets/images/veryLowEnergy.png",
+  //             blogSlideData['show_blogs_slides']['blogs_slides'][slideId]
+  //                 ['slide_image'],
+  //             fit: BoxFit.contain,
+  //           ),
+  //         ),
+  //         Text(blogSlideData['show_blogs_slides']['blogs_slides'][slideId]
+  //             ['slide_title']),
+  //         // ],
+  //         // ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget buildBlogCards(
       Map<String, dynamic> data, int index, BuildContext context) {
@@ -199,9 +200,11 @@ class _BlogsState extends State<Blogs> {
           //   },
           // );
 
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => BlogContent()));
 
+          int blogId = data['blog_id'];
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => BlogContent(blogId: blogId)));
         },
 
         // onTap: () {
@@ -292,10 +295,9 @@ class _BlogsState extends State<Blogs> {
                                               ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(8),
-                                            child: Image.asset(
-                                              data['image'].isNotEmpty
-                                                  ? data['image']
-                                                  : 'assets/images/blogImage.png',
+                                            child: Image.network(
+                                              '$apiUrl/public/${data['image']}',
+                                              // 'assets/images/blogImage.png',
                                               fit: BoxFit.contain,
                                             ),
                                           )),

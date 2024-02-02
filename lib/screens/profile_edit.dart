@@ -557,10 +557,15 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/nav_bar.dart';
+import 'package:haw/services/get_api.dart';
+import 'package:haw/services/post_api.dart';
+import 'package:intl/intl.dart';
 
 class ProfileEdit extends StatefulWidget {
   const ProfileEdit({super.key});
@@ -570,22 +575,128 @@ class ProfileEdit extends StatefulWidget {
 }
 
 class _ProfileEditState extends State<ProfileEdit> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    _getStates();
+
+  }
+
   Color bottombgcolor = const Color(0xFFFF608B);
   Color backgroundColor = const Color(0xFFFFDFE9);
   DateTime _selectedDate = DateTime.now();
+
+  final _formKey = GlobalKey<FormState>(); // Create a global key for the form
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _dob = TextEditingController();
+  final TextEditingController _height = TextEditingController();
+  final TextEditingController _weight = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
+
+  void validateForm() async{
+
+    if(_formKey.currentState!.validate()){
+      print("validate");
+
+      await PreferencesManager.setProfileVariables(
+        name: _name.text,
+        dob: _dob.text,
+        maritalStatus: _selectedMaritalStatus.toString(),
+        region: _selectedRegion.toString(),
+          height: _height.text,
+          weight : _weight.text,
+          phone: _phoneNumber.text,
+      );
+
+
+      PostAPIService().saveProfileEdit();
+      // show some message on success save
+      const snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(10),
+        content: Text('API not working'),
+        backgroundColor: Color(0xBAFF608B),
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 10),
+        margin: EdgeInsets.all(15),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+    }
+    // print(_selectedRegion);
+
+  }
+
+  bool isValidDate(String date) {
+    // Define the date format
+    String format = 'dd-MM-yyyy';
+
+    // Create a `DateFormat` instance
+    DateFormat dateFormat = DateFormat(format);
+
+    // Try to parse the date
+    try {
+      // If the date is valid, return true
+      return dateFormat.parse(date) != null;
+    } catch (e) {
+      // If the date is invalid, return false
+      return false;
+    }
+  }
+
+  String? _selectedMaritalStatus; // nullable to initially represent no selection
+  String? _selectedRegion;
+
+  late Map<String, dynamic> statesData = {};
+  late Map<String, dynamic> maritalData = {};
+  String error = '';
+
+  List<String> states = [];
+  List<String> marital = [];
+
+  _getStates() async{
+    try {
+      final data = await GetAPIService().fetchStates();
+      final data1 = await GetAPIService().fetchMaritalStatus();
+      setState(() {
+        statesData = data;
+        maritalData = data1;
+        // isLoading = false;
+        error = '';
+      });
+    } catch (e) {
+      setState(() {
+        // isLoading = false;
+        error = 'Failed to fetch States: $e';
+      });
+    }
+
+    // print(maritalData['show_marital_status'][0]['marital_status']);
+
+    for(var i=0; i<statesData['show_states']['state'].length ; i++)
+    {
+      states.add(statesData['show_states']['state'][i]['state_name'].toString());
+    }
+    for(var i=0; i<maritalData['show_marital_status'].length ; i++)
+    {
+      marital.add(maritalData['show_marital_status'][i]['marital_status'].toString());
+    }
+    // print(marital);
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
 
-      body:
-          // SingleChildScrollView(
-          // // padding: EdgeInsets.all(8.0),
-          // scrollDirection: Axis.vertical,
-          // child:
-          Column(
+      body:Form(
+        key: _formKey, // Assign the global key to the Form
+        child:Column(
         children: [
+
           Stack(
             children: [
               Padding(
@@ -646,6 +757,7 @@ class _ProfileEditState extends State<ProfileEdit> {
               ),
             ],
           ),
+
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -673,7 +785,23 @@ class _ProfileEditState extends State<ProfileEdit> {
                       child: Material(
                         elevation: 2,
                         borderRadius: BorderRadius.circular(8),
-                        child: TextField(
+                        child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction, // Validate on every change
+                          controller: _name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Name is Required';
+                            } else if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+                              return 'Please enter only letters and spaces';
+                            }else if (value.length > 24) { // Check for character limit
+                              return 'Name cannot exceed 25 characters';
+                            }
+                            return null;
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]')),
+                            LengthLimitingTextInputFormatter(25), // Enforce character limit during input
+                          ],
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -715,11 +843,22 @@ class _ProfileEditState extends State<ProfileEdit> {
                       child: Material(
                           elevation: 2,
                           borderRadius: BorderRadius.circular(8),
-                          child: TextField(
+                          child: TextFormField(
+                            autovalidateMode: AutovalidateMode.onUserInteraction, // Validate on every change
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'DOB is Required';
+                              } else if (!isValidDate(value)) { // Validate date format
+                                return 'Please enter a valid date in DD-MM-YYYY format';
+                              }
+                              return null;
+                            },
+
+                            controller: _dob,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: '13/10/2000',
+                              hintText: '13-10-2000',
                               // labelText: '100',
                               // labelStyle: const TextStyle(color: Colors.black),
                               border: OutlineInputBorder(
@@ -789,24 +928,32 @@ class _ProfileEditState extends State<ProfileEdit> {
                           ),
                         ],
                       ),
-                      child: DropdownButton(
-                        value: "Married",
-                        items: [
-                          DropdownMenuItem(
-                              value: "Married", child: Text("Married")),
-                          DropdownMenuItem(
-                              value: "Unmarried", child: Text("Unmarried")),
-                        ],
-                        onChanged: (value) {
-                          // the callback function when an item is selected
-                    // do something with the value
-                        },
-                        isExpanded:
-                            true, // make the dropdown take the full width of the container
-                        underline: Container(),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal:
-                                15), // remove the default underline of the dropdown
+                      child: DropdownButtonHideUnderline( // Remove underline more efficiently
+                        child: ButtonTheme( // Align text with button theme
+                          alignedDropdown: true,
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            value: _selectedMaritalStatus,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedMaritalStatus = newValue;
+                              });
+                            },
+                            items: marital
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,
+                                  style: TextStyle(fontSize: 16), // Consistent text size
+                                ),
+                              );
+                            }).toList(),
+                            hint: Text(
+                              "Marital status",
+                              style: TextStyle(color: Colors.grey.shade600), // Hint text color
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -848,25 +995,25 @@ class _ProfileEditState extends State<ProfileEdit> {
                           ),
                         ],
                       ),
-                      child: DropdownButton(
-                        // elevation: 2,
-                        value: "Punjab",
-                        items: [
-                          DropdownMenuItem(
-                              value: "Punjab", child: Text("Punjab")),
-                          DropdownMenuItem(
-                              value: "Region 2", child: Text("Region 2")),
-                        ],
-                        onChanged: (value) {
-                          // the callback function when an item is selected
-                    // do something with the value
+                      child: DropdownButton<String>(
+                        value: _selectedRegion, // Initially selected state
+                        items: states.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedRegion = newValue!;
+                            // Perform actions based on the selected state
+                          });
                         },
-                        isExpanded:
-                            true, // make the dropdown take the full width of the container
-                        underline: Container(),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal:
-                                15), // remove the default underline of the dropdown
+                        isExpanded: true,
+                        underline:
+                        Container(), // remove the default underline of the dropdown
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        hint: Text("Select Region"),
                       ),
                     ),
                   ),
@@ -893,11 +1040,17 @@ class _ProfileEditState extends State<ProfileEdit> {
                       child: Material(
                         elevation: 2,
                         borderRadius: BorderRadius.circular(15),
-                        child: TextField(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          controller: _height,
+
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: '123',
+                            hintText: 'Height (in cms)',
                             // labelText: '100',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -936,7 +1089,13 @@ class _ProfileEditState extends State<ProfileEdit> {
                       child: Material(
                         elevation: 2,
                         borderRadius: BorderRadius.circular(15),
-                        child: TextField(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          controller: _weight,
+
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -979,6 +1138,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                         elevation: 2,
                         borderRadius: BorderRadius.circular(8),
                         child: TextField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          controller: _phoneNumber,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -1023,6 +1187,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                         borderRadius: BorderRadius.circular(8),
                         child: TextField(
                           decoration: InputDecoration(
+                            enabled: false,
                             filled: true,
                             fillColor: Colors.white,
                             hintText: 'usermail@gmail.com',
@@ -1141,6 +1306,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   // );
 
                   // editProfileDrawer(context);
+                  validateForm();
 
                 },
                 style: ButtonStyle(
@@ -1159,6 +1325,7 @@ class _ProfileEditState extends State<ProfileEdit> {
           SizedBox(height: 30,),
         ],
       ),
+    ),
       // ),
       // bottomNavigationBar: BottomNavBar(),
     );
