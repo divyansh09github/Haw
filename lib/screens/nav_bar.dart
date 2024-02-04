@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/blogs.dart';
+import 'package:haw/screens/data_calendar_list.dart';
 import 'package:haw/screens/lock_screen.dart';
+import 'package:haw/screens/navbar_settings.dart';
 import 'package:haw/screens/pinput_screen.dart';
 import 'package:haw/screens/profile.dart';
 
@@ -17,7 +19,7 @@ class _NavBarState extends State<NavBar>{
 
   Color backgroundColor = const Color(0xFFFFDFE9);
 
-  bool _appLockEnabled = false;
+
 
   @override
   void initState(){
@@ -81,10 +83,10 @@ class _NavBarState extends State<NavBar>{
             iconColor: Color(0xFFFF608B),
             title: Text('Report'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Blogs()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DataCalendarList()),
+              );
             },
           ),
           ListTile(
@@ -101,15 +103,15 @@ class _NavBarState extends State<NavBar>{
                   );
             },
           ),
-          ListTile(
-            leading: Image.asset("assets/images/tipsnavbaricon.png",
-              width: 25,
-              height: 25,
-            ),
-            iconColor: Color(0xFFFF608B),
-            title: Text('Tips'),
-            onTap: () {},
-          ),
+          // ListTile(
+          //   leading: Image.asset("assets/images/tipsnavbaricon.png",
+          //     width: 25,
+          //     height: 25,
+          //   ),
+          //   iconColor: Color(0xFFFF608B),
+          //   title: Text('Tips'),
+          //   onTap: () {},
+          // ),
           ListTile(
             leading: Image.asset("assets/images/healthnavbaricon.png",
               width: 25,
@@ -161,43 +163,56 @@ class _NavBarState extends State<NavBar>{
             ),
           ),
           Divider(color: Color(0xFFFF608B)),
-          ExpansionTile(
+          // ExpansionTile(
+          //   leading: Image.asset("assets/images/settingsnavbaricon.png", width: 25, height: 25),
+          //   iconColor: Color(0xFFFF608B),
+          //   title: Text('Settings'),
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.only(left: 40.0),
+          //       child: ListTile(
+          //         leading: Icon(Icons.lock),
+          //         iconColor: Color(0xFFFF608B),
+          //         title: Text('App Lock'),
+          //         onTap: () {
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(builder: (context) => LockScreen()),
+          //           );
+          //         },
+          //         trailing: Switch(
+          //           activeColor: Color(0xFFFF608B),
+          //           value: _appLockEnabled, // Replace with your app lock state variable
+          //           onChanged: (value) => setState(() => _appLockEnabled = value), // Update app lock state
+          //         ),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.only(left: 40.0),
+          //       child: ListTile(
+          //         leading: Icon(Icons.help),
+          //         iconColor: Color(0xFFFF608B),
+          //         title: Text('Help'),
+          //         onTap: () { },
+          //       ),
+          //     ),
+          //     // Add more options as needed ...
+          //   ],
+          // ),
+
+          ListTile(
+            title: Text('Settings'),
             leading: Image.asset("assets/images/settingsnavbaricon.png", width: 25, height: 25),
             iconColor: Color(0xFFFF608B),
-            title: Text('Settings'),
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 40.0),
-                child: ListTile(
-                  leading: Icon(Icons.lock),
-                  iconColor: Color(0xFFFF608B),
-                  title: Text('App Lock'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LockScreen()),
-                    );
-                  },
-                  trailing: Switch(
-                    activeColor: Color(0xFFFF608B),
-                    value: _appLockEnabled, // Replace with your app lock state variable
-                    onChanged: (value) => setState(() => _appLockEnabled = value), // Update app lock state
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 40.0),
-                child: ListTile(
-                  leading: Icon(Icons.help),
-                  iconColor: Color(0xFFFF608B),
-                  title: Text('Help'),
-                  onTap: () { },
-                ),
-              ),
-              // Add more options as needed ...
-            ],
-          ),
 
+            trailing: Icon(Icons.arrow_forward_ios,size: 20),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavbarSettings()),
+              );
+            },
+          ),
           ListTile(
             title: Text('SignOut'),
             leading: Image.asset("assets/images/signoutnavbaricon.png",

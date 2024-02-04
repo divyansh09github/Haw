@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/screens/register_screen.dart';
 import 'package:haw/screens/terms&conditions.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
@@ -197,7 +198,7 @@ class _SignUpState extends State<SignUp> {
                       setInitialScreen('termsAndConditionScreen');
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Terms()),
+                        MaterialPageRoute(builder: (context) => RegisterUser()),
                       );
                     },
                     child: Container(

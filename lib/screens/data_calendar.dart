@@ -96,14 +96,17 @@ class _DataCalendarState extends State<DataCalendar> {
     //   showCalendar = true;
     // });
     // print(predictionData);
-    _selectedRanges = <PickerDateRange>[
-      PickerDateRange(DateTime.parse(predictionData['predictions'][0]['start_date']), DateTime.parse(predictionData['predictions'][0]['end_date'])),
-      PickerDateRange(DateTime.parse(predictionData['predictions'][1]['start_date']), DateTime.parse(predictionData['predictions'][1]['end_date'])),
-      PickerDateRange(DateTime.parse(predictionData['predictions'][2]['start_date']), DateTime.parse(predictionData['predictions'][2]['end_date'])),
-      PickerDateRange(DateTime.parse(predictionData['predictions'][3]['start_date']), DateTime.parse(predictionData['predictions'][3]['end_date'])),
-      PickerDateRange(DateTime.parse(predictionData['predictions'][4]['start_date']), DateTime.parse(predictionData['predictions'][4]['end_date'])),
-      PickerDateRange(DateTime.parse(predictionData['predictions'][5]['start_date']), DateTime.parse(predictionData['predictions'][5]['end_date'])),
-    ];
+    setState(() {
+      _selectedRanges = <PickerDateRange>[
+        PickerDateRange(DateTime.parse(predictionData['predictions'][0]['start_date']), DateTime.parse(predictionData['predictions'][0]['end_date'])),
+        PickerDateRange(DateTime.parse(predictionData['predictions'][1]['start_date']), DateTime.parse(predictionData['predictions'][1]['end_date'])),
+        PickerDateRange(DateTime.parse(predictionData['predictions'][2]['start_date']), DateTime.parse(predictionData['predictions'][2]['end_date'])),
+        PickerDateRange(DateTime.parse(predictionData['predictions'][3]['start_date']), DateTime.parse(predictionData['predictions'][3]['end_date'])),
+        PickerDateRange(DateTime.parse(predictionData['predictions'][4]['start_date']), DateTime.parse(predictionData['predictions'][4]['end_date'])),
+        PickerDateRange(DateTime.parse(predictionData['predictions'][5]['start_date']), DateTime.parse(predictionData['predictions'][5]['end_date'])),
+      ];
+    });
+
 
   }
 

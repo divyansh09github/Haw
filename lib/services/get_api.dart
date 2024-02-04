@@ -63,6 +63,8 @@ class GetAPIService{
       final response = await http.get(Uri.parse(
           "http://ehoaapp.techexposys.com/api/predictions-id-date/23"));
 
+
+      print('response code is: ${response.statusCode}');
         if (response.statusCode == 200) {
           final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
           error = false;
@@ -72,11 +74,13 @@ class GetAPIService{
           // Handle error based on response status code
           throw Exception('API request failed with status code: ${response.statusCode}');
         }
+
         } catch (e) {
         // Handle network errors
         // throw Exception('API request failed: $e');
         return albums;
       }
+
 
   }
 
@@ -156,6 +160,30 @@ class GetAPIService{
       final response = await http.get(Uri.parse(
           "http://ehoaapp.techexposys.com/api/show-blogs-slides/$id"));
 
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
+
+  Future<Map<String, dynamic>> fetchCalendarList() async{
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/dummyDataCalenderList"));
+
+      // print(response.statusCode);
       if (response.statusCode == 200) {
         final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
         error = false;

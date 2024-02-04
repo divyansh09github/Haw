@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/data_input.dart';
+import 'package:haw/services/get_api.dart';
 
 class DataCalendarList extends StatefulWidget {
   const DataCalendarList({super.key});
@@ -12,9 +13,61 @@ class DataCalendarList extends StatefulWidget {
 class _DataCalendarListState extends State<DataCalendarList> {
   Color backgroundColor = const Color(0xFFFFDFE9);
 
-  var ind = -1;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-  Widget cardBuilder(int index) {
+    _fetchContent();
+
+  }
+
+  bool dataMount = false;
+  bool period = false;
+  int listLength = 0;
+  String error = '';
+  bool showPage = false;
+  late Map<String, dynamic> calendarListData = {};
+  _fetchContent() async {
+    try {
+      final data = await GetAPIService().fetchCalendarList();
+      if (data.isNotEmpty) {
+        setState(() {
+          calendarListData = data;
+          dataMount = true;
+
+          error = '';
+        });
+        if (calendarListData['month_list'].length != 0) {
+          showPage = true;
+        }
+      } else {
+        // loadingProcess();
+      }
+    } catch (e) {
+      setState(() {
+        dataMount = false;
+        showPage = false;
+        error = 'Failed to fetch calendar List: $e';
+      });
+    }
+
+    if(dataMount)
+      {
+        setState(() {
+          listLength = calendarListData['month_list'].length;
+        });
+      }
+
+    print(calendarListData['month_list'][6]['period_day']);
+
+  }
+
+
+  var ind = -1;
+  Widget cardBuilder(Map<String, dynamic> data, int index) {
+
+
     return Stack(
       children: [
         GestureDetector(
@@ -45,7 +98,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                 children: [
                   AnimatedContainer(
                     decoration: ShapeDecoration(
-                      color: Color(0xFFFFB1CA), // this color will come only when it is a period day
+                      color: calendarListData['month_list'][index]['period_day'] ? Color(0xFFFFB1CA) : Colors.white,
                       shape: RoundedRectangleBorder(
                         // side: BorderSide(width: 1, color: Color(0xFFffd1de)),
                         borderRadius: BorderRadius.circular(5),
@@ -80,14 +133,20 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                                 right: BorderSide(
                                                     color: Color(0xFFF593AE),
                                                     width: 3))),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'assets/images/woman_2375426 1.png',
-                                            fit: BoxFit.contain,
-                                          ),
-                                        )),
+                                        child:
+                                        Center(child: Text(data['day'].toString().padLeft(2, '0'),
+                                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
+                                        )
+                                        ),
+                                        // ClipRRect(
+                                        //   borderRadius:
+                                        //       BorderRadius.circular(8),
+                                        //   child: Image.asset(
+                                        //     'assets/images/woman_2375426 1.png',
+                                        //     fit: BoxFit.contain,
+                                        //   ),
+                                        // )
+                                    ),
                                   ),
                                 ],
                               ),
@@ -108,7 +167,8 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8),
                                   child: Text(
-                                    "01, Monday",
+                                    '${data['weekday']}',
+                                    // "01, Monday",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
@@ -128,7 +188,8 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    "Your periods starts in 3 days.",
+                                    '${data['message']}',
+                                    // "Your periods starts in 3 days.",
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -414,13 +475,15 @@ class _DataCalendarListState extends State<DataCalendarList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return showPage ? Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
         children: [
           SizedBox(
             height: 70,
           ),
+
+          //Header Row with back arrow
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -440,7 +503,8 @@ class _DataCalendarListState extends State<DataCalendarList> {
                 // ),
               ),
               Text(
-                "January",
+              calendarListData['month'],
+                // "January",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w400,
@@ -455,7 +519,9 @@ class _DataCalendarListState extends State<DataCalendarList> {
           SizedBox(
             height: 20,
           ),
-          Container(
+
+          // Card Iterator container
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
             height: MediaQuery.of(context).size.height * 0.8,
             child: SingleChildScrollView(
@@ -463,15 +529,74 @@ class _DataCalendarListState extends State<DataCalendarList> {
               child: Column(
                 children: [
                   // SizedBox(height: 10),
-                  for (var i = 0; i < 30; i++)
+                  for (var i = 0; i < listLength; i++)
                     Column(
                       children: [
                         SizedBox(height: 5),
-                        cardBuilder(i),
+                        cardBuilder(calendarListData['month_list'][i],i),
                         SizedBox(height: 5),
                       ],
                     )
                 ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    )
+    : Scaffold(
+      backgroundColor: backgroundColor,
+      //Implement loader
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 70,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child:
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 30),
+                //   child:
+                Image.asset(
+                  "assets/images/arrowPinkback.png",
+                  height: 25,
+                  width: 25,
+                ),
+                // ),
+              ),
+              Text(
+                'Month',
+                // "January",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.44,
+                ),
+              ),
+              SizedBox(
+                width: 25,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.85,
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(150.0),
+                child: Image.network(
+                    "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
               ),
             ),
           ),

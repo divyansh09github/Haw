@@ -14,6 +14,8 @@ class BlogContent extends StatefulWidget {
 }
 
 class _BlogContentState extends State<BlogContent> {
+  final ScrollController _scrollController = ScrollController();
+
   Color backgroundColor = const Color(0xFFFFDFE9);
 
   @override
@@ -22,6 +24,12 @@ class _BlogContentState extends State<BlogContent> {
     super.initState();
     _fetchContent();
   }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
 
   String error = '';
   late Map<String, dynamic> blogSContentData = {};
@@ -79,6 +87,127 @@ class _BlogContentState extends State<BlogContent> {
     });
   }
 
+  Widget buildContentSlide(Map<String, dynamic> data, int i) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          //Header with back and forth arrows
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // Scroll to previous slide
+                    _scrollController.animateTo(
+                      _scrollController.offset -
+                          MediaQuery.of(context).size.width * 0.85,
+                      duration: Duration(milliseconds: 600),
+                      curve: Curves.ease,
+                    );
+                  },
+                  child: Padding(
+                    // Add padding to adjust the icon position within the card border
+                    padding:
+                        EdgeInsets.only(right: 0), // Pad from the right edge
+                    child: Image.asset(
+                      "assets/images/arrowPinkback.png",
+                      height: 20,
+                      width: 20,
+                      // color: Colors.grey,
+                    ),
+                    // Image.asset(
+                    //   "assets/images/arrow_blog_backward.png",
+                    //   width: 25,
+                    //   height: 25,
+                    // )
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.55,
+                  child: Center(
+                    child: Text(
+                      '${data['slide_title']}',
+                      // "Blog Title - 01",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      softWrap: false,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 1.32,
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Scroll to next slide
+                    _scrollController.animateTo(
+                      _scrollController.offset +
+                          MediaQuery.of(context).size.width * 0.85,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.ease,
+                    );
+                  },
+                  child: Padding(
+                    // Add padding to adjust the icon position within the card border
+                    padding:
+                        EdgeInsets.only(right: 0), // Pad from the right edge
+                    child: Image.asset(
+                      "assets/images/arrowPinkForward.png",
+                      height: 20,
+                      width: 20,
+                    ),
+                    // Image.asset(
+                    //   "assets/images/arrow_blog_forward.png",
+                    //   width: 25,
+                    //   height: 25,
+                    // )
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          //Blog Content
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: SizedBox(
+                  height: 400,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Image.network(
+                    '$apiUrl/public/${data['slide_image']}',
+                    // 'assets/images/blogImage.png',
+                    fit: BoxFit.contain,
+                  ),
+                  // Image.asset(
+                  //   "assets/images/blogcontentdummy.png",
+                  //   height: 25,
+                  //   width: 25,
+                  // ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Text(
+                  '$apiUrl/public/${data['slide_description']}',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return showPage
@@ -89,6 +218,8 @@ class _BlogContentState extends State<BlogContent> {
                 SizedBox(
                   height: 70,
                 ),
+
+                // Header Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -132,6 +263,8 @@ class _BlogContentState extends State<BlogContent> {
                 SizedBox(
                   height: 20,
                 ),
+
+                //Blog content Container
                 Container(
                   width: MediaQuery.of(context).size.width * 0.85,
                   height: MediaQuery.of(context).size.height * 0.8,
@@ -139,98 +272,29 @@ class _BlogContentState extends State<BlogContent> {
                       border: Border.all(width: 1, color: Colors.white),
                       borderRadius: BorderRadius.circular(10)),
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
+                    scrollDirection: Axis.horizontal,
+                    controller: _scrollController, // Define a ScrollController
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        //Header with back and forth arrows
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        SizedBox(width: 5),
+                        for (int i = 0;
+                            i <
+                                blogSContentData['show_blogs_slides']
+                                        ['blogs_slides']
+                                    .length;
+                            i++)
+                          Row(
                             children: [
-                              Padding(
-                                // Add padding to adjust the icon position within the card border
-                                padding: EdgeInsets.only(
-                                    right: 0), // Pad from the right edge
-                                child: Image.asset(
-                                  "assets/images/arrowPinkback.png",
-                                  height: 20,
-                                  width: 20,
-                                  // color: Colors.grey,
-                                ),
-                                // Image.asset(
-                                //   "assets/images/arrow_blog_backward.png",
-                                //   width: 25,
-                                //   height: 25,
-                                // )
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.55,
-                                child: Center(
-                                  child: Text(
-                                    '${blogSContentData['show_blogs_slides']['blogs_slides'][0]['slide_title']}',
-                                    // "Blog Title - 01",
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 1.32,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                // Add padding to adjust the icon position within the card border
-                                padding: EdgeInsets.only(
-                                    right: 0), // Pad from the right edge
-                                child: Image.asset(
-                                  "assets/images/arrowPinkForward.png",
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                // Image.asset(
-                                //   "assets/images/arrow_blog_forward.png",
-                                //   width: 25,
-                                //   height: 25,
-                                // )
-                              ),
+                              SizedBox(width: 5),
+                              buildContentSlide(
+                                  blogSContentData['show_blogs_slides']
+                                      ['blogs_slides'][i],
+                                  i),
+                              SizedBox(width: 5),
                             ],
                           ),
-                        ),
-
-                        //Blog Content
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: SizedBox(
-                                height: 400,
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                child: Image.network(
-                                  '$apiUrl/public/${blogSContentData['show_blogs_slides']['blogs_slides'][0]['slide_image']}',
-                                  // 'assets/images/blogImage.png',
-                                  fit: BoxFit.contain,
-                                ),
-                                // Image.asset(
-                                //   "assets/images/blogcontentdummy.png",
-                                //   height: 25,
-                                //   width: 25,
-                                // ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              child: Text(
-                                '$apiUrl/public/${blogSContentData['show_blogs_slides']['blogs_slides'][0]['slide_description']}',
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        ),
+                        SizedBox(width: 5),
                       ],
                     ),
                   ),
