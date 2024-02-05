@@ -568,8 +568,9 @@ import 'package:haw/services/post_api.dart';
 import 'package:intl/intl.dart';
 
 class ProfileEdit extends StatefulWidget {
-  const ProfileEdit({super.key});
+  const ProfileEdit({super.key, required this.profileData});
 
+  final Map<String, dynamic> profileData;
   @override
   State<ProfileEdit> createState() => _ProfileEditState();
 }
@@ -805,7 +806,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Username',
+                            hintText: '${widget.profileData['show_user'][0]['name'].toString()}',
                             // labelText: '100',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -858,7 +859,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: '13-10-2000',
+                              hintText: '${widget.profileData['show_user'][0]['dob']}',
                               // labelText: '100',
                               // labelStyle: const TextStyle(color: Colors.black),
                               border: OutlineInputBorder(
@@ -949,7 +950,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                               );
                             }).toList(),
                             hint: Text(
-                              "Marital status",
+                              // "Marital status",
+                              widget.profileData['show_user'][0]['state_name'] != null
+                                  ? widget.profileData['show_user'][0]['state_name'].toString()
+                                  : 'Marital Status',
                               style: TextStyle(color: Colors.grey.shade600), // Hint text color
                             ),
                           ),
@@ -1013,7 +1017,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                         underline:
                         Container(), // remove the default underline of the dropdown
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        hint: Text("Select Region"),
+                        // hint: Text("Select Region"),
+                        hint: Text(widget.profileData['show_user'][0]['state_name'] != null
+                            ? widget.profileData['show_user'][0]['state_name'].toString()
+                            : 'State',style: TextStyle(color: Colors.grey.shade600),),
                       ),
                     ),
                   ),
@@ -1050,7 +1057,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Height (in cms)',
+                            // hintText: 'Height (in cms)',
+                            hintText: widget.profileData['show_user'][0]['height'] != null
+                                ? '${widget.profileData['show_user'][0]['height']}'
+                                : 'Height',
                             // labelText: '100',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -1099,7 +1109,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Weight',
+                            // hintText: 'Weight',
+                            hintText: widget.profileData['show_user'][0]['height'] != null
+                                ? '${widget.profileData['show_user'][0]['height']}'
+                                : 'Weight',
                             // labelText: '100',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -1146,7 +1159,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: '1234567890',
+                            // hintText: '1234567890',
+                            hintText: widget.profileData['show_user'][0]['height'] != null
+                                ? '${widget.profileData['show_user'][0]['height']}'
+                                : 'Phone number',
                             // labelText: '1234567890',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -1190,7 +1206,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                             enabled: false,
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'usermail@gmail.com',
+                            // hintText: 'usermail@gmail.com',
+                            hintText:  '${widget.profileData['show_user'][0]['email']}' ?? 'Email',
                             // labelText: 'usermail@gmail.com',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(

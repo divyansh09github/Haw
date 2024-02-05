@@ -12,6 +12,8 @@ import 'package:haw/screens/period_duration.dart';
 import 'package:haw/screens/sign_up.dart';
 import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/screens/terms&conditions.dart';
+import 'package:haw/services/get_api.dart';
+import 'package:intl/intl.dart';
 
 class HomePeriod extends StatefulWidget {
   const HomePeriod({super.key});
@@ -51,28 +53,9 @@ class _HomePeriodState extends State<HomePeriod> {
     // _initialScreen();
 
 
-    kuchBhi();
-    // var futureDate = widget.startDate.add(Duration(days: widget.cycleLength));
-    // var futureDate = DateTime.now();
+    _apiService();
+    // kuchBhi();
 
-    // DateTime? lastPeriodDate =  PreferencesManager.getLastPeriodDate();
-    // int cycleLength =  PreferencesManager.getCycleLength();
-    // int periodDuration =  PreferencesManager.getPeriodDuration();
-    //
-    // DateTime futureDate = lastPeriodDate!.add(Duration(days: cycleLength));
-    //
-    //
-    // if (futureDate.compareTo(currentDate) > 0) {
-    //   setState(() {
-    //     abc = futureDate.difference(currentDate).inDays;
-    //     periodText = "Period starts in";
-    //   });
-    // } else if (currentDate.compareTo(futureDate) > 0) {
-    //   setState(() {
-    //     abc = currentDate.difference(futureDate).inDays;
-    //     periodText = "You are in";
-    //   });
-    // }
   }
 
   String? screen;
@@ -135,6 +118,27 @@ class _HomePeriodState extends State<HomePeriod> {
 
   }
 
+
+  late Map<String, dynamic> homeScreenData = {};
+  String error = '';
+  bool isLoading = false;
+
+  _apiService() async{
+    try {
+      final data = await GetAPIService().fetchProfile();
+      setState(() {
+        homeScreenData = data;
+        isLoading = true;
+        error = '';
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        error = 'Failed to fetch Profile: $e';
+      });
+    }
+  }
+
   void kuchBhi() async {
     DateTime? lastPeriodDate = await PreferencesManager.getLastPeriodDate();
     int cycleLength = await PreferencesManager.getCycleLength();
@@ -171,7 +175,7 @@ class _HomePeriodState extends State<HomePeriod> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  "${DateTime.now().day} January",
+                  "${DateTime.now().day} ${DateFormat.MMMM().format(DateTime.now())}",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: 50),
@@ -181,14 +185,15 @@ class _HomePeriodState extends State<HomePeriod> {
                 ),
                 SizedBox(height: 50),
                 Text(
-                  periodText,
+                  '${homeScreenData['message']}',
+                  // periodText,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  "$abc Days",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.w700),
-                ),
+                // SizedBox(height: 10),
+                // Text(
+                //   "$abc Days",
+                //   style: TextStyle(fontSize: 36, fontWeight: FontWeight.w700),
+                // ),
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {

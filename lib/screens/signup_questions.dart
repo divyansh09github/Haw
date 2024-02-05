@@ -175,7 +175,8 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
   }
 
   void navigate(){
-    Navigator.push(
+    setInitialScreen('calendarScreen');
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => Calendar()),
     );
@@ -682,7 +683,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
-                          controller: _height,
+                          controller: _weight,
 
                           decoration: InputDecoration(
 
@@ -885,7 +886,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                   child: ElevatedButton(
 
                     onPressed: () {
-                      setInitialScreen('calendarScreen');
+                      // setInitialScreen('calendarScreen');
                       // Navigate to the next page when the button is pressed
                       validateForm();
 

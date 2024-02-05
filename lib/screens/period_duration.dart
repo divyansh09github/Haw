@@ -122,8 +122,8 @@ class _PeriodDurationState extends State<PeriodDuration> {
             children: [
               GestureDetector(
                 onTap: () {
-                  setInitialScreen('homePeriodScreen');
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod()),);
+                  setInitialScreen('homeTabScreen');
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomeTabScreen()),);
                 },
                 child: Text(
                   "Not sure?",
@@ -154,7 +154,13 @@ class _PeriodDurationState extends State<PeriodDuration> {
                   await PreferencesManager.setPeriodDuration(periodLength);
                   PostAPIService().savePeriodDuration();
                   // Navigator.push(context,MaterialPageRoute(builder: (context) => Reminder()),);
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => HomeTabScreen()),);
+                  setInitialScreen('homeTabScreen');
+                  // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomeTabScreen()),);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeTabScreen()),
+                        (Route<dynamic> route) => false,
+                  );
                 },
                 child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
               ),

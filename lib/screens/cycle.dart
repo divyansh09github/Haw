@@ -183,8 +183,8 @@ class _CycleState extends State<Cycle> {
             children: [
               GestureDetector(
                 onTap: () {
-                  setInitialScreen('periodScreen');
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
+                  setInitialScreen('periodDurationScreen');
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
                 },
                 child: Text(
                   "Not sure?",
@@ -211,7 +211,6 @@ class _CycleState extends State<Cycle> {
                   shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
                 ),
                 onPressed: () async {
-                  setInitialScreen('periodScreen');
                   setState(() {
                     if (int.tryParse(_numberPickerController.text) != null) {
                       cycleLength = int.parse(_numberPickerController.text);
@@ -227,7 +226,8 @@ class _CycleState extends State<Cycle> {
                   //   cycleLength = cycleLength;
                   // });
                     // Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod(startDate: widget.startDate, cycleLength: cycleLength)),);
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
+                  setInitialScreen('periodDurationScreen');
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
                 },
                 child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
               ),

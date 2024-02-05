@@ -366,23 +366,23 @@ class _CalendarState extends State<Calendar> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => Cycle()),);
-                  },
-                  child: Text(
-                    "Not sure?",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontFamily: 'Inria Sans',
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.44,
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.push(context,MaterialPageRoute(builder: (context) => Cycle()),);
+                //   },
+                //   child: Text(
+                //     "Not sure?",
+                //     style: TextStyle(
+                //       color: Colors.black,
+                //       fontSize: 24,
+                //       fontFamily: 'Inria Sans',
+                //       fontWeight: FontWeight.w700,
+                //       letterSpacing: 1.44,
+                //     ),
+                //   ),
+                // ),
 
                 // SizedBox(width: 10), // Optional spacing between buttons
                 ElevatedButton(
@@ -401,7 +401,7 @@ class _CalendarState extends State<Calendar> {
                     PostAPIService().savePeriodDay();
                     setInitialScreen('cycleScreen');
                     // Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod(startDate: widget.startDate, cycleLength: cycleLength)),);
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => Cycle()),);
+                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Cycle()),);
                   },
                   child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
                 ),

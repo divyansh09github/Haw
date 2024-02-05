@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/screens/login_screen.dart';
+import 'package:haw/screens/register_screen.dart';
 import 'package:haw/screens/sign_up.dart';
 
 // Import other libraries or packages here
@@ -60,11 +62,10 @@ void setInitialScreen(String value) async{
                               style: TextStyle(color: Color(0xFFFF608B)),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  setInitialScreen('signUpScreen');
                                 haveAccount(true);
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SignUp()),
+                                  MaterialPageRoute(builder: (context) => LoginUser()),
                                 );
                                 },
                             ),
@@ -86,11 +87,11 @@ void setInitialScreen(String value) async{
                           height: 45,
                           child: ElevatedButton(
                             onPressed: () async{
-                              setInitialScreen('signUpScreen');
+                              // setInitialScreen('registerUser');
                               haveAccount(false);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SignUp()),
+                                MaterialPageRoute(builder: (context) => RegisterUser()),
                               );
                             },
                             style: ButtonStyle(

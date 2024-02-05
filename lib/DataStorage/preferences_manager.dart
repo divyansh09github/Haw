@@ -73,6 +73,28 @@ class PreferencesManager{
     await prefs.setString('predicted_date', predictedDate.toIso8601String());
   }
 
+  //User Id and Token
+
+  static Future<void> setUserId(int value) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('userId', value);
+  }
+
+  static Future<int?> getUserId() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userId');
+  }
+
+  static Future<void> setUserToken(String value) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userToken', value);
+  }
+
+  static Future<String?> getUserToken() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userToken');
+  }
+
   // Signup Screen
 
   static Future<void> setSignUpVariables({

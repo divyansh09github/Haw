@@ -921,7 +921,7 @@ class _ProfileState extends State<Profile> {
                         // Navigate to the next page when the button is pressed
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfileEdit()),
+                          MaterialPageRoute(builder: (context) => ProfileEdit(profileData: profileData)),
                         );
 
                         // editProfileDrawer(context);

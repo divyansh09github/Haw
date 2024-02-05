@@ -2,79 +2,92 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
-import 'package:haw/screens/terms&conditions.dart';
+import 'package:haw/screens/home_tab_screen.dart';
+import 'package:haw/services/get_api.dart';
 import 'package:haw/services/post_api.dart';
 
-class RegisterUser extends StatefulWidget {
-  const RegisterUser({super.key});
+class LoginUser extends StatefulWidget {
+  const LoginUser({super.key});
 
   @override
-  State<RegisterUser> createState() => _RegisterUserState();
+  State<LoginUser> createState() => _LoginUserState();
 }
 
-class _RegisterUserState extends State<RegisterUser> {
+class _LoginUserState extends State<LoginUser> {
+
   final TextEditingController _email = TextEditingController();
-  final TextEditingController _pass1 = TextEditingController();
-  final TextEditingController _pass2 = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
   final _formKey = GlobalKey<FormState>(); // Create a global key for the form
+
+
+  void validateForm() async {
+
+    if (_formKey.currentState!.validate()) {
+      print(_email.text);
+
+      try {
+        var response = await GetAPIService().login(_email.text.trim(), _pass.text);
+
+        if (response.statusCode != 200) {
+          // Handle non-200 responses
+          var body = jsonDecode(response.body);
+          if (body is Map && body.containsKey('error')) {
+            var snackDemo = SnackBar(
+              dismissDirection: DismissDirection.startToEnd,
+              padding: EdgeInsets.all(10),
+              content: Text("${body['error']}"),
+              backgroundColor: Color(0xBAFF608B),
+              elevation: 10,
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 5),
+              margin: EdgeInsets.all(15),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+          } else {
+            // Handle unexpected response format
+            print("Unexpected response format: ${response.body}");
+            // Display a generic error message to the user
+          }
+        } else if (response.statusCode == 200){
+          // Assuming a valid JSON response
+          try {
+            final body = jsonDecode(response.body);
+
+            print("login success");
+
+            PreferencesManager.setUserId(body['user_id']);
+            PreferencesManager.setUserToken(body['token']);
+
+            _navigate();
+
+          } catch (e) {
+            // Handle JSON decoding errors
+            print("Error decoding JSON response: $e");
+          }
+        }
+      } catch (e) {
+        // Handle network errors or other exceptions
+        print("Error during API call: $e");
+        // Display a generic error message to the user
+      }
+
+    }
+  }
 
   void setInitialScreen(String value) async {
     await PreferencesManager.setInitialScreen(value);
   }
 
-  void validateForm() async {
-
-    if (_formKey.currentState!.validate()) {
-
-       var response = (await PostAPIService().registerUser(_email.text, _pass2.text));
-
-       final body = jsonDecode(response.body);
-
-       if(response.statusCode != 200){
-         print(body['error']);
-         var snackDemo = SnackBar(
-           dismissDirection: DismissDirection.startToEnd,
-           padding: EdgeInsets.all(10),
-           content: Text("${body['error']}"),
-           backgroundColor: Color(0xBAFF608B),
-           elevation: 10,
-           behavior: SnackBarBehavior.floating,
-           duration: Duration(seconds: 5),
-           margin: EdgeInsets.all(15),
-         );
-         ScaffoldMessenger.of(context).showSnackBar(snackDemo);
-       }
-       else if(response.statusCode == 200){
-         var snackDemo = SnackBar(
-           dismissDirection: DismissDirection.startToEnd,
-           padding: EdgeInsets.all(10),
-           content: Text("Registered Successfully"),
-           backgroundColor: Color(0xBAFF608B),
-           elevation: 10,
-           behavior: SnackBarBehavior.floating,
-           duration: Duration(seconds: 5),
-           margin: EdgeInsets.all(15),
-         );
-         ScaffoldMessenger.of(context).showSnackBar(snackDemo);
-
-         setInitialScreen('termsAndConditionScreen');
-
-         await PreferencesManager.setUserId(body['user_id']);
-         await PreferencesManager.setUserToken(body['token']);
-         // print(await PreferencesManager.getUserId());
-         // print(await PreferencesManager.getUserToken());
-         _navigate();
-
-       }
-
-    }
-  }
-
   _navigate(){
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Terms()),);
+    setInitialScreen('homeTabScreen');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomeTabScreen()),
+          (Route<dynamic> route) => false,
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +115,7 @@ class _RegisterUserState extends State<RegisterUser> {
                       padding: const EdgeInsets.only(top: 80.0, bottom: 25),
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: MediaQuery.of(context).size.height * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.5,
                         width: MediaQuery.of(context).size.width * 0.8,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(
@@ -124,17 +137,19 @@ class _RegisterUserState extends State<RegisterUser> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            SizedBox(height: 70,),
                             //Register yourself heading
                             Text(
-                              "Register Yourself!",
+                              "Login",
                               style: TextStyle(
                                   fontSize: 25, color: Color(0xFF6C6C6C)),
                             ),
 
+                            SizedBox(height: 50,),
                             //Three TextFields
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
+                              const EdgeInsets.symmetric(horizontal: 30),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width *
                                     0.8, // Set width
@@ -154,7 +169,7 @@ class _RegisterUserState extends State<RegisterUser> {
 
                                       // Basic email format check
                                       if (!RegExp(
-                                              r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+                                          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
                                           .hasMatch(value)) {
                                         return 'Please enter a valid email address.';
                                       }
@@ -173,9 +188,9 @@ class _RegisterUserState extends State<RegisterUser> {
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
-                                      hintText: 'Email Id / Phone Number',
+                                      hintText: 'Email Id',
                                       hintStyle:
-                                          TextStyle(color: Colors.black12),
+                                      TextStyle(color: Colors.black12),
                                       // labelText: '100',
                                       // labelStyle: const TextStyle(color: Colors.black),
                                       border: OutlineInputBorder(
@@ -193,7 +208,7 @@ class _RegisterUserState extends State<RegisterUser> {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
+                              const EdgeInsets.symmetric(horizontal: 30),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width *
                                     0.8, // Set width
@@ -206,7 +221,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                     obscureText: true,
                                     autovalidateMode: AutovalidateMode
                                         .onUserInteraction, // Validate on every change
-                                    controller: _pass1,
+                                    controller: _pass,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Password is Required';
@@ -222,7 +237,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                       fillColor: Colors.white,
                                       hintText: 'Password',
                                       hintStyle:
-                                          TextStyle(color: Colors.black12),
+                                      TextStyle(color: Colors.black12),
                                       // labelText: '100',
                                       // labelStyle: const TextStyle(color: Colors.black),
                                       border: OutlineInputBorder(
@@ -238,51 +253,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width *
-                                    0.8, // Set width
-                                height: 30, // Set height
-                                child: Material(
-                                  elevation: 2,
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: TextFormField(
-                                    textAlign: TextAlign.center,
-                                    obscureText: true,
-                                    autovalidateMode: AutovalidateMode
-                                        .onUserInteraction, // Validate on every change
-                                    controller: _pass2,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Name is Required';
-                                      } else if (value != _pass1.text) {
-                                        return 'Passwords do not match';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Confirm Password',
-                                      hintStyle:
-                                          TextStyle(color: Colors.black12),
-                                      // labelText: '100',
-                                      // labelStyle: const TextStyle(color: Colors.black),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            15), // Match border radius with material
-                                        borderSide: BorderSide
-                                            .none, // Remove the default border
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 20.0, top: 10.0, right: 10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            SizedBox(height: 0,),
                           ],
                         ),
                       ),
@@ -291,7 +262,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     //Image
                     Positioned(
                       top:
-                          -20, // Adjust as needed to position half inside/outside
+                      -20, // Adjust as needed to position half inside/outside
                       child: SizedBox(
                         width: 250,
                         height: 200,
@@ -310,7 +281,7 @@ class _RegisterUserState extends State<RegisterUser> {
                             ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
-                                    MaterialStatePropertyAll(Color(0xFFFF608B)),
+                                MaterialStatePropertyAll(Color(0xFFFF608B)),
                                 minimumSize: MaterialStateProperty.all(
                                     Size(200, 40)), // Width and height
                                 shape: MaterialStateProperty.all<
@@ -329,11 +300,11 @@ class _RegisterUserState extends State<RegisterUser> {
                                 validateForm();
 
                               },
-                              child: Text('Register',
+                              child: Text('Login',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize:
-                                          20)), // Text for the second button
+                                      20)), // Text for the second button
                             ),
                           ],
                         ),

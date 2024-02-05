@@ -21,7 +21,7 @@ class AppRoutes {
   static const String dataInputScreen = '/data_input';
   static const String navBarScreen = '/nav_bar';
   static const String profileScreen = 'profile';
-  static const String profileEditScreen = 'ProfileEdit';
+  // static const String profileEditScreen = 'ProfileEdit';
   static const String testScreen = 'test';
   static const String calendarScreen = 'Calendar';
   static const String cycleScreen = 'cycle';
@@ -38,7 +38,7 @@ class AppRoutes {
     dataInputScreen: (context) => DataInput(),
     navBarScreen: (context) => NavBar(),
     profileScreen: (context) => Profile(),
-    profileEditScreen: (context) => ProfileEdit(),
+    // profileEditScreen: (context) => ProfileEdit(),
         testScreen: (context) => Test(),
     calendarScreen: (context) => Calendar(),
     // cycleScreen: (context) => Cycle(data: ,),

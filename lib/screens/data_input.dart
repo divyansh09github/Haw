@@ -121,7 +121,7 @@ class _DataInputState extends State<DataInput> {
       });
     }
     
-    print('$apiUrl/public/${feelingsData['show_disorders'][0]['icon']}');
+    // print('$apiUrl/public/${feelingsData['show_disorders'][0]['icon']}');
 
   }
 

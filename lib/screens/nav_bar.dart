@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:haw/screens/blogs.dart';
 import 'package:haw/screens/data_calendar_list.dart';
 import 'package:haw/screens/lock_screen.dart';
+import 'package:haw/screens/login_screen.dart';
 import 'package:haw/screens/navbar_settings.dart';
 import 'package:haw/screens/pinput_screen.dart';
 import 'package:haw/screens/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -19,16 +21,24 @@ class _NavBarState extends State<NavBar>{
 
   Color backgroundColor = const Color(0xFFFFDFE9);
 
-
-
   @override
   void initState(){
 
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  _signOut() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+    _navigateToLogin();
+  }
+
+  _navigateToLogin() {
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginUser()),);
+  }
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
       backgroundColor: backgroundColor,
       body: ListView(
         // padding: EdgeInsets.zero, // Removes padding
@@ -220,7 +230,9 @@ class _NavBarState extends State<NavBar>{
               height: 25,
             ),
             iconColor: Color(0xFFFF608B),
-            onTap: () {},
+            onTap: (){
+              _signOut();
+            },
           ),
         ],
       ),

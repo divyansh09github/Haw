@@ -133,10 +133,11 @@ class _TermsState extends State<Terms> {
                       height: 45,
                       child: ElevatedButton(
                         onPressed: () async {
-                          setInitialScreen('signUpQuestionsScreen');
+
 
                           if(_isChecked) {
-                            Navigator.push(
+                            setInitialScreen('signUpQuestionsScreen');
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SignUpQuestions()),

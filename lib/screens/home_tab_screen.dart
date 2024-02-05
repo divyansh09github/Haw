@@ -30,7 +30,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
     String? screenString = await PreferencesManager.getInitialScreen();
 
     switch (screenString) {
-      case 'homePeriodScreen':
+      case 'homeTabScreen':
         {
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => HomeTabScreen()));  // navigate to getStarted Screen
@@ -66,7 +66,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
               context, MaterialPageRoute(builder: (context) => Cycle()));
           break;
         }
-      case 'periodScreen':
+      case 'periodDurationScreen':
         {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PeriodDuration()));
