@@ -2,35 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/app_lock_screen.dart';
-import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/calender.dart';
 import 'package:haw/screens/cycle.dart';
 import 'package:haw/screens/get_started_page.dart';
+import 'package:haw/screens/home_tab_screen.dart';
 import 'package:haw/screens/period_duration.dart';
 import 'package:haw/screens/sign_up.dart';
 import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/screens/terms&conditions.dart';
 
-class HomeTabScreen extends StatefulWidget {
-  const HomeTabScreen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<HomeTabScreen> createState() => _HomeTabScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _HomeTabScreenState extends State<HomeTabScreen> {
+class _SplashScreenState extends State<SplashScreen> {
 
   @override
   initState() {
     super.initState();
 
-    // _initialScreen();
+    _initialScreen();
 
   }
 
   _checkLock() async{
     bool lck = await PreferencesManager.getIsLockEnabled();
-
   }
 
   _initialScreen() async{
@@ -46,8 +45,8 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
       switch (screenString) {
         case 'homeTabScreen':
           {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => HomeTabScreen()));  // navigate to getStarted Screen
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomeTabScreen()));  // navigate to getStarted Screen
             break;
           }
         case 'signUpScreen':
@@ -104,6 +103,14 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavBar();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            Text("Splash Screen", style: TextStyle(fontSize: 30),),
+          ],
+        ),
+      ),
+    );
   }
 }

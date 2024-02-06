@@ -1,24 +1,42 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
-import 'package:haw/screens/navbar_settings.dart';
+import 'package:haw/screens/home_tab_screen.dart';
 
-class LockScreen extends StatefulWidget {
-  const LockScreen({super.key});
+class AppLockScreen extends StatefulWidget {
+  const AppLockScreen({super.key});
 
   @override
-  State<LockScreen> createState() => _LockScreenState();
+  State<AppLockScreen> createState() => _AppLockScreenState();
 }
 
-class _LockScreenState extends State<LockScreen> {
+class _AppLockScreenState extends State<AppLockScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _pinCode();
+  }
+
+  String pin = '';
+  _pinCode() async{
+    String p = await PreferencesManager.getPinCode();
+
+    setState(() {
+      pin = p;
+    });
+  }
+
   Color backgroundColor = const Color(0xFFFFDFE9);
+
+
 
   List<dynamic> digits = [];
 
-  String passCode1 = '';
-  String passCode2 = '';
-  bool firstTime = true;
   String passCodeText = "Enter 4-digit passcode";
 
   _addValue(int i){
@@ -29,85 +47,33 @@ class _LockScreenState extends State<LockScreen> {
       });
     }
     if(digits.length == 4){
-      Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          passCodeText = "Enter passcode again";
-          passCode1 = digits.join();
-          digits.clear();
-          firstTime = false;
-        });
-      });
-    }
 
-  }
-  _addSecondValue(int i){
-
-    if(digits.length < 4){
-      setState(() {
-        digits.add(i);
-      });
-    }
-    if(digits.length == 4){
-      passCode2 = digits.join();
-
-      if(passCode1 == passCode2){
-        // Show SnackBar
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            dismissDirection: DismissDirection.startToEnd,
-            padding: EdgeInsets.all(10),
-            content: Text('Passcode Set Successfully'),
-            backgroundColor: Color(0xBAFF608B),
-            elevation: 10,
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 2),
-            margin: EdgeInsets.all(15),
-          ),
-        );
-
-        _setAppLock(passCode2);
-        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => NavbarSettings()),);
-        // Navigator.pop(context);
-      }
+      if(pin == digits.join())
+        {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeTabScreen()),
+          );
+        }
       else{
-        // Show SnackBar
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            dismissDirection: DismissDirection.startToEnd,
-            padding: EdgeInsets.all(10),
-            content: Text("Passcode doesn't Match"),
-            backgroundColor: Color(0xBAFF608B),
-            elevation: 10,
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 2),
-            margin: EdgeInsets.all(15),
-          ),
-        );
-        setState(() {
-          // passCodeText = "not Matched";
-          firstTime = true;
-          passCodeText = "Enter 4-digit passcode";
-          digits.clear();
-          passCode1 = '';
-          passCode2 = '';
+        Future.delayed(const Duration(milliseconds: 500), () {
+          setState(() {
+            passCodeText = "Wrong pin enter again";
+            digits.clear();
+          });
         });
-
       }
+
     }
 
   }
+
   _removeValue(){
     setState(() {
       if(digits.isNotEmpty) {
         digits.removeLast();
       }
     });
-  }
-
-  _setAppLock(String pinCode) async{
-    await PreferencesManager.setIsLockEnabled(true);
-    await PreferencesManager.setIsPinSet(true);
-    await PreferencesManager.setPinCode(pinCode);
   }
 
   @override
@@ -241,7 +207,7 @@ class _LockScreenState extends State<LockScreen> {
                         Text(
                           passCodeText,
                           style:
-                              TextStyle(fontSize: 16, color: Color(0xFFFF608B)),
+                          TextStyle(fontSize: 16, color: Color(0xFFFF608B)),
                         )
                       ],
                     ),
@@ -262,7 +228,7 @@ class _LockScreenState extends State<LockScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               // print('Button ${index + 1} pressed');
-                              firstTime ? _addValue(index+1) : _addSecondValue(index+1);
+                              _addValue(index+1);
                             },
                             child: Text('${index + 1}',
                                 style: TextStyle(
@@ -271,15 +237,14 @@ class _LockScreenState extends State<LockScreen> {
                         );
                       }),
 
-                      // Last row with icons
+                      // Last row with 3 icons and zero
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child:
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
                           onPressed: () {
-                            // exit(0);
-                            Navigator.pop(context);
+                            exit(0);
                           },
                           child: Icon(Icons.arrow_back,color: Color(0xFFFF608B),size: 40),
                         ),
@@ -320,9 +285,9 @@ class _LockScreenState extends State<LockScreen> {
         color: Colors.white,
         child: Center(
             child: Text(
-          "Forget Passcode?",
-          style: TextStyle(color: Color(0xFFFF608B), fontSize: 15),
-        )),
+              "Forget Passcode?",
+              style: TextStyle(color: Color(0xFFFF608B), fontSize: 15),
+            )),
       ),
     );
   }

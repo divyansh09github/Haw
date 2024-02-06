@@ -5,6 +5,7 @@ import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/homePeriod.dart';
 import 'package:haw/screens/home_tab_screen.dart';
+import 'package:haw/screens/splash_screen.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       ),
       // initialRoute: AppRoutes.homePeriodScreen,
       // home : HomePeriod(),
-      home: HomeTabScreen(),
+      // home: HomeTabScreen(),
+      home: SplashScreen(),
       routes: AppRoutes.routes,
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

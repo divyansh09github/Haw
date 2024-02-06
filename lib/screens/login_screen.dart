@@ -24,7 +24,6 @@ class _LoginUserState extends State<LoginUser> {
   void validateForm() async {
 
     if (_formKey.currentState!.validate()) {
-      print(_email.text);
 
       try {
         var response = await GetAPIService().login(_email.text.trim(), _pass.text);
@@ -171,7 +170,7 @@ class _LoginUserState extends State<LoginUser> {
                                       if (!RegExp(
                                           r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
                                           .hasMatch(value)) {
-                                        return 'Please enter a valid email address.';
+                                        return 'Please enter valid email address';
                                       }
 
                                       // Optional: More advanced checks if needed
@@ -224,7 +223,7 @@ class _LoginUserState extends State<LoginUser> {
                                     controller: _pass,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Password is Required';
+                                        return 'Password is required';
                                       } else if (value.length < 8) {
                                         return 'Password must be at least 8 characters long';
                                       } else if (value.length > 24) {

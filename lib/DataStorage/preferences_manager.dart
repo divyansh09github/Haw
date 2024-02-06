@@ -213,4 +213,36 @@ class PreferencesManager{
     };
   }
 
+  //PinCode AppLock
+
+  static Future<String> getPinCode() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('pinCode') ?? "0";
+  }
+
+  static Future<void> setPinCode(String pinCode) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('pinCode', pinCode);
+  }
+
+  static Future<bool> getIsPinSet() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isPinSet') ?? false;
+  }
+
+  static Future<void> setIsPinSet(bool value) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isPinSet', value);
+  }
+
+  static Future<bool> getIsLockEnabled() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLockEnabled') ?? false;
+  }
+
+  static Future<void> setIsLockEnabled(bool value) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLockEnabled', value);
+  }
+
 }

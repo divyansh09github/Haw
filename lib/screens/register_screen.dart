@@ -138,7 +138,7 @@ class _RegisterUserState extends State<RegisterUser> {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width *
                                     0.8, // Set width
-                                height: 30, // Set height
+                                height: 40, // Set height
                                 child: Material(
                                   elevation: 2,
                                   borderRadius: BorderRadius.circular(8),
@@ -156,7 +156,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                       if (!RegExp(
                                               r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
                                           .hasMatch(value)) {
-                                        return 'Please enter a valid email address.';
+                                        return 'Please enter valid email address';
                                       }
 
                                       // Optional: More advanced checks if needed
@@ -197,7 +197,7 @@ class _RegisterUserState extends State<RegisterUser> {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width *
                                     0.8, // Set width
-                                height: 30, // Set height
+                                height: 40, // Set height
                                 child: Material(
                                   elevation: 2,
                                   borderRadius: BorderRadius.circular(8),
@@ -209,7 +209,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                     controller: _pass1,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Password is Required';
+                                        return 'Password is required';
                                       } else if (value.length < 8) {
                                         return 'Password must be at least 8 characters long';
                                       } else if (value.length > 24) {
@@ -238,13 +238,27 @@ class _RegisterUserState extends State<RegisterUser> {
                                 ),
                               ),
                             ),
+
+                            // SizedBox(
+                            //   height: 40,
+                            //   width: MediaQuery.of(context).size.width * 0.65,
+                            //   child: TextField(
+                            //
+                            //     obscureText: true,
+                            //     decoration: InputDecoration(focusColor: Color(0xffFF608B),
+                            //       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
+                            //       border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                            //       labelText: 'Password',
+                            //     ),
+                            //   ),
+                            // ),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 30),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width *
                                     0.8, // Set width
-                                height: 30, // Set height
+                                height: 40, // Set height
                                 child: Material(
                                   elevation: 2,
                                   borderRadius: BorderRadius.circular(8),
@@ -256,7 +270,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                     controller: _pass2,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Name is Required';
+                                        return 'Name is required';
                                       } else if (value != _pass1.text) {
                                         return 'Passwords do not match';
                                       }

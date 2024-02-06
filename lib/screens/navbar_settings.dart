@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/screens/lock_screen.dart';
 import 'package:haw/screens/settings_help.dart';
 import 'package:haw/screens/settings_termsandconditions.dart';
 
@@ -15,6 +17,22 @@ class _NavbarSettingsState extends State<NavbarSettings> {
   Color backgroundColor = const Color(0xFFFFDFE9);
   bool _appLockEnabled = false;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    setLock();
+    super.initState();
+
+
+
+  }
+
+  setLock() async{
+    bool abc = await PreferencesManager.getIsLockEnabled();
+    setState(() {
+      _appLockEnabled = abc;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +96,23 @@ class _NavbarSettingsState extends State<NavbarSettings> {
                   child: Switch(
                     activeColor: Color(0xFFFF608B),
                     value: _appLockEnabled,
-                    onChanged: (value) => setState(() => _appLockEnabled = value),
+                    onChanged: (value) async=>
+                    {
+                      if(value){
+                        if(await PreferencesManager.getIsPinSet()){
+                          PreferencesManager.setIsLockEnabled(value),
+                          setState(() => _appLockEnabled = value)
+                        }
+                        else{
+                            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LockScreen()),)
+                        }
+                      }else{
+                        PreferencesManager.setIsLockEnabled(value),
+                        setState(() => _appLockEnabled = value)
+                      },
+                    // PreferencesManager.setIsLockEnabled(value),
+                    //   setState(() => _appLockEnabled = value)
+                    },
                   ),
                 ),
               ),
@@ -88,14 +122,21 @@ class _NavbarSettingsState extends State<NavbarSettings> {
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: ListTile(
-              title: Text('Change Pin'),
+              title: Text('Set Pin'),
+
               leading: Icon(Icons.pin),
               // Image.asset("assets/images/signoutnavbaricon.png",
               //   width: 25,
               //   height: 25,
               // ),
               iconColor: Color(0xFFFF608B),
-              onTap: () {},
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => LockScreen()),
+                // );
+                Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LockScreen()),);
+              },
             ),
           ),
           Padding(
