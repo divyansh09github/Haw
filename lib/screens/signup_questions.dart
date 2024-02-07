@@ -232,23 +232,23 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Positioned(
-                  top: 60,
-                  left: 20,
-                  child: Row(
-                  children: [
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Image.asset("assets/images/backArrowWhite.png",
-                        height: 25,
-                          width: 25,
-                        ),
-                      ),
-                  ],
-                ),
-                ),
+                // Positioned(
+                //   top: 60,
+                //   left: 20,
+                //   child: Row(
+                //   children: [
+                //       GestureDetector(
+                //         onTap: (){
+                //           Navigator.pop(context);
+                //         },
+                //         child: Image.asset("assets/images/backArrowWhite.png",
+                //         height: 25,
+                //           width: 25,
+                //         ),
+                //       ),
+                //   ],
+                // ),
+                // ),
                 Positioned(
                   bottom: 30, // Adjust the bottom position as needed
                   left: (MediaQuery.of(context).size.width - 120) / 2,

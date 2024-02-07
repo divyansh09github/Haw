@@ -38,55 +38,55 @@ class _SplashScreenState extends State<SplashScreen> {
     String? screenString = await PreferencesManager.getInitialScreen();
 
     if(lockEnabled){
-      Navigator.push(
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => AppLockScreen()));
     }
     else{
       switch (screenString) {
         case 'homeTabScreen':
           {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => HomeTabScreen()));  // navigate to getStarted Screen
             break;
           }
-        case 'signUpScreen':
-          {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SignUp()));
-            break;
-          }
+        // case 'signUpScreen':
+        //   {
+        //     Navigator.pushReplacement(
+        //         context, MaterialPageRoute(builder: (context) => SignUp()));
+        //     break;
+        //   }
         case 'termsAndConditionScreen':
           {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Terms()));
             break;
           }
         case 'signUpQuestionsScreen':
           {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => SignUpQuestions()));
             break;
           }
         case 'calendarScreen':
           {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Calendar()));
             break;
           }
         case 'cycleScreen':
           {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Cycle()));
             break;
           }
         case 'periodDurationScreen':
           {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => PeriodDuration()));
             break;
           }
         default :{
-          Navigator.push(
+          Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));  // navigate to getStarted Screen
           break;
         }

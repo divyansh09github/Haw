@@ -146,112 +146,190 @@ class _LoginUserState extends State<LoginUser> {
 
                             SizedBox(height: 50,),
                             //Three TextFields
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 30),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width *
-                                    0.8, // Set width
-                                height: 30, // Set height
-                                child: Material(
-                                  elevation: 2,
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: TextFormField(
-                                    textAlign: TextAlign.center,
-                                    autovalidateMode: AutovalidateMode
-                                        .onUserInteraction, // Validate on every change
-                                    controller: _email,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Email is required.';
-                                      }
 
-                                      // Basic email format check
-                                      if (!RegExp(
-                                          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-                                          .hasMatch(value)) {
-                                        return 'Please enter valid email address';
-                                      }
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.65,
+                              child: TextFormField(
+                                cursorColor: Color(0xffFF608B),
+                                autovalidateMode: AutovalidateMode
+                                    .onUserInteraction, // Validate on every change
+                                controller: _email,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Email is required.';
+                                  }
 
-                                      // Optional: More advanced checks if needed
-                                      // Add logic for MX record checks, disposable email domain checks, etc.
+                                  // Basic email format check
+                                  if (!RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+                                      .hasMatch(value)) {
+                                    return 'Please enter valid email address';
+                                  }
 
-                                      return null; // Valid email
-                                    },
-                                    // inputFormatters: [
-                                    //   FilteringTextInputFormatter.allow(
-                                    //       RegExp(r'[a-zA-Z ]')),
-                                    //   LengthLimitingTextInputFormatter(
-                                    //       25), // Enforce character limit during input
-                                    // ],
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Email Id',
-                                      hintStyle:
-                                      TextStyle(color: Colors.black12),
-                                      // labelText: '100',
-                                      // labelStyle: const TextStyle(color: Colors.black),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            15), // Match border radius with material
-                                        borderSide: BorderSide
-                                            .none, // Remove the default border
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 20.0, top: 10.0, right: 10.0),
-                                    ),
-                                  ),
+                                  // Optional: More advanced checks if needed
+                                  // Add logic for MX record checks, disposable email domain checks, etc.
+
+                                  return null; // Valid email
+                                },
+                                // inputFormatters: [
+                                //   FilteringTextInputFormatter.allow(
+                                //       RegExp(r'[a-zA-Z ]')),
+                                //   LengthLimitingTextInputFormatter(
+                                //       25), // Enforce character limit during input
+                                // ],
+                                decoration: InputDecoration(
+                                  focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
+                                  errorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                                  labelStyle: TextStyle(color:Color(0xffFF608B) ,fontSize: 15),
+                                  focusColor: Color(0xffFF608B),
+                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
+                                  // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                                  labelText: 'Email Id',
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 30),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width *
-                                    0.8, // Set width
-                                height: 30, // Set height
-                                child: Material(
-                                  elevation: 2,
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: TextFormField(
-                                    textAlign: TextAlign.center,
-                                    obscureText: true,
-                                    autovalidateMode: AutovalidateMode
-                                        .onUserInteraction, // Validate on every change
-                                    controller: _pass,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Password is required';
-                                      } else if (value.length < 8) {
-                                        return 'Password must be at least 8 characters long';
-                                      } else if (value.length > 24) {
-                                        return 'Password cannot exceed 25 characters';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Password',
-                                      hintStyle:
-                                      TextStyle(color: Colors.black12),
-                                      // labelText: '100',
-                                      // labelStyle: const TextStyle(color: Colors.black),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            15), // Match border radius with material
-                                        borderSide: BorderSide
-                                            .none, // Remove the default border
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 20.0, top: 10.0, right: 10.0),
-                                    ),
-                                  ),
+                            // Padding(
+                            //   padding:
+                            //   const EdgeInsets.symmetric(horizontal: 30),
+                            //   child: SizedBox(
+                            //     width: MediaQuery.of(context).size.width *
+                            //         0.8, // Set width
+                            //     height: 30, // Set height
+                            //     child: Material(
+                            //       elevation: 2,
+                            //       borderRadius: BorderRadius.circular(8),
+                            //       child: TextFormField(
+                            //         textAlign: TextAlign.center,
+                            //         autovalidateMode: AutovalidateMode
+                            //             .onUserInteraction, // Validate on every change
+                            //         controller: _email,
+                            //         validator: (value) {
+                            //           if (value == null || value.isEmpty) {
+                            //             return 'Email is required.';
+                            //           }
+                            //
+                            //           // Basic email format check
+                            //           if (!RegExp(
+                            //               r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+                            //               .hasMatch(value)) {
+                            //             return 'Please enter valid email address';
+                            //           }
+                            //
+                            //           // Optional: More advanced checks if needed
+                            //           // Add logic for MX record checks, disposable email domain checks, etc.
+                            //
+                            //           return null; // Valid email
+                            //         },
+                            //         // inputFormatters: [
+                            //         //   FilteringTextInputFormatter.allow(
+                            //         //       RegExp(r'[a-zA-Z ]')),
+                            //         //   LengthLimitingTextInputFormatter(
+                            //         //       25), // Enforce character limit during input
+                            //         // ],
+                            //         decoration: InputDecoration(
+                            //           filled: true,
+                            //           fillColor: Colors.white,
+                            //           hintText: 'Email Id',
+                            //           hintStyle:
+                            //           TextStyle(color: Colors.black12),
+                            //           // labelText: '100',
+                            //           // labelStyle: const TextStyle(color: Colors.black),
+                            //           border: OutlineInputBorder(
+                            //             borderRadius: BorderRadius.circular(
+                            //                 15), // Match border radius with material
+                            //             borderSide: BorderSide
+                            //                 .none, // Remove the default border
+                            //           ),
+                            //           contentPadding: const EdgeInsets.only(
+                            //               left: 20.0, top: 10.0, right: 10.0),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+
+
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.65,
+                              child: TextFormField(
+                                cursorColor: Color(0xffFF608B),
+                                textAlign: TextAlign.center,
+                                obscureText: true,
+                                autovalidateMode: AutovalidateMode
+                                    .onUserInteraction, // Validate on every change
+                                controller: _pass,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Password is required';
+                                  } else if (value.length < 8) {
+                                    return 'Password must be at least 8 characters long';
+                                  } else if (value.length > 24) {
+                                    return 'Password cannot exceed 25 characters';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
+                                  errorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                                  labelStyle: TextStyle(color: Color(0xffFF608B) ,fontSize: 15),
+                                  focusColor: Color(0xffFF608B),
+                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
+                                  // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                                  labelText: 'Password',
                                 ),
                               ),
                             ),
+                            // Padding(
+                            //   padding:
+                            //   const EdgeInsets.symmetric(horizontal: 30),
+                            //   child: SizedBox(
+                            //     width: MediaQuery.of(context).size.width *
+                            //         0.8, // Set width
+                            //     height: 30, // Set height
+                            //     child: Material(
+                            //       elevation: 2,
+                            //       borderRadius: BorderRadius.circular(8),
+                            //       child: TextFormField(
+                            //         textAlign: TextAlign.center,
+                            //         obscureText: true,
+                            //         autovalidateMode: AutovalidateMode
+                            //             .onUserInteraction, // Validate on every change
+                            //         controller: _pass,
+                            //         validator: (value) {
+                            //           if (value == null || value.isEmpty) {
+                            //             return 'Password is required';
+                            //           } else if (value.length < 8) {
+                            //             return 'Password must be at least 8 characters long';
+                            //           } else if (value.length > 24) {
+                            //             return 'Password cannot exceed 25 characters';
+                            //           }
+                            //           return null;
+                            //         },
+                            //         decoration: InputDecoration(
+                            //           filled: true,
+                            //           fillColor: Colors.white,
+                            //           hintText: 'Password',
+                            //           hintStyle:
+                            //           TextStyle(color: Colors.black12),
+                            //           // labelText: '100',
+                            //           // labelStyle: const TextStyle(color: Colors.black),
+                            //           border: OutlineInputBorder(
+                            //             borderRadius: BorderRadius.circular(
+                            //                 15), // Match border radius with material
+                            //             borderSide: BorderSide
+                            //                 .none, // Remove the default border
+                            //           ),
+                            //           contentPadding: const EdgeInsets.only(
+                            //               left: 20.0, top: 10.0, right: 10.0),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                             SizedBox(height: 0,),
                           ],
                         ),

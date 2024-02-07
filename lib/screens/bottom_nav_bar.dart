@@ -240,6 +240,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: bottombgcolor,
             child: TabBar(
 
+              indicatorColor: Colors.white,
               tabs: [
                 Tab(
                   child: Padding(

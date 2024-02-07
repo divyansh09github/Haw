@@ -48,75 +48,12 @@ class _HomePeriodState extends State<HomePeriod> {
   initState() {
     super.initState();
     showScreen = false;
-    // String screenStr = _initialScreen() as String;
-
-    // _initialScreen();
-
 
     _apiService();
     // kuchBhi();
 
   }
 
-  String? screen;
-   _initialScreen() async{
-    String? screenString = await PreferencesManager.getInitialScreen();
-
-    switch (screenString) {
-      case 'homePeriodScreen':
-        {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (context) => HomePage()));  // navigate to getStarted Screen
-          break;
-        }
-      case 'signUpScreen':
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignUp()));
-          break;
-        }
-      case 'termsAndConditionScreen':
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Terms()));
-          break;
-        }
-      case 'signUpQuestionsScreen':
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignUpQuestions()));
-          break;
-        }
-      case 'calendarScreen':
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Calendar()));
-          break;
-        }
-      case 'cycleScreen':
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Cycle()));
-          break;
-        }
-      case 'periodScreen':
-        {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PeriodDuration()));
-          break;
-        }
-      default :{
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));  // navigate to getStarted Screen
-        break;
-      }
-    }
-
-    // setState(() {
-    //   screen = screenString;
-    // });
-
-  }
 
 
   late Map<String, dynamic> homeScreenData = {};
@@ -125,7 +62,7 @@ class _HomePeriodState extends State<HomePeriod> {
 
   _apiService() async{
     try {
-      final data = await GetAPIService().fetchProfile();
+      final data = await GetAPIService().fetchHomeScreen();
       setState(() {
         homeScreenData = data;
         isLoading = true;
@@ -139,27 +76,27 @@ class _HomePeriodState extends State<HomePeriod> {
     }
   }
 
-  void kuchBhi() async {
-    DateTime? lastPeriodDate = await PreferencesManager.getLastPeriodDate();
-    int cycleLength = await PreferencesManager.getCycleLength();
-    int periodDuration = await PreferencesManager.getPeriodDuration();
-
-    DateTime futureDate = lastPeriodDate!.add(Duration(days: cycleLength));
-
-    PreferencesManager.setPredictedDate(futureDate);
-
-    if (futureDate.compareTo(currentDate) > 0) {
-      setState(() {
-        abc = futureDate.difference(currentDate).inDays;
-        periodText = "Period starts in";
-      });
-    } else if (currentDate.compareTo(futureDate) > 0) {
-      setState(() {
-        abc = currentDate.difference(futureDate).inDays;
-        periodText = "You are in";
-      });
-    }
-  }
+  // void kuchBhi() async {
+  //   DateTime? lastPeriodDate = await PreferencesManager.getLastPeriodDate();
+  //   int cycleLength = await PreferencesManager.getCycleLength();
+  //   int periodDuration = await PreferencesManager.getPeriodDuration();
+  //
+  //   DateTime futureDate = lastPeriodDate!.add(Duration(days: cycleLength));
+  //
+  //   PreferencesManager.setPredictedDate(futureDate);
+  //
+  //   if (futureDate.compareTo(currentDate) > 0) {
+  //     setState(() {
+  //       abc = futureDate.difference(currentDate).inDays;
+  //       periodText = "Period starts in";
+  //     });
+  //   } else if (currentDate.compareTo(futureDate) > 0) {
+  //     setState(() {
+  //       abc = currentDate.difference(futureDate).inDays;
+  //       periodText = "You are in";
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
