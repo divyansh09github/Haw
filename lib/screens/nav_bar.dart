@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/blogs.dart';
 import 'package:haw/screens/data_calendar_list.dart';
+import 'package:haw/screens/get_started_page.dart';
 import 'package:haw/screens/lock_screen.dart';
 import 'package:haw/screens/login_screen.dart';
 import 'package:haw/screens/navbar_settings.dart';
@@ -29,11 +30,11 @@ class _NavBarState extends State<NavBar>{
   _signOut() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
-    _navigateToLogin();
+    _navigateToGetStarted();
   }
 
-  _navigateToLogin() {
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginUser()),);
+  _navigateToGetStarted() {
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()),);
   }
 
     @override
@@ -93,10 +94,10 @@ class _NavBarState extends State<NavBar>{
             iconColor: Color(0xFFFF608B),
             title: Text('Report'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DataCalendarList()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => DataCalendarList()),
+              // );
             },
           ),
           ListTile(

@@ -124,7 +124,7 @@ class _HomePeriodState extends State<HomePeriod> {
                 Text(
                   '${homeScreenData['message']}',
                   // periodText,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),textAlign: TextAlign.center,
                 ),
                 // SizedBox(height: 10),
                 // Text(
@@ -146,14 +146,14 @@ class _HomePeriodState extends State<HomePeriod> {
           ),
         ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showTipsBottomSheet(context);
-        },
-        tooltip: 'Show Tips',
-        child: Icon(Icons.lightbulb_outline),
-      ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     _showTipsBottomSheet(context);
+      //   },
+      //   tooltip: 'Show Tips',
+      //   child: Icon(Icons.lightbulb_outline),
+      // ),
+      //   floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
         // bottomNavigationBar: BottomNavBar(),
     );

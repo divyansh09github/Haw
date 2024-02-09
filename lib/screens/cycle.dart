@@ -31,36 +31,37 @@ class _CycleState extends State<Cycle> {
   }
 
   bool isEditable = false;
+  bool isSelectedDays = false;
+  int defaultDays = 28;
   final TextEditingController _numberPickerController = TextEditingController(); // Declare the controller
 
-  // Future saveCycleLength() async {
-  //   var length = await PreferencesManager.getCycleLength();
-  //   print(length);
-  //   // Map data = {
-  //   //   "average_cycle_length" :
-  //   // };
-  //
-  //   // var queryParameters = jsonEncode(data);
-  //   // final response = await http.post(
-  //   //     Uri.parse('$apiUrl/api/save-cycle-length?id=15&token=bUktfVR3hubVuo5OaDL2GdJKvjGXfGD3b2rhyl2248grSDdHgiYVPJJwunhmgQe4&average_cycle_length=$length'),
-  //   //     // qParams: queryParameters,
-  //   //     headers: {"Content-Type": "application/json"}
-  //   //     );
-  //   //
-  //   //     print(response.body);
-  // }
+  _notSure() async{
+    await PostAPIService().saveCycleLength(defaultDays);
+    _navigate();
+  }
 
-  // void saveCycleLength() async{
-  //   isEditable ? await PreferencesManager.setCycleLength(_numberPickerController.text as int)
-  //       : await PreferencesManager.setCycleLength(cycleLength);
-  // }
+  _nextButton() async{
 
+    if (int.tryParse(_numberPickerController.text) != null) {
+      setState(() {
+          cycleLength = int.parse(_numberPickerController.text);
+      });
+    }
+    await PostAPIService().saveCycleLength(cycleLength);
+    _navigate();
+
+  }
+
+  _navigate(){
+    setInitialScreen('periodDurationScreen');
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
+  }
   void setInitialScreen(String value) async{
     await PreferencesManager.setInitialScreen(value);
   }
 
   Color bottombgcolor = const Color(0xFFFF608B);
-  var cycleLength = 01;
+  var cycleLength = 25;
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +93,8 @@ class _CycleState extends State<Cycle> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center, // Vertical centering
             children: [
-              Text("What is the average length of", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-              Text("your cycle?", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+              Text("What is the average length of", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
+              Text("your cycle?", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
               SizedBox(height: 40),
               SizedBox(
                   width:  MediaQuery.of(context).size.width * 0.60,
@@ -140,12 +141,13 @@ class _CycleState extends State<Cycle> {
                     ),
                         )
                         : NumberPicker(
-                      selectedTextStyle: TextStyle(color: Colors.black, fontSize: 26),
+                      selectedTextStyle: TextStyle(color: Colors.black, fontSize: 25),
                       itemCount: 1,
                       value: cycleLength,
-                      minValue: 01,
+                      minValue: 25,
                       maxValue: 35,
                       onChanged: (value)  => setState(() {
+                        isSelectedDays = true;
                         cycleLength = value;
                       }),
                       // textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
@@ -156,9 +158,9 @@ class _CycleState extends State<Cycle> {
                     'Days',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 32,
-                      fontFamily: 'Inria Sans',
-                      fontWeight: FontWeight.w700,
+                      fontSize: 25,
+                      // fontFamily: 'Inria Sans',
+                      fontWeight: FontWeight.w400,
                       height: 0,
                       letterSpacing: 1.92,
                     ),
@@ -183,22 +185,21 @@ class _CycleState extends State<Cycle> {
             children: [
               GestureDetector(
                 onTap: () {
-                  setInitialScreen('periodDurationScreen');
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
+                  _notSure();
                 },
                 child: Text(
                   "Not sure?",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 24,
+                    fontSize: 20,
                     fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
+                    // fontWeight: FontWeight.w500,
                     letterSpacing: 1.44,
                   ),
                 ),
               ),
               // SizedBox(width: 10), // Optional spacing between buttons
-              ElevatedButton(
+              isSelectedDays ? ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Color(0xFFFF608B)),
                   minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
@@ -210,24 +211,23 @@ class _CycleState extends State<Cycle> {
                   elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
                   shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
                 ),
-                onPressed: () async {
-                  setState(() {
-                    if (int.tryParse(_numberPickerController.text) != null) {
-                      cycleLength = int.parse(_numberPickerController.text);
-                    }
-                  });
-                  await PreferencesManager.setCycleLength(cycleLength);
-                  PostAPIService().saveCycleLength();
-
-                  // print(cycleLength);
-                  // print(_numberPickerController.text);
-                  // saveCycleLength();
-                  // setState(() {
-                  //   cycleLength = cycleLength;
-                  // });
-                    // Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod(startDate: widget.startDate, cycleLength: cycleLength)),);
-                  setInitialScreen('periodDurationScreen');
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
+                onPressed: () {
+                  _nextButton();
+                },
+                child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
+              ) : ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Color(0x35FF608B)),
+                  minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Border radius
+                    ),
+                  ),
+                  elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
+                  shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
+                ),
+                onPressed: () {
                 },
                 child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
               ),

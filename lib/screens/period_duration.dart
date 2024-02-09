@@ -18,24 +18,35 @@ class PeriodDuration extends StatefulWidget {
 
 class _PeriodDurationState extends State<PeriodDuration> {
 
-  // Future savePeriodDuration() async{
-  //   var durationLength = await PreferencesManager.getPeriodDuration();
-  //   print(durationLength);
-  //
-  //   // final response = await http.post(
-  //   //     Uri.parse('$apiUrl/api/save-cycle-days?id=15&token=bUktfVR3hubVuo5OaDL2GdJKvjGXfGD3b2rhyl2248grSDdHgiYVPJJwunhmgQe4&average_cycle_days=$durationLength'),
-  //   //     // qParams: queryParameters,
-  //   //     headers: {"Content-Type": "application/json"}
-  //   // );
-  //   // print(response.body);
-  // }
+
+
+  Color bottombgcolor = const Color(0xFFFF608B);
+  var periodLength = 07;
+  bool isSelectedDays = false;
+  int defaultDays = 4;
+
+  _nextButton() async{
+    await PostAPIService().savePeriodDuration(periodLength);
+    _navigate();
+  }
+
+  _notSure() async{
+    await PostAPIService().savePeriodDuration(defaultDays);
+    _navigate();
+  }
+
+  _navigate(){
+    setInitialScreen('homeTabScreen');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomeTabScreen( homeIndex: 0,)),
+          (Route<dynamic> route) => false,
+    );
+  }
 
   void setInitialScreen(String value) async{
     await PreferencesManager.setInitialScreen(value);
   }
-
-  Color bottombgcolor = const Color(0xFFFF608B);
-  var periodLength = 07;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +78,8 @@ class _PeriodDurationState extends State<PeriodDuration> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center, // Vertical centering
             children: [
-              Text("What is the duration of ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-              Text("your Periods?", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+              Text("What is the duration of ", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
+              Text("your Periods?", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
               SizedBox(height: 40),
               SizedBox(
                   width: 250,
@@ -78,12 +89,13 @@ class _PeriodDurationState extends State<PeriodDuration> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   NumberPicker(
-                    selectedTextStyle: TextStyle(color: Colors.black, fontSize: 26),
+                    selectedTextStyle: TextStyle(color: Colors.black, fontSize: 25),
                     itemCount: 1,
                     value: periodLength,
                     minValue: 01,
                     maxValue: 15,
                     onChanged: (value)  => setState(() {
+                      isSelectedDays = true;
                       periodLength = value;
                     }),
                     // textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
@@ -94,9 +106,9 @@ class _PeriodDurationState extends State<PeriodDuration> {
                     'Days',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 32,
-                      fontFamily: 'Inria Sans',
-                      fontWeight: FontWeight.w700,
+                      fontSize: 25,
+                      // fontFamily: 'Inria Sans',
+                      fontWeight: FontWeight.w400,
                       height: 0,
                       letterSpacing: 1.92,
                     ),
@@ -122,22 +134,21 @@ class _PeriodDurationState extends State<PeriodDuration> {
             children: [
               GestureDetector(
                 onTap: () {
-                  setInitialScreen('homeTabScreen');
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomeTabScreen()),);
+                  _notSure();
                 },
                 child: Text(
                   "Not sure?",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 24,
-                    fontFamily: 'Inria Sans',
-                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                    // fontFamily: 'Inria Sans',
+                    // fontWeight: FontWeight.w700,
                     letterSpacing: 1.44,
                   ),
                 ),
               ),
               // SizedBox(width: 10), // Optional spacing between buttons
-              ElevatedButton(
+              isSelectedDays ? ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Color(0xFFFF608B)),
                   minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
@@ -149,18 +160,23 @@ class _PeriodDurationState extends State<PeriodDuration> {
                   elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
                   shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
                 ),
-                onPressed: () async {
-                  setInitialScreen('homePeriodScreen');
-                  await PreferencesManager.setPeriodDuration(periodLength);
-                  PostAPIService().savePeriodDuration();
-                  // Navigator.push(context,MaterialPageRoute(builder: (context) => Reminder()),);
-                  setInitialScreen('homeTabScreen');
-                  // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomeTabScreen()),);
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeTabScreen()),
-                        (Route<dynamic> route) => false,
-                  );
+                onPressed: () {
+                  _nextButton();
+                },
+                child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
+              ) : ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Color(0x3DFF608B)),
+                  minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Border radius
+                    ),
+                  ),
+                  elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
+                  shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
+                ),
+                onPressed: () {
                 },
                 child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
               ),

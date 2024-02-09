@@ -52,7 +52,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
         {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => HomeTabScreen()),
+            MaterialPageRoute(builder: (context) => HomeTabScreen(homeIndex: 0,)),
           );
         }
       else{

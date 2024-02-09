@@ -576,7 +576,7 @@ class _DataCalendarState extends State<DataCalendar> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => DataCalendarList()),
+        MaterialPageRoute(builder: (context) => DataCalendarList(selectedDate : selectedDate!)),
       );
       // if(selectedDate!.isBefore(DateTime.now())) {
       //   Navigator.push(

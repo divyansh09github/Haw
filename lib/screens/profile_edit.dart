@@ -555,16 +555,20 @@
 //   }
 // }
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/nav_bar.dart';
 import 'package:haw/services/get_api.dart';
 import 'package:haw/services/post_api.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class ProfileEdit extends StatefulWidget {
@@ -584,6 +588,9 @@ class _ProfileEditState extends State<ProfileEdit> {
     _getStates();
 
   }
+  // Define a variable to store the selected image file
+  File? _selectedImageFile;
+
 
   Color bottombgcolor = const Color(0xFFFF608B);
   Color backgroundColor = const Color(0xFFFFDFE9);
@@ -598,8 +605,12 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   void validateForm() async{
 
+    print(_selectedImageFile);
+
+    await PostAPIService().saveProfileImage(_selectedImageFile);
     if(_formKey.currentState!.validate()){
       print("validate");
+
 
       await PreferencesManager.setProfileVariables(
         name: _name.text,
@@ -617,7 +628,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       const snackDemo = SnackBar(
         dismissDirection: DismissDirection.startToEnd,
         padding: EdgeInsets.all(10),
-        content: Text('API not working'),
+        content: Text('Saved'),
         backgroundColor: Color(0xBAFF608B),
         elevation: 10,
         behavior: SnackBarBehavior.floating,
@@ -732,18 +743,61 @@ class _ProfileEditState extends State<ProfileEdit> {
                   children: [
                     // Text("Username", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400)),
                     // SizedBox(height: 20,),
-                    Container(
-                      width: 120,
-                      decoration: BoxDecoration(
+                    GestureDetector(
+                      onTap: () async {
+                        // Handle image selection (replace with your desired method)
+                        final newImageFile = await ImagePicker().pickImage(
+                          source: ImageSource.gallery, // Pick from gallery by default
+                          imageQuality: 8, // Compress image quality for smaller size
+                        );
+
+                        if (newImageFile != null) {
+                          // Update profile picture (replace with your logic)
+                          // await updateProfilePicture(newImageFile); // Function to update picture
+
+                          // Update selected image file
+                          setState(() {
+                            _selectedImageFile = File(newImageFile.path);
+                          });
+                          print(newImageFile.name);
+                          // Show success message (optional)
+                          const snackDemo = SnackBar(
+                            dismissDirection:
+                            DismissDirection.startToEnd,
+                            padding: EdgeInsets.all(10),
+                            content: Center(child: Text('Profile picture uploaded')),
+                            backgroundColor: Color(0xBAFF608B),
+                            elevation: 10,
+                            behavior: SnackBarBehavior.floating,
+                            duration: Duration(seconds: 2),
+                            margin: EdgeInsets.all(15),
+                          );
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackDemo);
+                        }
+                      },
+                      child: Container(
+                        width: 120,
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 4)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: Image.asset(
-                          'assets/images/profileimage.png', // Replace with your second image path
-                          fit: BoxFit.fill,
+                          border: Border.all(color: Colors.white, width: 4),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(60), // Half of the container width for perfect circle
+                          child: _selectedImageFile != null
+                              ? Image.file(_selectedImageFile!, width: 120, height: 120, fit: BoxFit.cover,)
+                              : widget.profileData['show_user']?[0]?['image'] != null
+                              ? Image.network(
+                            '$apiUrl/public/${widget.profileData['show_user']?[0]?['image']}',
+                            fit: BoxFit.cover,
+                          )
+                              : Image.asset(
+                            'assets/images/profileimage.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
+
                     ),
                     SizedBox(
                       height: 5,
@@ -806,7 +860,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: '${widget.profileData['show_user'][0]['name'].toString()}',
+                            hintText: widget.profileData['show_user'][0]['name'].toString(),
                             // labelText: '100',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -951,8 +1005,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                             }).toList(),
                             hint: Text(
                               // "Marital status",
-                              widget.profileData['show_user'][0]['state_name'] != null
-                                  ? widget.profileData['show_user'][0]['state_name'].toString()
+                              widget.profileData['show_user'][0]['marital_status'] != null
+                                  ? widget.profileData['show_user'][0]['marital_status'].toString()
                                   : 'Marital Status',
                               style: TextStyle(color: Colors.grey.shade600), // Hint text color
                             ),
@@ -1150,13 +1204,26 @@ class _ProfileEditState extends State<ProfileEdit> {
                       child: Material(
                         elevation: 2,
                         borderRadius: BorderRadius.circular(8),
-                        child: TextField(
+                        child: TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Phone number is required';
+                            } else if (value.length < 10) {
+                              return 'Phone number must be at least 10 digits long';
+                            } else if (value.length > 10) {
+                              return 'Phone number cannot exceed 15 digits';
+                            } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                              return 'Phone number can only contain digits';
+                            }
+                            return null; // Valid phone number
+                          },
                           controller: _phoneNumber,
                           decoration: InputDecoration(
+
                             filled: true,
                             fillColor: Colors.white,
                             // hintText: '1234567890',
@@ -1346,395 +1413,5 @@ class _ProfileEditState extends State<ProfileEdit> {
       // ),
       // bottomNavigationBar: BottomNavBar(),
     );
-
-//     return Scaffold(
-//       backgroundColor: backgroundColor,
-//       body: SingleChildScrollView(
-//         padding: EdgeInsets.all(8.0),
-//         scrollDirection: Axis.vertical,
-//         child: Column(
-//
-//           children: [
-//             SizedBox(height: 30,),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 //Image
-//                 Padding(
-//                   padding: const EdgeInsets.all(8.0),
-//                   child: Image.asset(
-//                     'assets/images/cil_user-female.png', // Replace with your image path
-//                     fit: BoxFit.cover, // Adjust image fit as needed
-//                   ),
-//                 ),
-//               ],
-//             ),
-//
-//             Column(
-//               children: [
-//                 SizedBox(height: 50,),
-//
-//                 //Username textfeild
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                       elevation: 5,
-//                       borderRadius: BorderRadius.circular(15),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           labelText: 'Username',
-//                           labelStyle: const TextStyle(color: Colors.black),
-//                           border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 15), // Match border radius with material
-//                             borderSide:
-//                             BorderSide.none, // Remove the default border
-//                           ),
-//                           contentPadding: const EdgeInsets.only(
-//                               left: 20.0, top: 10.0, right: 10.0),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //DOB
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                         elevation: 5,
-//                         borderRadius: BorderRadius.circular(15),
-//                         child:
-//                         TextField(
-//                           decoration: InputDecoration(
-//                             filled: true,
-//                             fillColor: Colors.white,
-//                             labelText:  "${DateTime.now()}",
-//                             labelStyle: const TextStyle(color: Colors.black),
-//                             border: OutlineInputBorder(
-//                               borderRadius: BorderRadius.circular(15), // Match border radius with material
-//                               borderSide: BorderSide.none, // Remove the default border
-//                             ),
-//                             contentPadding: const EdgeInsets.only(left: 20.0, top: 10.0, right: 10.0),
-// // Use IntrinsicHeight to wrap the column widget
-// //                             suffixIcon: IntrinsicHeight(
-// //                               child: Column(
-// //                                 mainAxisSize: MainAxisSize.min,
-// //                                 children: <Widget>[
-// //
-// //                                   // SizedBox(height: 20.0),
-// //
-// //                                   IconButton(
-// //                                       onPressed: () => _selectedDate,
-// //                                       icon: Icon(Icons.calendar_month, size: 24.0,color: Color(0xFFFF608B))
-// //                                   ),
-// //
-// //                                 ],
-// //                               ),
-// //                             ),
-//                           ),
-//                         )
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //Age
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                       elevation: 5,
-//                       borderRadius: BorderRadius.circular(15),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           labelText: '23',
-//                           labelStyle: const TextStyle(color: Colors.black),
-//                           border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 15), // Match border radius with material
-//                             borderSide:
-//                             BorderSide.none, // Remove the default border
-//                           ),
-//                           contentPadding: const EdgeInsets.only(
-//                               left: 20.0, top: 10.0, right: 10.0),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //Marital status
-//                 Container(
-//
-//                   height: 30, // increase the height of the dropdown
-//                   width: 300, // increase the width of the dropdown
-//                   // set the background color of the dropdown
-//                   decoration: BoxDecoration(
-//                     color: Colors.white, // the background color of the decoration
-//                     border: Border.all(color: Colors.white, width: 1), // the border of the decoration
-//                     borderRadius: BorderRadius.circular(15), // the border radius of the decoration
-//                     boxShadow: [ // the box shadow of the decoration
-//                       BoxShadow(
-//                         color: Colors.grey, // the color of the shadow
-//                         offset: Offset(0, 2), // the offset of the shadow
-//                         blurRadius: 4, // the blur radius of the shadow
-//                       ),
-//                     ],
-//                   ),
-//                   child: DropdownButton(
-//                     value: "Married",
-//                     items: [
-//                       DropdownMenuItem(value: "Married", child: Text("Married")),
-//                       DropdownMenuItem(value: "Unmarried", child: Text("Unmarried")),
-//                     ],
-//                     onChanged: (value) { // the callback function when an item is selected
-// // do something with the value
-//                     },
-//                     isExpanded: true, // make the dropdown take the full width of the container
-//                     underline: Container(),
-//                     padding: const EdgeInsets.symmetric(horizontal: 15),// remove the default underline of the dropdown
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //State dropdown
-//                 Container(
-//                   height: 30, // increase the height of the dropdown
-//                   width: 300, // increase the width of the dropdown
-//                   // set the background color of the dropdown
-//                   decoration: BoxDecoration(
-//                     color: Colors.white, // the background color of the decoration
-//                     border: Border.all(color: Colors.white, width: 1), // the border of the decoration
-//                     borderRadius: BorderRadius.circular(15), // the border radius of the decoration
-//                     boxShadow: [ // the box shadow of the decoration
-//                       BoxShadow(
-//                         color: Colors.grey, // the color of the shadow
-//                         offset: Offset(0, 2), // the offset of the shadow
-//                         blurRadius: 4, // the blur radius of the shadow
-//                       ),
-//                     ],
-//                   ),
-//                   child: DropdownButton(
-//                     value: "Punjab",
-//                     items: [
-//                       DropdownMenuItem(value: "Punjab", child: Text("Punjab")),
-//                       DropdownMenuItem(value: "Region 2", child: Text("Region 2")),
-//                     ],
-//                     onChanged: (value) { // the callback function when an item is selected
-// // do something with the value
-//                     },
-//                     isExpanded: true, // make the dropdown take the full width of the container
-//                     underline: Container(),
-//                     padding: const EdgeInsets.symmetric(horizontal: 15),// remove the default underline of the dropdown
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //height
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                       elevation: 5,
-//                       borderRadius: BorderRadius.circular(15),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           labelText: '123',
-//                           labelStyle: const TextStyle(color: Colors.black),
-//                           border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 15), // Match border radius with material
-//                             borderSide:
-//                             BorderSide.none, // Remove the default border
-//                           ),
-//                           contentPadding: const EdgeInsets.only(
-//                               left: 20.0, top: 10.0, right: 10.0),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //weight
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                       elevation: 5,
-//                       borderRadius: BorderRadius.circular(15),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           labelText: '100',
-//                           labelStyle: const TextStyle(color: Colors.black),
-//                           border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 15), // Match border radius with material
-//                             borderSide:
-//                             BorderSide.none, // Remove the default border
-//                           ),
-//                           contentPadding: const EdgeInsets.only(
-//                               left: 20.0, top: 10.0, right: 10.0),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //Phone textfeild
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                       elevation: 5,
-//                       borderRadius: BorderRadius.circular(15),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           labelText: '1234567890',
-//                           labelStyle: const TextStyle(color: Colors.black),
-//                           border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 15), // Match border radius with material
-//                             borderSide:
-//                             BorderSide.none, // Remove the default border
-//                           ),
-//                           contentPadding: const EdgeInsets.only(
-//                               left: 20.0, top: 10.0, right: 10.0),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //Gmail textfeild
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                       elevation: 5,
-//                       borderRadius: BorderRadius.circular(15),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           labelText: 'usermail@gmail.com',
-//                           labelStyle: const TextStyle(color: Colors.black),
-//                           border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 15), // Match border radius with material
-//                             borderSide:
-//                             BorderSide.none, // Remove the default border
-//                           ),
-//                           contentPadding: const EdgeInsets.only(
-//                               left: 20.0, top: 10.0, right: 10.0),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 20,),
-//
-//                 //facebook textfeild
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 50),
-//
-//                   child: SizedBox(
-//                     width: 300, // Set width
-//                     height: 30, // Set height
-//                     child: Material(
-//                       elevation: 5,
-//                       borderRadius: BorderRadius.circular(15),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           labelText: 'userfacebook@gmail.com',
-//                           labelStyle: const TextStyle(color: Colors.black),
-//                           border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 15), // Match border radius with material
-//                             borderSide:
-//                             BorderSide.none, // Remove the default border
-//                           ),
-//                           contentPadding: const EdgeInsets.only(
-//                               left: 20.0, top: 10.0, right: 10.0),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 25,),
-//
-//                 //Save butoon
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     SizedBox(
-//                       width: 356,
-//                       height: 45,
-//                       child: ElevatedButton(
-//                         onPressed: () {
-// // Navigate to the next page when the button is pressed
-// //                   Navigator.push(
-// //                     context,
-// //                     MaterialPageRoute(builder: (context) => Detail()),
-// //                   );
-//                         },
-//                         style: ButtonStyle(
-//
-//                           backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
-//                           shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
-//                         ),
-//                         child: Text('Save', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ],
-//
-//         ),
-//       ),
-//       bottomNavigationBar: BottomNavBar(),
-//     );
   }
 }

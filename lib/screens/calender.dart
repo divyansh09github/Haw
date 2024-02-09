@@ -284,6 +284,9 @@ class _CalendarState extends State<Calendar> {
   //   // print(response.body);
   // }
 
+  DateTime? selectedLastPeriodDate;
+  bool isDateSelected = false;
+
   Color bottombgcolor = const Color(0xFFFF608B);
   CleanCalendarController get calenderController => CleanCalendarController(
     initialDateSelected: DateTime.now(),
@@ -293,13 +296,38 @@ class _CalendarState extends State<Calendar> {
     // onRangeSelected: (firstDate, secondDate) {},
     rangeMode: false,
     onDayTapped: (date) async {
-      await PreferencesManager.setLastPeriodDate(date);
+      // await PreferencesManager.setLastPeriodDate(date);
+      setState(() {
+        selectedLastPeriodDate = date;
+        isDateSelected = true;
+      });
     },
     // onPreviousMinDateTapped: (date) {},
     // onAfterMaxDateTapped: (date) {},
     weekdayStart: DateTime.monday,
 
   );
+
+  _saveButton(){
+
+    if(isDateSelected){
+      _saveAPI();
+      _navigate();
+    }
+    else{
+
+    }
+
+  }
+
+  _saveAPI() async{
+
+    await PostAPIService().savePeriodDay(selectedLastPeriodDate!);
+    setInitialScreen('cycleScreen');
+  }
+  _navigate(){
+    Navigator.push(context,MaterialPageRoute(builder: (context) => Cycle()),);
+  }
 
   void setInitialScreen(String value) async{
     await PreferencesManager.setInitialScreen(value);
@@ -332,7 +360,10 @@ class _CalendarState extends State<Calendar> {
         appBar: AppBar(
           backgroundColor: Color(0xFFFF608B),
           centerTitle: true,
-          title: const Text('When did your last period start?'),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: const Text('When did your last period start?', style: TextStyle(color: Colors.white),),
+          ),
           // actions: [
           //   IconButton(
           //     onPressed: () {
@@ -385,7 +416,7 @@ class _CalendarState extends State<Calendar> {
                 // ),
 
                 // SizedBox(width: 10), // Optional spacing between buttons
-                ElevatedButton(
+                isDateSelected ? ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Color(0xFFFF608B)),
                     minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
@@ -398,10 +429,24 @@ class _CalendarState extends State<Calendar> {
                     shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
                   ),
                   onPressed: () {
-                    PostAPIService().savePeriodDay();
-                    setInitialScreen('cycleScreen');
-                    // Navigator.push(context,MaterialPageRoute(builder: (context) => HomePeriod(startDate: widget.startDate, cycleLength: cycleLength)),);
-                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Cycle()),);
+                    _saveButton();
+                  },
+                  child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
+                ) :
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Color(0xFFF608B)),
+                    minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0), // Border radius
+                      ),
+                    ),
+                    elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
+                    shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
+                  ),
+                  onPressed: () {
+                    _saveButton();
                   },
                   child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
                 ),

@@ -194,17 +194,25 @@ class GetAPIService{
 
   }
 
-  Future<Map<String, dynamic>> fetchCalendarList() async{
+  Future<Map<String, dynamic>> fetchCalendarList(DateTime month) async{
+
+
+
+    // print(monthNum.runtimeType);
 
     try {
+      int monthNum = month.month;
+      var userId = await PreferencesManager.getUserId();
+      var token = await PreferencesManager.getUserToken();
+      print("here");
       final response = await http.get(Uri.parse(
-          "http://ehoaapp.techexposys.com/api/dummyDataCalenderList"));
+          "http://ehoaapp.techexposys.com/api/calander-list-screen-user/$userId/$monthNum"));
 
       // print(response.statusCode);
       if (response.statusCode == 200) {
         final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
         error = false;
-        // print(albumData);
+        print('list: $albumData');
         return albumData;
       } else {
         // Handle error based on response status code
@@ -213,6 +221,7 @@ class GetAPIService{
     } catch (e) {
       // Handle network errors
       // throw Exception('API request failed: $e');
+      print(e);
       return albums;
     }
 

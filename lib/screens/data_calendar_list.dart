@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/screens/data_input.dart';
+import 'package:haw/screens/home_tab_screen.dart';
 import 'package:haw/services/get_api.dart';
 
 class DataCalendarList extends StatefulWidget {
-  const DataCalendarList({super.key});
+  DataCalendarList({super.key, required this.selectedDate});
 
+  final DateTime selectedDate;
   @override
   State<DataCalendarList> createState() => _DataCalendarListState();
 }
@@ -19,6 +21,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
     super.initState();
 
     _fetchContent();
+    // print('date : ${widget.selectedDate}');
 
   }
 
@@ -28,9 +31,11 @@ class _DataCalendarListState extends State<DataCalendarList> {
   String error = '';
   bool showPage = false;
   late Map<String, dynamic> calendarListData = {};
+
   _fetchContent() async {
+
     try {
-      final data = await GetAPIService().fetchCalendarList();
+      final data = await GetAPIService().fetchCalendarList(widget.selectedDate);
       if (data.isNotEmpty) {
         setState(() {
           calendarListData = data;
@@ -59,15 +64,13 @@ class _DataCalendarListState extends State<DataCalendarList> {
         });
       }
 
-    print(calendarListData['month_list'][6]['period_day']);
+    print('abc: $calendarListData');
 
   }
 
 
   var ind = -1;
   Widget cardBuilder(Map<String, dynamic> data, int index) {
-
-
     return Stack(
       children: [
         GestureDetector(
@@ -98,7 +101,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                 children: [
                   AnimatedContainer(
                     decoration: ShapeDecoration(
-                      color: calendarListData['month_list'][index]['period_day'] ? Color(0xFFFFB1CA) : Colors.white,
+                      color: data['period_day'] ? Color(0xFFFFB1CA) : Colors.white,
                       shape: RoundedRectangleBorder(
                         // side: BorderSide(width: 1, color: Color(0xFFffd1de)),
                         borderRadius: BorderRadius.circular(5),
@@ -134,18 +137,22 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                                     color: Color(0xFFF593AE),
                                                     width: 3))),
                                         child:
-                                        Center(child: Text(data['day'].toString().padLeft(2, '0'),
-                                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
-                                        )
-                                        ),
-                                        // ClipRRect(
-                                        //   borderRadius:
-                                        //       BorderRadius.circular(8),
-                                        //   child: Image.asset(
-                                        //     'assets/images/woman_2375426 1.png',
-                                        //     fit: BoxFit.contain,
-                                        //   ),
+                                        // Center(child: Text(data['day'].toString().padLeft(2, '0'),
+                                        //   style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
                                         // )
+                                        // ),
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: 
+                                            Image.network(
+                                                'http://ehoaapp.techexposys.com/public/${data['moon']}',
+                                              fit: BoxFit.contain)
+                                          // Image.asset(
+                                          //   'assets/images/woman_2375426 1.png',
+                                          //   fit: BoxFit.contain,
+                                          // ),
+                                        )
                                     ),
                                   ),
                                 ],
@@ -167,7 +174,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8),
                                   child: Text(
-                                    '${data['weekday']}',
+                                    '${data['day'].toString().padLeft(2, '0')}, ${data['weekday']}',
                                     // "01, Monday",
                                     style: TextStyle(
                                       fontSize: 16,
@@ -230,7 +237,8 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: Color(0xFFFA8997)),
+                                                    color: data['flow']['selected'] ? Color(0xFFFA8997) : Colors.grey
+                                                ),
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                               ),
@@ -246,8 +254,10 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(2.0),
-                                              child: Image.asset(
-                                                  "assets/images/medium.png"),
+                                              child:
+                                                Image.network('http://ehoaapp.techexposys.com/public/${data['flow']['image']}'),
+                                            //   Image.asset(
+                                            //       "assets/images/medium.png"),
                                             ),
                                           ),
                                         ),
@@ -262,7 +272,8 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: Color(0xFF6BD6CF)),
+                                                    color: data['feelings']['selected'] ? Color(0xFF6BD6CF) : Colors.grey
+                                                ),
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                               ),
@@ -278,8 +289,9 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(2.0),
-                                              child: Image.asset(
-                                                  "assets/images/Loved.png"),
+                                              child: Image.network('http://ehoaapp.techexposys.com/public/${data['feelings']['image']}'),
+                                              // Image.asset(
+                                              //     "assets/images/Loved.png"),
                                             ),
                                           ),
                                         ),
@@ -294,7 +306,8 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: Color(0xFFFFE28C)),
+                                                    color: data['liveliness']['selected'] ? Color(0xFFFFE28C): Colors.grey
+                                                ),
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                               ),
@@ -310,8 +323,9 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(2.0),
-                                              child: Image.asset(
-                                                  "assets/images/noPain.png"),
+                                              child: Image.network('http://ehoaapp.techexposys.com/public/${data['liveliness']['image']}'),
+                                              // Image.asset(
+                                              //     "assets/images/noPain.png"),
                                             ),
                                           ),
                                         ),
@@ -326,7 +340,8 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: Color(0xFFA3B971)),
+                                                    color: data['energy']['selected'] ? Color(0xFFA3B971) : Colors.grey
+                                                ),
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                               ),
@@ -342,8 +357,9 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(0.0),
-                                              child: Image.asset(
-                                                  "assets/images/veryLowEnergy.png"),
+                                              child: Image.network('http://ehoaapp.techexposys.com/public/${data['energy']['image']}'),
+                                              // Image.asset(
+                                              //     "assets/images/veryLowEnergy.png"),
                                             ),
                                           ),
                                         )
@@ -431,10 +447,10 @@ class _DataCalendarListState extends State<DataCalendarList> {
 
               if (result ?? false) {
                 // Do something if the user taps Yes
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DataInput()),
+                      builder: (context) => HomeTabScreen(homeIndex: 2)),
                 );
                 print("Yes");
               } else {

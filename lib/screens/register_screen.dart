@@ -55,7 +55,7 @@ class _RegisterUserState extends State<RegisterUser> {
          var snackDemo = SnackBar(
            dismissDirection: DismissDirection.startToEnd,
            padding: EdgeInsets.all(10),
-           content: Text("Registered Successfully"),
+           content: Text("Registered successfully"),
            backgroundColor: Color(0xBAFF608B),
            elevation: 10,
            behavior: SnackBarBehavior.floating,
@@ -138,6 +138,8 @@ class _RegisterUserState extends State<RegisterUser> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+
+                            SizedBox(height: 0,),
                             //Register yourself heading
                             Text(
                               "Register Yourself!",
@@ -146,7 +148,6 @@ class _RegisterUserState extends State<RegisterUser> {
                             ),
 
                             //Email TextField
-
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.65,
                               child: TextFormField(
@@ -197,65 +198,6 @@ class _RegisterUserState extends State<RegisterUser> {
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //   padding:
-                            //       const EdgeInsets.symmetric(horizontal: 30),
-                            //   child: SizedBox(
-                            //     width: MediaQuery.of(context).size.width *
-                            //         0.8, // Set width
-                            //     height: 40, // Set height
-                            //     child: Material(
-                            //       elevation: 2,
-                            //       borderRadius: BorderRadius.circular(8),
-                            //       child: TextFormField(
-                            //         textAlign: TextAlign.center,
-                            //         autovalidateMode: AutovalidateMode
-                            //             .onUserInteraction, // Validate on every change
-                            //         controller: _email,
-                            //         validator: (value) {
-                            //           if (value == null || value.isEmpty) {
-                            //             return 'Email is required.';
-                            //           }
-                            //
-                            //           // Basic email format check
-                            //           if (!RegExp(
-                            //                   r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-                            //               .hasMatch(value)) {
-                            //             return 'Please enter valid email address';
-                            //           }
-                            //
-                            //           // Optional: More advanced checks if needed
-                            //           // Add logic for MX record checks, disposable email domain checks, etc.
-                            //
-                            //           return null; // Valid email
-                            //         },
-                            //         // inputFormatters: [
-                            //         //   FilteringTextInputFormatter.allow(
-                            //         //       RegExp(r'[a-zA-Z ]')),
-                            //         //   LengthLimitingTextInputFormatter(
-                            //         //       25), // Enforce character limit during input
-                            //         // ],
-                            //         decoration: InputDecoration(
-                            //           filled: true,
-                            //           fillColor: Colors.white,
-                            //           hintText: 'Email Id / Phone Number',
-                            //           hintStyle:
-                            //               TextStyle(color: Colors.black12),
-                            //           // labelText: '100',
-                            //           // labelStyle: const TextStyle(color: Colors.black),
-                            //           border: OutlineInputBorder(
-                            //             borderRadius: BorderRadius.circular(
-                            //                 15), // Match border radius with material
-                            //             borderSide: BorderSide
-                            //                 .none, // Remove the default border
-                            //           ),
-                            //           contentPadding: const EdgeInsets.only(
-                            //               left: 20.0, top: 10.0, right: 10.0),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
 
                             //Password field
                             SizedBox(
@@ -280,7 +222,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                   if (value == null || value.isEmpty) {
                                     return 'Password is required';
                                   } else if (value.length < 8) {
-                                    return 'Password must be at least 8 characters long';
+                                    return 'Password must be atleast 8 characters';
                                   } else if (value.length > 24) {
                                     return 'Password cannot exceed 25 characters';
                                   } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
@@ -290,12 +232,13 @@ class _RegisterUserState extends State<RegisterUser> {
                                   } else if (!RegExp(r'[0-9]').hasMatch(value)) {
                                     return 'Password must contain at least one number';
                                   } else if (!RegExp(r'[^a-zA-Z0-9]').hasMatch(value)) {
-                                    return 'Password must contain at least one special character (e.g., !@#%^&*)';
+                                    return 'Password must have atleast one special character';
                                   }
                                   return null; // Valid password
 
                                 },
-                                decoration: InputDecoration(
+                                decoration: InputDecoration(errorMaxLines: 2,
+
                                   focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
                                   errorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
                                   contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
@@ -305,56 +248,10 @@ class _RegisterUserState extends State<RegisterUser> {
                                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
                                   // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
                                   labelText: 'Password',
+
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //   padding:
-                            //       const EdgeInsets.symmetric(horizontal: 30),
-                            //   child: SizedBox(
-                            //     width: MediaQuery.of(context).size.width *
-                            //         0.8, // Set width
-                            //     height: 40, // Set height
-                            //     child: Material(
-                            //       elevation: 2,
-                            //       borderRadius: BorderRadius.circular(8),
-                            //       child: TextFormField(
-                            //         textAlign: TextAlign.center,
-                            //         obscureText: true,
-                            //         autovalidateMode: AutovalidateMode
-                            //             .onUserInteraction, // Validate on every change
-                            //         controller: _pass1,
-                            //         validator: (value) {
-                            //           if (value == null || value.isEmpty) {
-                            //             return 'Password is required';
-                            //           } else if (value.length < 8) {
-                            //             return 'Password must be at least 8 characters long';
-                            //           } else if (value.length > 24) {
-                            //             return 'Password cannot exceed 25 characters';
-                            //           }
-                            //           return null;
-                            //         },
-                            //         decoration: InputDecoration(
-                            //           filled: true,
-                            //           fillColor: Colors.white,
-                            //           hintText: 'Password',
-                            //           hintStyle:
-                            //               TextStyle(color: Colors.black12),
-                            //           // labelText: '100',
-                            //           // labelStyle: const TextStyle(color: Colors.black),
-                            //           border: OutlineInputBorder(
-                            //             borderRadius: BorderRadius.circular(
-                            //                 15), // Match border radius with material
-                            //             borderSide: BorderSide
-                            //                 .none, // Remove the default border
-                            //           ),
-                            //           contentPadding: const EdgeInsets.only(
-                            //               left: 20.0, top: 10.0, right: 10.0),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
 
                             //Confirm Password field
                             SizedBox(
@@ -387,51 +284,8 @@ class _RegisterUserState extends State<RegisterUser> {
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //   padding:
-                            //       const EdgeInsets.symmetric(horizontal: 30),
-                            //   child: SizedBox(
-                            //     width: MediaQuery.of(context).size.width *
-                            //         0.8, // Set width
-                            //     height: 40, // Set height
-                            //     child: Material(
-                            //       elevation: 2,
-                            //       borderRadius: BorderRadius.circular(8),
-                            //       child: TextFormField(
-                            //         textAlign: TextAlign.center,
-                            //         obscureText: true,
-                            //         autovalidateMode: AutovalidateMode
-                            //             .onUserInteraction, // Validate on every change
-                            //         controller: _pass2,
-                            //         validator: (value) {
-                            //           if (value == null || value.isEmpty) {
-                            //             return 'Name is required';
-                            //           } else if (value != _pass1.text) {
-                            //             return 'Passwords do not match';
-                            //           }
-                            //           return null;
-                            //         },
-                            //         decoration: InputDecoration(
-                            //           filled: true,
-                            //           fillColor: Colors.white,
-                            //           hintText: 'Confirm Password',
-                            //           hintStyle:
-                            //               TextStyle(color: Colors.black12),
-                            //           // labelText: '100',
-                            //           // labelStyle: const TextStyle(color: Colors.black),
-                            //           border: OutlineInputBorder(
-                            //             borderRadius: BorderRadius.circular(
-                            //                 15), // Match border radius with material
-                            //             borderSide: BorderSide
-                            //                 .none, // Remove the default border
-                            //           ),
-                            //           contentPadding: const EdgeInsets.only(
-                            //               left: 20.0, top: 10.0, right: 10.0),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
+
+                            SizedBox(height: 0,),
                           ],
                         ),
                       ),

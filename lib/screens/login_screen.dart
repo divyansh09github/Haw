@@ -55,8 +55,9 @@ class _LoginUserState extends State<LoginUser> {
 
             print("login success");
 
-            PreferencesManager.setUserId(body['user_id']);
-            PreferencesManager.setUserToken(body['token']);
+            await PreferencesManager.setUserId(body['user_id']);
+            await PreferencesManager.setUserToken(body['token']);
+
 
             _navigate();
 
@@ -82,7 +83,7 @@ class _LoginUserState extends State<LoginUser> {
     setInitialScreen('homeTabScreen');
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => HomeTabScreen()),
+      MaterialPageRoute(builder: (context) => HomeTabScreen(homeIndex: 0,)),
           (Route<dynamic> route) => false,
     );
   }

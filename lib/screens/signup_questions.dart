@@ -298,7 +298,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Username",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -317,7 +317,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                           child: TextFormField(
                             autovalidateMode: AutovalidateMode.onUserInteraction, // Validate on every change
                             controller: _name,
-                            textCapitalization: TextCapitalization.characters,
+                            // textCapitalization: TextCapitalization.characters,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Name is Required';
@@ -337,6 +337,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                               filled: true,
                               fillColor: Colors.white,
                               hintText: 'Username',
+                              hintStyle: TextStyle(color: Color(0xffDADADA)),
                               // prefixIcon: Icon(Icons.person), // Add a visual cue for name field
                               errorStyle: TextStyle(color: Colors.red.shade300), // Enhance error visibility
                               border: OutlineInputBorder(
@@ -359,7 +360,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Date Of Birth",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -396,6 +397,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: '13/10/2000',
+                                hintStyle: TextStyle(color: Color(0xffDADADA)),
                                 // prefixIcon: Icon(Icons.calendar_today), // Visual cue for date field
                                 errorStyle: TextStyle(color: Colors.red.shade300), // Enhanced error visibility
                                 border: OutlineInputBorder(
@@ -487,7 +489,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Marital Status",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -538,7 +540,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                             }).toList(),
                             hint: Text(
                               "Marital status",
-                              style: TextStyle(color: Colors.grey.shade600), // Hint text color
+                              style: TextStyle(color: Color(0xffDADADA),), // Hint text color
                             ),
                           ),
                         ),
@@ -554,7 +556,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Region",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -601,7 +603,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                         underline:
                             Container(), // remove the default underline of the dropdown
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        hint: Text("Select Region"),
+                        hint: Text("Select Region",style: TextStyle(color: Color(0xffDADADA),)),
                       ),
                     ),
                   ),
@@ -613,7 +615,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Height",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -641,6 +643,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                               filled: true,
                               fillColor: Colors.white,
                               hintText: "Height (in cms)",
+                              hintStyle: TextStyle(color: Color(0xffDADADA)),
                               // prefixIcon: Icon(Icons.person), // Add a visual cue for name field
                               errorStyle: TextStyle(color: Colors.red.shade700), // Enhance error visibility
                               border: OutlineInputBorder(
@@ -662,7 +665,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Weight",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -690,6 +693,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                             filled: true,
                             fillColor: Colors.white,
                             hintText: "Weight (in Kgs)",
+                            hintStyle: TextStyle(color: Color(0xffDADADA)),
                             // prefixIcon: Icon(Icons.person), // Add a visual cue for name field
                             errorStyle: TextStyle(color: Colors.red.shade700), // Enhance error visibility
                             border: OutlineInputBorder(
@@ -711,7 +715,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Phone Number",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -731,6 +735,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                             filled: true,
                             fillColor: Colors.white,
                             hintText: '1234567890',
+                            hintStyle: TextStyle(color: Color(0xffDADADA)),
                             // labelText: '1234567890',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -754,7 +759,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     child: Text(
                       "Email",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                   SizedBox(
@@ -774,6 +779,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                             filled: true,
                             fillColor: Colors.white,
                             hintText: 'usermail@gmail.com',
+                            hintStyle: TextStyle(color: Color(0xffDADADA)),
                             // labelText: 'usermail@gmail.com',
                             // labelStyle: const TextStyle(color: Colors.black),
                             border: OutlineInputBorder(
@@ -869,9 +875,9 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                   //   ],
                   // ),
 
-                  SizedBox(
-                    height: 30,
-                  ),
+                  // SizedBox(
+                  //   height: 30,
+                  // ),
                 ],
               ),
             ),

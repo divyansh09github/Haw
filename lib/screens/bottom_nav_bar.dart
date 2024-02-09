@@ -18,8 +18,9 @@ import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/screens/terms&conditions.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  const BottomNavBar({super.key, required this.homeIndex});
 
+  final int homeIndex;
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
@@ -233,6 +234,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
+        initialIndex: widget.homeIndex,
         length: 5,
         child: Scaffold(
           bottomNavigationBar: Container(

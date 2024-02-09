@@ -311,6 +311,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/data_input.dart';
@@ -460,19 +461,34 @@ class _ProfileState extends State<Profile> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text(profileData?['show_user']?[0]?['name'] ?? 'Username', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400)),
+                    Text(
+                      profileData['show_user']?[0]?['name']?.split(' ')[0] ?? 'Username',
+                      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400),
+                    ),
                     SizedBox(height: 20,),
                     Container(
                       width: 120,
-                      decoration: BoxDecoration( shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 4)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: Image.asset(
-                          profileData?['show_user']?[0]?['image'] ?? 'assets/images/profileimage.png', // Replace with your second image path
-                          fit: BoxFit.fill,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 4),
+                      ),
+                      child: ClipOval(
+                        child: SizedBox(
+                          width: 112, // Adjusted width to account for border width
+                          height: 112, // Adjusted height to account for border width
+                          child: profileData['show_user']?[0]?['image'] != null
+                              ? Image.network(
+                            '$apiUrl/public/${profileData['show_user']?[0]?['image']}',
+                            fit: BoxFit.cover,
+                          )
+                              : Image.asset(
+                            'assets/images/profileimage.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -605,7 +621,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          profileData?['show_user']?[0]?['marital_status'] ?? 'Marital Status',
+                          profileData['show_user']?[0]?['marital_status'] ?? 'Marital Status',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -757,7 +773,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(width: 20,),
                         Text(
-                          profileData?['show_user']?[0]?['phone_number'].toString() ?? 'Phone Number',
+                          profileData?['show_user']?[0]?['phone_number'] ?? 'Phone Number',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,

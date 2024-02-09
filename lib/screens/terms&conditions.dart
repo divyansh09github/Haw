@@ -144,18 +144,37 @@ class _TermsState extends State<Terms> {
                             );
                           }
                           else{
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.transparent,
-                                content: Text('Accept the terms & conditions.', style: TextStyle(color: Colors.red, fontSize: 16),),
-                                duration: Duration(seconds: 2), // Adjust the duration as needed
-                              ),
+
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: backgroundColor,
+                                  // title: Text('Alert!'),
+                                  content: Text('Accept the terms & conditions.', style: TextStyle(fontSize: 18),textAlign: TextAlign.center),
+                                  actions: [
+                                    Center(
+                                      child: TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text('OK', style: TextStyle(color: Color(0xFFFF608B)),),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
                             );
+
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(
+                            //     backgroundColor: Colors.transparent,
+                            //     content: Text('Accept the terms & conditions.', style: TextStyle(color: Colors.red, fontSize: 16),),
+                            //     duration: Duration(seconds: 2), // Adjust the duration as needed
+                            //   ),
+                            // );
                           }
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Color(
-                              0xFFFF608B)), // Use backgroundColor to change the background color
+                          backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
                           shape: MaterialStateProperty.all(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   25.0))), // Use shape to change the border radius
