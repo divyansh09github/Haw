@@ -101,7 +101,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                 children: [
                   AnimatedContainer(
                     decoration: ShapeDecoration(
-                      color: data['period_day'] ? Color(0xFFFFB1CA) : Colors.white,
+                      color: data['period_day'] ? Color(0xFFFFB1CA) : Colors.lightBlueAccent,
                       shape: RoundedRectangleBorder(
                         // side: BorderSide(width: 1, color: Color(0xFFffd1de)),
                         borderRadius: BorderRadius.circular(5),
@@ -505,7 +505,12 @@ class _DataCalendarListState extends State<DataCalendarList> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomeTabScreen(homeIndex: 1)),
+                  );
                 },
                 child:
                     // Padding(

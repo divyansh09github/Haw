@@ -49,8 +49,9 @@ class _DataInputState extends State<DataInput> {
 
   late Map<String, dynamic> symptomsData = {};
   _fetchSymptoms() async {
+    final data = await GetAPIService().fetchSymptoms(currentDate);
     try {
-      final data = await GetAPIService().fetchSymptoms(currentDate);
+
       setState(() {
         symptomsData = data;
         isLoading = true;
@@ -64,26 +65,39 @@ class _DataInputState extends State<DataInput> {
     }
 
     List<int> symptoms = [];
-    for (var i in symptomsData['show_symptoms']['symptoms']) {
-      // print(i);
-      symptoms.add(int.tryParse(i) ?? 0);
+    if(data['show_symptoms'] != null && data['show_symptoms']['symptoms'] != null){
+      print(data['show_symptoms']['symptoms'].runtimeType);
+      for (var i in data['show_symptoms']['symptoms']) {
+        print(i);
+        symptoms.add(int.tryParse(i) ?? 0);
+      }
     }
 
     List<int> feelings = [];
-    for (var i in symptomsData['show_symptoms']['emotions']) {
-      // print(i);
-      feelings.add(int.tryParse(i) ?? 0);
+    if(data['show_symptoms'] != null && data['show_symptoms']['emotions'] != null){
+      for (var i in data['show_symptoms']['emotions']) {
+        // print(i);
+        feelings.add(int.tryParse(i) ?? 0);
+      }
     }
 
-    setState(() {
-      selectedFlowIndex = symptomsData['show_symptoms']['menstrual_flow'];
-      selectedEnergyIndex = symptomsData['show_symptoms']['energy'];
+    if(data['show_symptoms'] != null && data['show_symptoms']['menstrual_flow'] != null){
+      setState(() {
+        selectedFlowIndex = int.parse(data['show_symptoms']['menstrual_flow']);
+      });
+    }
 
+    if(data['show_symptoms'] != null && data['show_symptoms']['energy'] != null){
+      setState(() {
+        selectedEnergyIndex = int.parse(data['show_symptoms']['energy']);
+      });
+    }
+    setState(() {
       livelinessIndexes = symptoms;
       feelingsIndexes = feelings;
     });
 
-    // print((symptomsData['show_symptoms']['symptoms']).runtimeType);
+    // print('symp: ${symptomsData['show_symptoms']}');
   }
 
   late Map<String, dynamic> energyData = {};
@@ -112,6 +126,7 @@ class _DataInputState extends State<DataInput> {
       });
     }
 
+    // print(energyData);
     // print('$apiUrl/public/${feelingsData['show_disorders'][0]['icon']}');
   }
 
@@ -127,7 +142,7 @@ class _DataInputState extends State<DataInput> {
     }
   }
 
-  var selectedEnergyIndex;
+  late int selectedEnergyIndex;
   void _onTapEnergy(int index) {
     if (selectedEnergyIndex == index) {
       selectedEnergyIndex = -1;
@@ -165,6 +180,7 @@ class _DataInputState extends State<DataInput> {
                 padding: MaterialStateProperty.all(EdgeInsets.all(0)),
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
+                    // print(selectedEnergyIndex.runtimeType);
                     return selectedEnergyIndex == data['disorders_id']
                         ? energyBtnBorderColor
                         : Colors.white;
@@ -335,6 +351,8 @@ class _DataInputState extends State<DataInput> {
               padding: MaterialStatePropertyAll(EdgeInsets.all(12)),
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
+                  // print(feelingsIndexes);
+                  // print(data['disorders_id']);
                   if (feelingsIndexes.contains(data['disorders_id'])) {
                     return feelingsBtnBorderColorSelected; // Change background color on press
                   }

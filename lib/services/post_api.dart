@@ -132,12 +132,14 @@ class PostAPIService{
 
   }
 
-  Future saveTrackSymptoms(List<int> feelings, List<int> liveliness, var flow, var energy, DateTime date) async{
+  Future saveTrackSymptoms(List<int> feelings, List<int> liveliness, int flow, int energy, DateTime date) async{
     // Getting all values:
     // final data = await PreferencesManager.getSymptoms();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
 
+    print(liveliness);
+    print(energy.runtimeType);
     // String liveliness = data['liveliness'].map((number) => number.toString()).join(',');
     // String feelings = data['feelings'].map((number) => number.toString()).join(',');
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
