@@ -83,7 +83,7 @@ void setInitialScreen(String value) async{
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: SizedBox(
-                          width: 360,
+                          width: MediaQuery.of(context).size.width * 0.85,
                           height: 45,
                           child: ElevatedButton(
                             onPressed: () async{

@@ -63,31 +63,30 @@ class PostAPIService{
     print(response.body);
   }
 
-  Future saveSignUpQuestions() async{
+  Future<http.Response> saveSignUpQuestions(String name, DateTime dob, String marital, String region, String height, String weight, String phone, String email) async{
     var signUpVariables = await PreferencesManager.getSignUpVariables();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
-    // print(signUpVariables?['name']);
-    // print(signUpVariables?['dob']);
-    // print(signUpVariables?['maritalStatus']);
-    // print(signUpVariables);
 
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dob);
 
     final response = await http.post(Uri.parse(
-        '$apiUrl/api/save-deatils?'
-        'id=$userId'
-        '&token=$token'
-        '&name=${signUpVariables?['name']}'
-        '&dob=${signUpVariables?['dob']}'
-        '&age=${signUpVariables?['age']}'
-        '&marital_status=${signUpVariables?['maritalStatus']}'
-        '&height=${signUpVariables?['height']}'
-        '&weight=${signUpVariables?['weight']}'
-        '&country_id=2'
+        'http://ehoaapp.techexposys.com/api/save-deatils?'
+            'id=$userId'
+            '&token=$token'
+            '&name=$name'
+            '&dob=$formattedDate'
+            '&age=26'
+            '&marital_status=$marital'
+            '&height=$height'
+            '&weight=$weight'
+            '&state_name=$region'
     ),
         headers: {"Content-Type": "application/json"}
     );
     print(response.body);
+
+    return response;
   }
 
   Future saveProfileEdit() async{

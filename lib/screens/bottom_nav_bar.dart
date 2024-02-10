@@ -238,7 +238,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         length: 5,
         child: Scaffold(
           bottomNavigationBar: Container(
-            height: MediaQuery.of(context).size.height * 0.08,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.09,
             color: bottombgcolor,
             child: TabBar(
 
@@ -278,13 +279,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           'assets/images/pepicons-pop_calendar.png', // Replace with your image path
                           fit: BoxFit.cover, // Adjust image fit as needed
                         ),
-                        Text(
-                          "Calendar",
-                          style: TextStyle(
+                        // Flexible( // Wrap text if it overflows
+                        //   child:
+                          Text(
+                            "Calendar",
+                            style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        ), // Add text below the image
+                              color: Colors.white,
+                            ),
+                          ),
+                        // ), // Add text below the image
                       ],
                     ),
                   ),
@@ -301,7 +306,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           fit: BoxFit.cover, // Adjust image fit as needed
                         ),
                         Text(
-                          "Track",
+                          "Traits",
                           style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,

@@ -287,10 +287,11 @@ class _CalendarState extends State<Calendar> {
   DateTime? selectedLastPeriodDate;
   bool isDateSelected = false;
 
+  DateTime initDate = DateTime.now();
   Color bottombgcolor = const Color(0xFFFF608B);
   CleanCalendarController get calenderController => CleanCalendarController(
-    initialDateSelected: DateTime.now(),
-    initialFocusDate: DateTime.now(),
+    initialDateSelected: initDate,
+    initialFocusDate: initDate,
     minDate: DateTime.utc(2022),
     maxDate: DateTime.now(), //.add(const Duration(days: 365)),
     // onRangeSelected: (firstDate, secondDate) {},
@@ -299,6 +300,7 @@ class _CalendarState extends State<Calendar> {
       // await PreferencesManager.setLastPeriodDate(date);
       setState(() {
         selectedLastPeriodDate = date;
+        initDate = date;
         isDateSelected = true;
       });
     },
@@ -323,7 +325,7 @@ class _CalendarState extends State<Calendar> {
   _saveAPI() async{
 
     await PostAPIService().savePeriodDay(selectedLastPeriodDate!);
-    setInitialScreen('cycleScreen');
+    // setInitialScreen('cycleScreen');
   }
   _navigate(){
     Navigator.push(context,MaterialPageRoute(builder: (context) => Cycle()),);
@@ -362,7 +364,7 @@ class _CalendarState extends State<Calendar> {
           centerTitle: true,
           title: Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: const Text('When did your last period start?', style: TextStyle(color: Colors.white),),
+            child: const Text('When did your last menstrual cycle begins?', style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
           ),
           // actions: [
           //   IconButton(
@@ -435,7 +437,7 @@ class _CalendarState extends State<Calendar> {
                 ) :
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Color(0xFFF608B)),
+                    backgroundColor: MaterialStatePropertyAll(Color(0xffffb7cb)),
                     minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -446,7 +448,7 @@ class _CalendarState extends State<Calendar> {
                     shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
                   ),
                   onPressed: () {
-                    _saveButton();
+
                   },
                   child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
                 ),

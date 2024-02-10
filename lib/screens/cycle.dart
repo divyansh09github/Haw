@@ -15,16 +15,14 @@ class Cycle extends StatefulWidget {
   const Cycle({super.key});
   // final DateTime startDate;
 
-
   // Cycle({ @required this.data});
   @override
   State<Cycle> createState() => _CycleState();
 }
 
 class _CycleState extends State<Cycle> {
-
   @override
-  void initState(){
+  void initState() {
     setState(() {
       isEditable = false;
     });
@@ -33,30 +31,38 @@ class _CycleState extends State<Cycle> {
   bool isEditable = false;
   bool isSelectedDays = false;
   int defaultDays = 28;
-  final TextEditingController _numberPickerController = TextEditingController(); // Declare the controller
+  final TextEditingController _numberPickerController =
+      TextEditingController(); // Declare the controller
 
-  _notSure() async{
+  _notSure() async {
     await PostAPIService().saveCycleLength(defaultDays);
     _navigate();
   }
 
-  _nextButton() async{
-
+  _nextButton() async {
     if (int.tryParse(_numberPickerController.text) != null) {
       setState(() {
-          cycleLength = int.parse(_numberPickerController.text);
+        cycleLength = int.parse(_numberPickerController.text);
+      });
+    }
+    else{
+      setState(() {
+        cycleLength = 25;
       });
     }
     await PostAPIService().saveCycleLength(cycleLength);
     _navigate();
-
   }
 
-  _navigate(){
-    setInitialScreen('periodDurationScreen');
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PeriodDuration()),);
+  _navigate() {
+    // setInitialScreen('periodDurationScreen');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PeriodDuration()),
+    );
   }
-  void setInitialScreen(String value) async{
+
+  void setInitialScreen(String value) async {
     await PreferencesManager.setInitialScreen(value);
   }
 
@@ -65,10 +71,9 @@ class _CycleState extends State<Cycle> {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-
         colorScheme: const ColorScheme(
           primary: Colors.white,
           primaryContainer: Color(0xFF002984),
@@ -87,156 +92,227 @@ class _CycleState extends State<Cycle> {
       ),
       home: Scaffold(
         backgroundColor: Colors.white,
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Vertical centering
-            children: [
-              Text("What is the average length of", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
-              Text("your cycle?", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
-              SizedBox(height: 40),
-              SizedBox(
-                  width:  MediaQuery.of(context).size.width * 0.60,
-                  child: Divider(color: bottombgcolor,thickness: 2)
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading:  Padding(
+            padding: const EdgeInsets.fromLTRB(30, 30, 0, 0),
+            child: Row(
                 children: [
                   GestureDetector(
-                    // behavior: HitTestBehavior.translucent, // Allow taps to pass through
-                    onDoubleTap: () {
-                      setState(() {
-                        isEditable = true;
-                        _numberPickerController.text = cycleLength.toString(); // Set initial value
-                      });
+                    onTap: () {
+                      Navigator.pop(context);
                     },
-                    child: isEditable
-                        ? SizedBox(
-                      height: 30,
-                          width: 50,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                      controller: _numberPickerController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(
-                          // Add appropriate styling here
-
-                      ),
-                      validator: (value) {
-                          // Add validation for valid numbers within the range
-                      },
-                      onEditingComplete: () {
-
-                          setState(() {
-                            if (int.tryParse(_numberPickerController.text) != null) {
-                              cycleLength = int.parse(_numberPickerController.text);
-                            }
-
-                            isEditable = false;
-                          });
-                          return;
-                      },
-                    ),
-                        )
-                        : NumberPicker(
-                      selectedTextStyle: TextStyle(color: Colors.black, fontSize: 25),
-                      itemCount: 1,
-                      value: cycleLength,
-                      minValue: 25,
-                      maxValue: 35,
-                      onChanged: (value)  => setState(() {
-                        isSelectedDays = true;
-                        cycleLength = value;
-                      }),
-                      // textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  SizedBox(width:  MediaQuery.of(context).size.width * 0.1,),
-                  Text(
-                    'Days',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      // fontFamily: 'Inria Sans',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                      letterSpacing: 1.92,
+                    child: Image.asset(
+                      "assets/images/arrowPinkback.png",
+                      height: 25,
+                      width: 25,
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                  width:  MediaQuery.of(context).size.width * 0.60,
-                  child: Divider(color: bottombgcolor,thickness: 2)
-              ),
-            ],
           ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        height: MediaQuery.of(context).size.height * 0.1,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _notSure();
-                },
-                child: Text(
-                  "Not sure?",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Inria Sans',
-                    // fontWeight: FontWeight.w500,
-                    letterSpacing: 1.44,
-                  ),
-                ),
-              ),
-              // SizedBox(width: 10), // Optional spacing between buttons
-              isSelectedDays ? ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Color(0xFFFF608B)),
-                  minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Border radius
-                    ),
-                  ),
-                  elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
-                  shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
-                ),
-                onPressed: () {
-                  _nextButton();
-                },
-                child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
-              ) : ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Color(0x35FF608B)),
-                  minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Border radius
-                    ),
-                  ),
-                  elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
-                  shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
-                ),
-                onPressed: () {
-                },
-                child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-    );
 
+        ),
+        body:  SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment:
+                          MainAxisAlignment.center, // Vertical centering
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.85,
+                          child: Text(
+                            "What is the usual length of your period?",
+                            softWrap: true,
+                          maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                        // Text(
+                        //   "your period?",
+                        //   style: TextStyle(
+                        //       fontSize: 25, fontWeight: FontWeight.w300),
+                        // ),
+                        SizedBox(height: 40),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.60,
+                            child: Divider(color: bottombgcolor, thickness: 2)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              // behavior: HitTestBehavior.translucent, // Allow taps to pass through
+                              onDoubleTap: () {
+                                setState(() {
+                                  isEditable = true;
+                                  _numberPickerController.text = cycleLength
+                                      .toString(); // Set initial value
+                                });
+                              },
+                              child: isEditable
+                                  ? SizedBox(
+                                      height: 30,
+                                      width: 50,
+                                      child: TextFormField(
+                                        textAlign: TextAlign.center,
+                                        controller: _numberPickerController,
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        decoration: InputDecoration(
+                                            // Add appropriate styling here
+
+                                            ),
+                                        validator: (value) {
+                                          // Add validation for valid numbers within the range
+                                        },
+                                        onEditingComplete: () {
+                                          setState(() {
+                                            if (int.tryParse(
+                                                    _numberPickerController
+                                                        .text) !=
+                                                null) {
+                                              cycleLength = int.parse(
+                                                  _numberPickerController.text);
+                                            }
+
+                                            isEditable = false;
+                                          });
+                                          return;
+                                        },
+                                      ),
+                                    )
+                                  : NumberPicker(
+                                      selectedTextStyle: TextStyle(
+                                          color: Colors.black, fontSize: 25),
+                                      itemCount: 1,
+                                      value: cycleLength,
+                                      minValue: 25,
+                                      maxValue: 35,
+                                      onChanged: (value) => setState(() {
+                                        isSelectedDays = true;
+                                        cycleLength = value;
+                                      }),
+                                      // textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+                                    ),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.1,
+                            ),
+                            Text(
+                              'Days',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 25,
+                                // fontFamily: 'Inria Sans',
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                                letterSpacing: 1.92,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.60,
+                            child: Divider(color: bottombgcolor, thickness: 2)),
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.white,
+          height: MediaQuery.of(context).size.height * 0.1,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _notSure();
+                  },
+                  child: Text(
+                    "Not sure?",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontFamily: 'Inria Sans',
+                      // fontWeight: FontWeight.w500,
+                      letterSpacing: 1.44,
+                    ),
+                  ),
+                ),
+                // SizedBox(width: 10), // Optional spacing between buttons
+                // isSelectedDays
+                //     ?
+                ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Color(0xFFFF608B)),
+                          minimumSize: MaterialStateProperty.all(
+                              Size(100, 40)), // Width and height
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(25.0), // Border radius
+                            ),
+                          ),
+                          elevation: MaterialStateProperty.all(
+                              5), // Adjust elevation as needed
+                          shadowColor: MaterialStateProperty.all(
+                              Colors.black), // Shadow color
+                        ),
+                        onPressed: () {
+                          _nextButton();
+                        },
+                        child: Text('Next',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20)), // Text for the second button
+                      )
+                    // : ElevatedButton(
+                    //     style: ButtonStyle(
+                    //       backgroundColor:
+                    //           MaterialStatePropertyAll(Color(0xffffb7cb)),
+                    //       minimumSize: MaterialStateProperty.all(
+                    //           Size(100, 40)), // Width and height
+                    //       shape:
+                    //           MaterialStateProperty.all<RoundedRectangleBorder>(
+                    //         RoundedRectangleBorder(
+                    //           borderRadius:
+                    //               BorderRadius.circular(25.0), // Border radius
+                    //         ),
+                    //       ),
+                    //       elevation: MaterialStateProperty.all(
+                    //           5), // Adjust elevation as needed
+                    //       shadowColor: MaterialStateProperty.all(
+                    //           Colors.black), // Shadow color
+                    //     ),
+                    //     onPressed: () {},
+                    //     child: Text('Next',
+                    //         style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontSize: 20)), // Text for the second button
+                    //   ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

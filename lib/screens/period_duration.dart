@@ -24,8 +24,20 @@ class _PeriodDurationState extends State<PeriodDuration> {
   var periodLength = 07;
   bool isSelectedDays = false;
   int defaultDays = 4;
+  final TextEditingController _numberPickerController =
+  TextEditingController(); // Declare the controller
 
   _nextButton() async{
+    if (int.tryParse(_numberPickerController.text) != null) {
+      setState(() {
+        periodLength = int.parse(_numberPickerController.text);
+      });
+    }
+    else{
+      setState(() {
+        periodLength = 7;
+      });
+    }
     await PostAPIService().savePeriodDuration(periodLength);
     _navigate();
   }
@@ -72,12 +84,34 @@ class _PeriodDurationState extends State<PeriodDuration> {
       ),
       home: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading:  Padding(
+            padding: const EdgeInsets.fromLTRB(30, 30, 0, 0),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Image.asset(
+                    "assets/images/arrowPinkback.png",
+                    height: 25,
+                    width: 25,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+        ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height * 0.8,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center, // Vertical centering
             children: [
+
               Text("What is the duration of ", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
               Text("your Periods?", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),),
               SizedBox(height: 40),
@@ -120,6 +154,7 @@ class _PeriodDurationState extends State<PeriodDuration> {
                   width: 250,
                   child: Divider(color: bottombgcolor,thickness: 2)
               ),
+              SizedBox(height: 20,),
             ],
           ),
         ),
@@ -148,7 +183,8 @@ class _PeriodDurationState extends State<PeriodDuration> {
                 ),
               ),
               // SizedBox(width: 10), // Optional spacing between buttons
-              isSelectedDays ? ElevatedButton(
+              // isSelectedDays ?
+              ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Color(0xFFFF608B)),
                   minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
@@ -164,22 +200,23 @@ class _PeriodDurationState extends State<PeriodDuration> {
                   _nextButton();
                 },
                 child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
-              ) : ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Color(0x3DFF608B)),
-                  minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Border radius
-                    ),
-                  ),
-                  elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
-                  shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
-                ),
-                onPressed: () {
-                },
-                child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
-              ),
+              )
+              //     : ElevatedButton(
+              //   style: ButtonStyle(
+              //     backgroundColor: MaterialStatePropertyAll(Color(0x3DFF608B)),
+              //     minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
+              //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              //       RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(25.0), // Border radius
+              //       ),
+              //     ),
+              //     elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
+              //     shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
+              //   ),
+              //   onPressed: () {
+              //   },
+              //   child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
+              // ),
             ],
           ),
         ),

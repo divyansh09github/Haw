@@ -88,19 +88,33 @@ class _DataCalendarState extends State<DataCalendar> {
 
   loadingProcess(){
     Future.delayed(Duration(seconds: 5), () {
+
+      futureDate();
       // After 10 seconds, show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          dismissDirection: DismissDirection.startToEnd,
-          padding: EdgeInsets.all(10),
-          content: Text('Low internet Connection'),
-          backgroundColor: Color(0xBAFF608B),
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 4),
-          margin: EdgeInsets.all(15),
+      const snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(7),
+        content: Text(
+          'Low internet connection.',
+          style: TextStyle(color: Color(0xFF972633)),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
         ),
       );
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
 
       // Navigate to another page after 8 seconds (5 seconds for loading + 3 seconds for snackbar)
       // Future.delayed(Duration(seconds: 3), () {
@@ -291,17 +305,32 @@ class _DataCalendarState extends State<DataCalendar> {
       }
       else{
         _controller.selectedRanges = _selectedRanges;
+
         const snackDemo = SnackBar(
-          dismissDirection: DismissDirection.down,
-          padding: EdgeInsets.all(10),
-          content: Text("You can't choose future date"),
-          backgroundColor: Color(0xBAFF608B),
+          dismissDirection: DismissDirection.startToEnd,
+          padding: EdgeInsets.all(7),
+          content: Text(
+            "You can't choose future date",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+          backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
           elevation: 10,
           behavior: SnackBarBehavior.floating,
           duration: Duration(seconds: 2),
           margin: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15), // Customize corner radius as needed
+            ),
+          ),
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackDemo);
+
       }
 
     }

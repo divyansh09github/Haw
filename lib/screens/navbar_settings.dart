@@ -37,7 +37,7 @@ class _NavbarSettingsState extends State<NavbarSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           SizedBox(

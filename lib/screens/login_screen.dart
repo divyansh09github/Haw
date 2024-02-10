@@ -15,6 +15,7 @@ class LoginUser extends StatefulWidget {
 }
 
 class _LoginUserState extends State<LoginUser> {
+  bool _isPasswordVisible = true;
 
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
@@ -35,14 +36,26 @@ class _LoginUserState extends State<LoginUser> {
             var snackDemo = SnackBar(
               dismissDirection: DismissDirection.startToEnd,
               padding: EdgeInsets.all(10),
-              content: Text("${body['error']}"),
-              backgroundColor: Color(0xBAFF608B),
+              content: Text(
+                "${body['error']}",
+                style: TextStyle(color: Color(0xFF972633)),
+              ),
+              backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
               elevation: 10,
               behavior: SnackBarBehavior.floating,
-              duration: Duration(seconds: 5),
+              duration: Duration(seconds: 4),
               margin: EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15), // Customize corner radius as needed
+                ),
+              ),
             );
-            ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+            ScaffoldMessenger.of(context)
+                .showSnackBar(snackDemo);
           } else {
             // Handle unexpected response format
             print("Unexpected response format: ${response.body}");
@@ -53,7 +66,29 @@ class _LoginUserState extends State<LoginUser> {
           try {
             final body = jsonDecode(response.body);
 
-            print("login success");
+            var snackDemo = SnackBar(
+              dismissDirection: DismissDirection.startToEnd,
+              padding: EdgeInsets.all(10),
+              content: Text(
+                "We've missed you",
+                style: TextStyle(color: Color(0xFF972633)),
+              ),
+              backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+              elevation: 10,
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 4),
+              margin: EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15), // Customize corner radius as needed
+                ),
+              ),
+            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(snackDemo);
 
             await PreferencesManager.setUserId(body['user_id']);
             await PreferencesManager.setUserToken(body['token']);
@@ -137,7 +172,8 @@ class _LoginUserState extends State<LoginUser> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(height: 70,),
+
+                            SizedBox(height: 40,),
                             //Register yourself heading
                             Text(
                               "Login",
@@ -146,7 +182,7 @@ class _LoginUserState extends State<LoginUser> {
                             ),
 
                             SizedBox(height: 50,),
-                            //Three TextFields
+                            //Two TextFields
 
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.65,
@@ -164,7 +200,7 @@ class _LoginUserState extends State<LoginUser> {
                                   if (!RegExp(
                                       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
                                       .hasMatch(value)) {
-                                    return 'Please enter valid email address';
+                                    return 'Enter valid email address';
                                   }
 
                                   // Optional: More advanced checks if needed
@@ -191,73 +227,14 @@ class _LoginUserState extends State<LoginUser> {
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //   padding:
-                            //   const EdgeInsets.symmetric(horizontal: 30),
-                            //   child: SizedBox(
-                            //     width: MediaQuery.of(context).size.width *
-                            //         0.8, // Set width
-                            //     height: 30, // Set height
-                            //     child: Material(
-                            //       elevation: 2,
-                            //       borderRadius: BorderRadius.circular(8),
-                            //       child: TextFormField(
-                            //         textAlign: TextAlign.center,
-                            //         autovalidateMode: AutovalidateMode
-                            //             .onUserInteraction, // Validate on every change
-                            //         controller: _email,
-                            //         validator: (value) {
-                            //           if (value == null || value.isEmpty) {
-                            //             return 'Email is required.';
-                            //           }
-                            //
-                            //           // Basic email format check
-                            //           if (!RegExp(
-                            //               r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-                            //               .hasMatch(value)) {
-                            //             return 'Please enter valid email address';
-                            //           }
-                            //
-                            //           // Optional: More advanced checks if needed
-                            //           // Add logic for MX record checks, disposable email domain checks, etc.
-                            //
-                            //           return null; // Valid email
-                            //         },
-                            //         // inputFormatters: [
-                            //         //   FilteringTextInputFormatter.allow(
-                            //         //       RegExp(r'[a-zA-Z ]')),
-                            //         //   LengthLimitingTextInputFormatter(
-                            //         //       25), // Enforce character limit during input
-                            //         // ],
-                            //         decoration: InputDecoration(
-                            //           filled: true,
-                            //           fillColor: Colors.white,
-                            //           hintText: 'Email Id',
-                            //           hintStyle:
-                            //           TextStyle(color: Colors.black12),
-                            //           // labelText: '100',
-                            //           // labelStyle: const TextStyle(color: Colors.black),
-                            //           border: OutlineInputBorder(
-                            //             borderRadius: BorderRadius.circular(
-                            //                 15), // Match border radius with material
-                            //             borderSide: BorderSide
-                            //                 .none, // Remove the default border
-                            //           ),
-                            //           contentPadding: const EdgeInsets.only(
-                            //               left: 20.0, top: 10.0, right: 10.0),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-
-
+                            SizedBox(height: 0,),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.65,
                               child: TextFormField(
                                 cursorColor: Color(0xffFF608B),
                                 textAlign: TextAlign.center,
-                                obscureText: true,
+                                maxLength: 25,
+                                obscureText: _isPasswordVisible, // Control visibility
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction, // Validate on every change
                                 controller: _pass,
@@ -265,9 +242,9 @@ class _LoginUserState extends State<LoginUser> {
                                   if (value == null || value.isEmpty) {
                                     return 'Password is required';
                                   } else if (value.length < 8) {
-                                    return 'Password must be at least 8 characters long';
+                                    return 'Minimum 8 characters';
                                   } else if (value.length > 24) {
-                                    return 'Password cannot exceed 25 characters';
+                                    return 'Limit exceeds';
                                   }
                                   return null;
                                 },
@@ -281,57 +258,23 @@ class _LoginUserState extends State<LoginUser> {
                                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
                                   // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
                                   labelText: 'Password',
+
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                      color: _isPasswordVisible ? Color(0xffD9D9D9) : Color(0xffFF608B), // Adjust icon color if needed
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isPasswordVisible = !_isPasswordVisible;
+                                      });
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //   padding:
-                            //   const EdgeInsets.symmetric(horizontal: 30),
-                            //   child: SizedBox(
-                            //     width: MediaQuery.of(context).size.width *
-                            //         0.8, // Set width
-                            //     height: 30, // Set height
-                            //     child: Material(
-                            //       elevation: 2,
-                            //       borderRadius: BorderRadius.circular(8),
-                            //       child: TextFormField(
-                            //         textAlign: TextAlign.center,
-                            //         obscureText: true,
-                            //         autovalidateMode: AutovalidateMode
-                            //             .onUserInteraction, // Validate on every change
-                            //         controller: _pass,
-                            //         validator: (value) {
-                            //           if (value == null || value.isEmpty) {
-                            //             return 'Password is required';
-                            //           } else if (value.length < 8) {
-                            //             return 'Password must be at least 8 characters long';
-                            //           } else if (value.length > 24) {
-                            //             return 'Password cannot exceed 25 characters';
-                            //           }
-                            //           return null;
-                            //         },
-                            //         decoration: InputDecoration(
-                            //           filled: true,
-                            //           fillColor: Colors.white,
-                            //           hintText: 'Password',
-                            //           hintStyle:
-                            //           TextStyle(color: Colors.black12),
-                            //           // labelText: '100',
-                            //           // labelStyle: const TextStyle(color: Colors.black),
-                            //           border: OutlineInputBorder(
-                            //             borderRadius: BorderRadius.circular(
-                            //                 15), // Match border radius with material
-                            //             borderSide: BorderSide
-                            //                 .none, // Remove the default border
-                            //           ),
-                            //           contentPadding: const EdgeInsets.only(
-                            //               left: 20.0, top: 10.0, right: 10.0),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            SizedBox(height: 0,),
+
+                            SizedBox(height: 20,),
                           ],
                         ),
                       ),

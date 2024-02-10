@@ -15,6 +15,8 @@ class RegisterUser extends StatefulWidget {
 }
 
 class _RegisterUserState extends State<RegisterUser> {
+  bool _isPasswordVisible = true;
+  bool _isPasswordVisible1 = true;
 
   FocusNode focusNodeE = FocusNode();
   FocusNode focusNodeP = FocusNode();
@@ -32,7 +34,7 @@ class _RegisterUserState extends State<RegisterUser> {
 
     if (_formKey.currentState!.validate()) {
 
-       var response = (await PostAPIService().registerUser(_email.text, _pass2.text));
+       var response = await PostAPIService().registerUser(_email.text, _pass2.text);
 
        final body = jsonDecode(response.body);
 
@@ -42,27 +44,52 @@ class _RegisterUserState extends State<RegisterUser> {
          var snackDemo = SnackBar(
            dismissDirection: DismissDirection.startToEnd,
            padding: EdgeInsets.all(10),
-           content: Text("${body['error']['email'][0]}", textAlign: TextAlign.center,),
-           backgroundColor: Color(0xBAFF608B),
+           content: Text(
+             "${body['error']['email'][0]}",
+             style: TextStyle(color: Color(0xFF972633)),
+           ),
+           backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
            elevation: 10,
            behavior: SnackBarBehavior.floating,
-           duration: Duration(seconds: 5),
+           duration: Duration(seconds: 4),
            margin: EdgeInsets.all(15),
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.only(
+               topLeft: Radius.circular(15),
+               topRight: Radius.circular(15),
+               bottomLeft: Radius.circular(15),
+               bottomRight: Radius.circular(15), // Customize corner radius as needed
+             ),
+           ),
          );
-         ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+         ScaffoldMessenger.of(context)
+             .showSnackBar(snackDemo);
        }
        else if(response.statusCode == 200){
          var snackDemo = SnackBar(
            dismissDirection: DismissDirection.startToEnd,
            padding: EdgeInsets.all(10),
-           content: Text("Registered successfully"),
-           backgroundColor: Color(0xBAFF608B),
+           content: Text(
+             "Get ready to unlock a world of possibilities!",
+             style: TextStyle(color: Color(0xFF972633)),
+           ),
+           backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
            elevation: 10,
            behavior: SnackBarBehavior.floating,
-           duration: Duration(seconds: 5),
+           duration: Duration(seconds: 4),
            margin: EdgeInsets.all(15),
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.only(
+               topLeft: Radius.circular(15),
+               topRight: Radius.circular(15),
+               bottomLeft: Radius.circular(15),
+               bottomRight: Radius.circular(15), // Customize corner radius as needed
+             ),
+           ),
          );
-         ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+         ScaffoldMessenger.of(context)
+             .showSnackBar(snackDemo);
+
 
          setInitialScreen('termsAndConditionScreen');
 
@@ -140,12 +167,14 @@ class _RegisterUserState extends State<RegisterUser> {
                           children: [
 
                             SizedBox(height: 0,),
+                            SizedBox(height: 0,),
                             //Register yourself heading
                             Text(
                               "Register Yourself!",
                               style: TextStyle(
                                   fontSize: 25, color: Color(0xFF6C6C6C)),
                             ),
+                            SizedBox(height: 0,),
 
                             //Email TextField
                             SizedBox(
@@ -171,7 +200,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                   if (!RegExp(
                                       r"^[a-zA-Z0-9._]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
                                       .hasMatch(value)) {
-                                    return 'Please enter valid email address';
+                                    return 'Enter valid email address';
                                   }
 
                                   // Optional: More advanced checks if needed
@@ -198,14 +227,16 @@ class _RegisterUserState extends State<RegisterUser> {
                                 ),
                               ),
                             ),
-
+                            // SizedBox(height: 0,),
                             //Password field
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.65,
                               child: TextFormField(
                                 cursorColor: Color(0xffFF608B),
                                 // focusNode: focusNodeP,
-                                obscureText: true,
+                                obscureText: _isPasswordVisible, // Control visibility
+                                maxLength: 25,
+
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction, // Validate on every change
                                 controller: _pass1,
@@ -222,23 +253,23 @@ class _RegisterUserState extends State<RegisterUser> {
                                   if (value == null || value.isEmpty) {
                                     return 'Password is required';
                                   } else if (value.length < 8) {
-                                    return 'Password must be atleast 8 characters';
+                                    return 'Minimum 8 characters';
                                   } else if (value.length > 24) {
-                                    return 'Password cannot exceed 25 characters';
+                                    return 'Limit exceeds';
                                   } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                    return 'Password must contain at least one uppercase letter';
+                                    return 'Must have uppercase';
                                   } else if (!RegExp(r'[a-z]').hasMatch(value)) {
-                                    return 'Password must contain at least one lowercase letter';
+                                    return 'Must have lowercase';
                                   } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-                                    return 'Password must contain at least one number';
+                                    return 'Must have a number';
                                   } else if (!RegExp(r'[^a-zA-Z0-9]').hasMatch(value)) {
-                                    return 'Password must have atleast one special character';
+                                    return 'Must have special character';
                                   }
                                   return null; // Valid password
 
                                 },
-                                decoration: InputDecoration(errorMaxLines: 2,
-
+                                decoration: InputDecoration(
+                                  errorMaxLines: 2,
                                   focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
                                   errorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
                                   contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
@@ -248,6 +279,20 @@ class _RegisterUserState extends State<RegisterUser> {
                                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
                                   // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
                                   labelText: 'Password',
+
+                                  counterText: '',
+                                  counterStyle: const TextStyle(color: Colors.transparent),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                      color: _isPasswordVisible ? Color(0xffD9D9D9) : Color(0xffFF608B), // Adjust icon color if needed
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isPasswordVisible = !_isPasswordVisible;
+                                      });
+                                    },
+                                  ),
 
                                 ),
                               ),
@@ -259,7 +304,8 @@ class _RegisterUserState extends State<RegisterUser> {
                               child: TextFormField(
                                 cursorColor: Color(0xffFF608B),
                                 // focusNode: focusNodeCP,
-                                obscureText: true,
+                                obscureText: _isPasswordVisible1,
+                                maxLength: 25,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction, // Validate on every change
                                 controller: _pass2,
@@ -267,7 +313,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                   if (value == null || value.isEmpty) {
                                     return 'Confirm password is required';
                                   } else if (value != _pass1.text) {
-                                    return 'Passwords do not match';
+                                    return "Passwords doesn't match";
                                   }
                                   return null;
                                 },
@@ -281,10 +327,25 @@ class _RegisterUserState extends State<RegisterUser> {
                                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
                                   // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
                                   labelText: 'Confirm Password',
+
+                                  counterText: '',
+                                  counterStyle: const TextStyle(color: Colors.transparent),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible1 ? Icons.visibility : Icons.visibility_off,
+                                      color: _isPasswordVisible1 ? Color(0xffD9D9D9) : Color(0xffFF608B), // Adjust icon color if needed
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isPasswordVisible1 = !_isPasswordVisible1;
+                                      });
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
 
+                            SizedBox(height: 0,),
                             SizedBox(height: 0,),
                           ],
                         ),

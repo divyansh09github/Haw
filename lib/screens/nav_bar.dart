@@ -40,7 +40,7 @@ class _NavBarState extends State<NavBar>{
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       body: ListView(
         // padding: EdgeInsets.zero, // Removes padding
         children: [
@@ -64,7 +64,11 @@ class _NavBarState extends State<NavBar>{
               ),
             ),
             decoration: BoxDecoration(
-              color: Color(0xFFFF608B),
+              color: Colors.white,
+              image: DecorationImage(
+                image: AssetImage('assets/images/navbarHeader.jpg'), // Replace with your actual image path
+                fit: BoxFit.fill, // Ensures image covers the entire background
+              ),
               // You can add background image if needed
               // image: DecorationImage(
               //   fit: BoxFit.cover,

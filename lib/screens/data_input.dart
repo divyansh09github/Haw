@@ -142,7 +142,7 @@ class _DataInputState extends State<DataInput> {
     }
   }
 
-  late int selectedEnergyIndex;
+  var selectedEnergyIndex;
   void _onTapEnergy(int index) {
     if (selectedEnergyIndex == index) {
       selectedEnergyIndex = -1;
@@ -518,9 +518,9 @@ class _DataInputState extends State<DataInput> {
 
                           "${currentDate.day}, ${DateFormat.MMMM().format(currentDate)}",
                           style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 25,
                               fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w400,
                               color: Colors.black87),
                         ),
                         SizedBox(
@@ -548,7 +548,7 @@ class _DataInputState extends State<DataInput> {
                         child: Text(
                           "Flow",
                           style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 22,
                               fontWeight: FontWeight.w600,
                               fontStyle: FontStyle.normal),
                           textAlign: TextAlign.left,
@@ -1213,7 +1213,7 @@ class _DataInputState extends State<DataInput> {
                         child: Text(
                           "Feelings",
                           style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 22,
                               fontWeight: FontWeight.w600,
                               fontStyle: FontStyle.normal),
                           textAlign: TextAlign.left,
@@ -1275,7 +1275,7 @@ class _DataInputState extends State<DataInput> {
                         child: Text(
                           "Liveliness",
                           style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 22,
                               fontWeight: FontWeight.w600,
                               fontStyle: FontStyle.normal),
                           textAlign: TextAlign.left,
@@ -1338,7 +1338,7 @@ class _DataInputState extends State<DataInput> {
                         child: Text(
                           "Energy",
                           style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 22,
                               fontWeight: FontWeight.w600,
                               fontStyle: FontStyle.normal),
                           textAlign: TextAlign.left,
@@ -1404,16 +1404,27 @@ class _DataInputState extends State<DataInput> {
                                   saveFunction();
                                   // print("hello");
                                   const snackDemo = SnackBar(
-                                    dismissDirection:
-                                        DismissDirection.startToEnd,
-                                    padding: EdgeInsets.all(10),
-                                    content: Text('Data Saved'),
-                                    backgroundColor: Color(0xBAFF608B),
+                                    dismissDirection: DismissDirection.startToEnd,
+                                    padding: EdgeInsets.all(7),
+                                    content: Text(
+                                      'Data Saved',
+                                      style: TextStyle(color: Color(0xFF972633)),
+                                    ),
+                                    backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
                                     elevation: 10,
                                     behavior: SnackBarBehavior.floating,
                                     duration: Duration(seconds: 2),
                                     margin: EdgeInsets.all(15),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(15),
+                                        topRight: Radius.circular(15),
+                                        bottomLeft: Radius.circular(15),
+                                        bottomRight: Radius.circular(15), // Customize corner radius as needed
+                                      ),
+                                    ),
                                   );
+
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackDemo);
                                 },
@@ -1425,7 +1436,7 @@ class _DataInputState extends State<DataInput> {
                                           borderRadius:
                                               BorderRadius.circular(15.0))),
                                   elevation: MaterialStateProperty.all(
-                                      12), // Add elevation for shadow
+                                      8), // Add elevation for shadow
                                   shadowColor: MaterialStateProperty.all(Color(
                                       0xFFFF608B)), // Customize shadow color
                                 ),
@@ -1444,7 +1455,7 @@ class _DataInputState extends State<DataInput> {
                                   },
                                   style: ButtonStyle(
                                     backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
+                                        MaterialStateProperty.all(Color(0xffffb7cb)),
                                     shape: MaterialStateProperty.all(
                                         RoundedRectangleBorder(
                                             borderRadius:
@@ -1458,7 +1469,7 @@ class _DataInputState extends State<DataInput> {
                                       style: TextStyle(
                                           fontSize: 24.0,
                                           fontWeight: FontWeight.bold,
-                                          color: Color(0xFFFF608B))),
+                                          color: Colors.white)),
                                 ),
                               ),
                       ),
