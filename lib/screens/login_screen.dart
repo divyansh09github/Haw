@@ -233,7 +233,7 @@ class _LoginUserState extends State<LoginUser> {
                               child: TextFormField(
                                 enableInteractiveSelection: false,
                                 cursorColor: Color(0xffFF608B),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.left,
                                 maxLength: 25,
                                 obscureText: _isPasswordVisible, // Control visibility
                                 autovalidateMode: AutovalidateMode
@@ -259,6 +259,8 @@ class _LoginUserState extends State<LoginUser> {
                                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
                                   // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
                                   labelText: 'Password',
+                                  counterText: '',
+                                  counterStyle: const TextStyle(color: Colors.transparent),
 
                                   suffixIcon: IconButton(
                                     icon: Icon(

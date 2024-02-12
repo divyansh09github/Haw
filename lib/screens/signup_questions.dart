@@ -177,7 +177,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
 
       try {
         // await PostAPIService().saveProfileImage(_selectedImageFile);
-        await PreferencesManager.setUserName(_name.text);
+
         var response = await PostAPIService().saveSignUpQuestions(_name.text, _toDate!, _selectedMaritalStatus.toString(), _selectedRegion.toString(), _height.text, _weight.text, _email.text, _phone.text);
 
         if (response.statusCode != 200) {
@@ -215,8 +215,9 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
           }
         } else if (response.statusCode == 200){
           // Assuming a valid JSON response
+          await PreferencesManager.setUserName(_name.text);
           try {
-            final body = jsonDecode(response.body);
+            // final body = jsonDecode(response.body);
 
             print("Data Saved");
 

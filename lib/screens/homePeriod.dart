@@ -14,6 +14,8 @@ import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/screens/terms&conditions.dart';
 import 'package:haw/services/get_api.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePeriod extends StatefulWidget {
   const HomePeriod({super.key});
@@ -24,33 +26,35 @@ class HomePeriod extends StatefulWidget {
   @override
   State<HomePeriod> createState() => _HomePeriodState();
 }
+class ChartData {
+  ChartData(this.x, this.y, this.color);
+  final String x;
+  final double y;
+  final Color color;
+}
+
 
 class _HomePeriodState extends State<HomePeriod> {
   Color bottombgcolor = const Color(0xFFFF608B);
   var _currentValue = 01;
-  String todayStr = "";
+  // String todayStr = "";
   DateTime datetime = DateTime.now();
   DateTime currentDate = DateTime.now();
 
   // String periodStart = "Period starts in";
   String periodText = "You are in";
-  String symptomsText = "Want to log symptoms?";
   String daysText = "4";
   // var cycleLength = 35;
   DateTime predictedDateTime = DateTime.now();
   int? abc;
 
-  bool? showScreen;
   @override
   initState() {
     super.initState();
-    showScreen = false;
 
     _apiService();
 
   }
-
-
 
   late Map<String, dynamic> homeScreenData = {};
   String error = '';
@@ -72,54 +76,182 @@ class _HomePeriodState extends State<HomePeriod> {
     }
   }
 
+  final List<ChartData> chartData = [
+    ChartData('1', 7, Color(0xFFFF608B)),
+    ChartData('2', 4, Color(0xFFC67492)),
+    ChartData('3', 9, Color(0xFF02AC92)),
+    ChartData('4', 5, Color(0xFFFBA77C)),
+    ChartData('5', 3, Color(0xFFC72D2D))
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: Center(
-            child: Column(
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.center, // Vertical centering
               children: [
+
+                SizedBox(height: 50,),
                 Text(
-                  todayStr,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                  "${DateTime.now().day}, ${DateFormat.MMMM().format(DateTime.now())}",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
                 ),
-                Text(
-                  "${DateTime.now().day} ${DateFormat.MMMM().format(DateTime.now())}",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 50),
-                Image.asset(
-                  "assets/images/fontisto_blood-drop.png",
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(height: 50),
-                Text(
-                  '${homeScreenData['message']}',
-                  // periodText,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),textAlign: TextAlign.center,
-                ),
-                // SizedBox(height: 10),
-                // Text(
-                //   "$abc Days",
-                //   style: TextStyle(fontSize: 36, fontWeight: FontWeight.w700),
-                // ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
-                  },
-                  child: Text(
-                  symptomsText,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                SizedBox(height: 30),
+                // Three Cycles Container
+                Container(
+                  width: MediaQuery.of(context).size.width *.9,
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  decoration:
+                  BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Color(0xffFFD3DF),width: 3),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0, 3.0),blurRadius: 1.0,spreadRadius: 0,)],
+                  ),
+                  child: Column(
+                    children: [
+                      Text("Average Days", style: TextStyle(fontSize: 16),),
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                height: 70,
+                                decoration: BoxDecoration(shape: BoxShape.circle,border: Border.all(color: Color(0xffFF9C41),width: 8)),
+                                child: Center(child: Text("28", style: TextStyle(fontSize: 18),)),
+                              ),
+                              SizedBox(height: 10,),
+                              Text("Length"),
+                            ],
+                          ),
+                          SizedBox(height: 70,child: VerticalDivider(color: Color(0xffFFD3DF),width: 0,thickness: 2,)),
+                          Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                height: 70,
+                                decoration: BoxDecoration(shape: BoxShape.circle,border: Border.all(color: Color(0xffFF8CAB),width: 8)),
+                                child: Center(child: Text("05", style: TextStyle(fontSize: 18),)),
+                              ),
+                              SizedBox(height: 10,),
+                              Text("Duration"),
+                            ],
+                          ),
+                          SizedBox(height: 70,child: VerticalDivider(color: Color(0xffFFD3DF),width: 0,thickness: 2,)),
+                          Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                height: 70,
+                                decoration: BoxDecoration(shape: BoxShape.circle,border: Border.all(color: Color(0xff5DB0CA),width: 8)),
+                                child: Center(child: Text("13", style: TextStyle(fontSize: 18),)),
+                              ),
+                              SizedBox(height: 10,),
+                              Text("Variation"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
+
+                SizedBox(height: 30,),
+
+                SfCircularChart(
+                  borderWidth: 0,
+                    series: <CircularSeries>[
+                      // Renders doughnut chart
+                      DoughnutSeries<ChartData, String>(
+                          animationDuration: 5,
+                          radius: "100%",
+                          innerRadius: "60%",
+                          dataSource: chartData,
+                          pointColorMapper:(ChartData data,  _) => data.color,
+                          xValueMapper: (ChartData data, _) => data.x,
+                          yValueMapper: (ChartData data, _) => data.y
+                      )
+                    ],
+                  annotations: [
+                    CircularChartAnnotation(
+                      widget: Container(
+                        height: 100,
+                        width: 100,
+                        child: Column(
+                          children: [
+                            Image.asset("assets/images/medium.png", height: 50, width: 50,),
+                            Text("Today is your Day 01.", textAlign: TextAlign.center),
+                          ],
+                        ),
+                      )
+                    )
+                  ],
+                ),
+
+                //Log Symptoms Text
+                GestureDetector(
+                  onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
+                  },
+                  child: Text(
+                  "Log your symptoms?",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
+                ),
+                SizedBox(height: 30,),
+
+                //Four Coloured Icons Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(10)),border: Border.all(width: 5,color: Color(0xffFB8A97))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Image.asset("assets/images/medium.png"),
+                      ),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(10)),border: Border.all(width: 5,color: Color(0xff6BD6CF))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Image.asset("assets/images/Loved.png"),
+                      ),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(10)),border: Border.all(width: 5,color: Color(0xffFFE28C))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Image.asset("assets/images/jointPain.png"),
+                      ),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(10)),border: Border.all(width: 5,color: Color(0xffA3B971))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Image.asset("assets/images/highEnergy.png"),
+                      ),
+                    ),
+                  ],
+                ),
+
               ], // Children
             ),
-          ),
-        ),
+    ),
+
 
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {

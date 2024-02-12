@@ -33,11 +33,11 @@ class _PeriodDurationState extends State<PeriodDuration> {
         periodLength = int.parse(_numberPickerController.text);
       });
     }
-    else{
-      setState(() {
-        periodLength = 4;
-      });
-    }
+    // else{
+    //   setState(() {
+    //     periodLength = 7;
+    //   });
+    // }
     await PostAPIService().savePeriodDuration(periodLength);
     _navigate();
   }
@@ -184,7 +184,7 @@ class _PeriodDurationState extends State<PeriodDuration> {
               ),
               // SizedBox(width: 10), // Optional spacing between buttons
               // isSelectedDays ?
-              ElevatedButton(
+              isSelectedDays ? ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Color(0xFFFF608B)),
                   minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
@@ -201,22 +201,22 @@ class _PeriodDurationState extends State<PeriodDuration> {
                 },
                 child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
               )
-              //     : ElevatedButton(
-              //   style: ButtonStyle(
-              //     backgroundColor: MaterialStatePropertyAll(Color(0x3DFF608B)),
-              //     minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
-              //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              //       RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(25.0), // Border radius
-              //       ),
-              //     ),
-              //     elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
-              //     shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
-              //   ),
-              //   onPressed: () {
-              //   },
-              //   child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
-              // ),
+                  : ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Color(0x3DFF608B)),
+                  minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Border radius
+                    ),
+                  ),
+                  elevation: MaterialStateProperty.all(5), // Adjust elevation as needed
+                  shadowColor: MaterialStateProperty.all(Colors.black), // Shadow color
+                ),
+                onPressed: () {
+                },
+                child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)), // Text for the second button
+              ),
             ],
           ),
         ),

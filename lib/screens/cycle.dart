@@ -45,11 +45,11 @@ class _CycleState extends State<Cycle> {
         cycleLength = int.parse(_numberPickerController.text);
       });
     }
-    else{
-      setState(() {
-        cycleLength = 28;
-      });
-    }
+    // else{
+    //   setState(() {
+    //     cycleLength = 25;
+    //   });
+    // }
     await PostAPIService().saveCycleLength(cycleLength);
     _navigate();
   }
@@ -127,7 +127,7 @@ class _CycleState extends State<Cycle> {
                         Container(
                           width: MediaQuery.of(context).size.width * 0.85,
                           child: Text(
-                            "What is the usual length of your period?",
+                            "What is the usual length of your cycle?",
                             softWrap: true,
                           maxLines: 2,
                             textAlign: TextAlign.center,
@@ -258,7 +258,7 @@ class _CycleState extends State<Cycle> {
                 // SizedBox(width: 10), // Optional spacing between buttons
                 // isSelectedDays
                 //     ?
-                ElevatedButton(
+                isSelectedDays ? ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll(Color(0xFFFF608B)),
@@ -284,30 +284,30 @@ class _CycleState extends State<Cycle> {
                                 color: Colors.white,
                                 fontSize: 20)), // Text for the second button
                       )
-                    // : ElevatedButton(
-                    //     style: ButtonStyle(
-                    //       backgroundColor:
-                    //           MaterialStatePropertyAll(Color(0xffffb7cb)),
-                    //       minimumSize: MaterialStateProperty.all(
-                    //           Size(100, 40)), // Width and height
-                    //       shape:
-                    //           MaterialStateProperty.all<RoundedRectangleBorder>(
-                    //         RoundedRectangleBorder(
-                    //           borderRadius:
-                    //               BorderRadius.circular(25.0), // Border radius
-                    //         ),
-                    //       ),
-                    //       elevation: MaterialStateProperty.all(
-                    //           5), // Adjust elevation as needed
-                    //       shadowColor: MaterialStateProperty.all(
-                    //           Colors.black), // Shadow color
-                    //     ),
-                    //     onPressed: () {},
-                    //     child: Text('Next',
-                    //         style: TextStyle(
-                    //             color: Colors.white,
-                    //             fontSize: 20)), // Text for the second button
-                    //   ),
+                    : ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Color(0xffffb7cb)),
+                          minimumSize: MaterialStateProperty.all(
+                              Size(100, 40)), // Width and height
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(25.0), // Border radius
+                            ),
+                          ),
+                          elevation: MaterialStateProperty.all(
+                              5), // Adjust elevation as needed
+                          shadowColor: MaterialStateProperty.all(
+                              Colors.black), // Shadow color
+                        ),
+                        onPressed: () {},
+                        child: Text('Next',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20)), // Text for the second button
+                      ),
               ],
             ),
           ),

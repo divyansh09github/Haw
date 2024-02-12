@@ -64,7 +64,7 @@ class PostAPIService{
   }
 
   Future<http.Response> saveSignUpQuestions(String name, DateTime dob, String marital, String region, String height, String weight, String phone, String email) async{
-    var signUpVariables = await PreferencesManager.getSignUpVariables();
+    // var signUpVariables = await PreferencesManager.getSignUpVariables();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
 
@@ -84,7 +84,7 @@ class PostAPIService{
     ),
         headers: {"Content-Type": "application/json"}
     );
-    print(response.body);
+    print("abr : ${response.body}");
 
     return response;
   }

@@ -35,6 +35,7 @@ class _NavBarState extends State<NavBar>{
     setState(() {
       userName = name;
     });
+    print(userName);
   }
   _signOut() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();

@@ -566,6 +566,7 @@ import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/nav_bar.dart';
+import 'package:haw/screens/profile.dart';
 import 'package:haw/services/get_api.dart';
 import 'package:haw/services/post_api.dart';
 import 'package:image_picker/image_picker.dart';
@@ -807,7 +808,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Profile()),
+                        );
                       },
                       child: Image.asset("assets/images/backArrowWhite.png",
                         height: 25,
