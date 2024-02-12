@@ -35,7 +35,7 @@ class _PeriodDurationState extends State<PeriodDuration> {
     }
     else{
       setState(() {
-        periodLength = 7;
+        periodLength = 4;
       });
     }
     await PostAPIService().savePeriodDuration(periodLength);

@@ -236,7 +236,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                 // focusNode: focusNodeP,
                                 obscureText: _isPasswordVisible, // Control visibility
                                 maxLength: 25,
-
+                                enableInteractiveSelection: false,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction, // Validate on every change
                                 controller: _pass1,
@@ -317,6 +317,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                   }
                                   return null;
                                 },
+                                enableInteractiveSelection: false,
                                 decoration: InputDecoration(
                                   focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
                                   errorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),

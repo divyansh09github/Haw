@@ -231,6 +231,7 @@ class _LoginUserState extends State<LoginUser> {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.65,
                               child: TextFormField(
+                                enableInteractiveSelection: false,
                                 cursorColor: Color(0xffFF608B),
                                 textAlign: TextAlign.center,
                                 maxLength: 25,

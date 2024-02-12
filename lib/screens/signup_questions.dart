@@ -177,6 +177,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
 
       try {
         // await PostAPIService().saveProfileImage(_selectedImageFile);
+        await PreferencesManager.setUserName(_name.text);
         var response = await PostAPIService().saveSignUpQuestions(_name.text, _toDate!, _selectedMaritalStatus.toString(), _selectedRegion.toString(), _height.text, _weight.text, _email.text, _phone.text);
 
         if (response.statusCode != 200) {
@@ -465,6 +466,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
 
 
                     SizedBox(height: 5,),
+                    //Name field
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: TextFormField(
@@ -522,6 +524,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     ),
                     SizedBox(height: 30,),
 
+                    //DOB field
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: TextFormField(
@@ -580,6 +583,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     ),
                     SizedBox(height: 30,),
 
+                    //Marital field
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
@@ -641,6 +645,8 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     ),
                     SizedBox(height: 30,),
 
+
+                    //Region field
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
@@ -697,6 +703,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     ),
                     SizedBox(height: 30,),
 
+                    //Height field
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: TextFormField(
@@ -741,6 +748,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     ),
                     SizedBox(height: 30,),
 
+                    //Weight field
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: TextFormField(
@@ -794,6 +802,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     ),
                     SizedBox(height: 30,),
 
+                    //Phone number field
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: TextFormField(

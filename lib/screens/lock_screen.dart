@@ -12,6 +12,23 @@ class LockScreen extends StatefulWidget {
 }
 
 class _LockScreenState extends State<LockScreen> {
+
+  String userName = "user";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _getUsername();
+  }
+
+  _getUsername() async{
+    String name = await PreferencesManager.getUserName();
+    setState(() {
+      userName = name;
+    });
+  }
+
   Color backgroundColor = const Color(0xFFFFDFE9);
 
   List<dynamic> digits = [];
@@ -52,18 +69,30 @@ class _LockScreenState extends State<LockScreen> {
 
       if(passCode1 == passCode2){
         // Show SnackBar
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            dismissDirection: DismissDirection.startToEnd,
-            padding: EdgeInsets.all(10),
-            content: Text('Passcode Set Successfully'),
-            backgroundColor: Color(0xBAFF608B),
-            elevation: 10,
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 2),
-            margin: EdgeInsets.all(15),
+        const snackDemo = SnackBar(
+          dismissDirection: DismissDirection.startToEnd,
+          padding: EdgeInsets.all(7),
+          content: Text(
+            "Passcode set successfully",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+          backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 2),
+          margin: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15), // Customize corner radius as needed
+            ),
           ),
         );
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackDemo);
 
         _setAppLock(passCode2);
         Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => NavbarSettings()),);
@@ -71,18 +100,30 @@ class _LockScreenState extends State<LockScreen> {
       }
       else{
         // Show SnackBar
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            dismissDirection: DismissDirection.startToEnd,
-            padding: EdgeInsets.all(10),
-            content: Text("Passcode doesn't Match"),
-            backgroundColor: Color(0xBAFF608B),
-            elevation: 10,
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 2),
-            margin: EdgeInsets.all(15),
+        const snackDemo = SnackBar(
+          dismissDirection: DismissDirection.startToEnd,
+          padding: EdgeInsets.all(7),
+          content: Text(
+            "Passcode doesn't match",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+          backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 2),
+          margin: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15), // Customize corner radius as needed
+            ),
           ),
         );
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackDemo);
         setState(() {
           // passCodeText = "not Matched";
           firstTime = true;
@@ -113,7 +154,7 @@ class _LockScreenState extends State<LockScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Stack(
@@ -149,7 +190,7 @@ class _LockScreenState extends State<LockScreen> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text('Hello, User',
+                    Text('Hello, $userName',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -192,7 +233,7 @@ class _LockScreenState extends State<LockScreen> {
                             decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(
-                                        color: Colors.white, width: 4))),
+                                        color: Color(0xFFFF608B), width: 4))),
                             child: digits.length > i ? Center(child: Text(digits[i].toString(), style: TextStyle(fontSize: 25,color: Color(0xFFFF608B),fontWeight: FontWeight.w600),)) : Text(""),
                           ),
                         // Container(
@@ -232,7 +273,7 @@ class _LockScreenState extends State<LockScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: Row(
@@ -259,7 +300,7 @@ class _LockScreenState extends State<LockScreen> {
                       ...List.generate(9, (index) {
                         return Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: ElevatedButton(
+                          child: ElevatedButton(style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
                             onPressed: () {
                               // print('Button ${index + 1} pressed');
                               firstTime ? _addValue(index+1) : _addSecondValue(index+1);

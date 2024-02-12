@@ -41,16 +41,12 @@ class _HomePeriodState extends State<HomePeriod> {
   int? abc;
 
   bool? showScreen;
-
-  // DateTime? lastPeriodDate = await PreferencesManager.getLastPeriodDate();
-
   @override
   initState() {
     super.initState();
     showScreen = false;
 
     _apiService();
-    // kuchBhi();
 
   }
 
@@ -76,27 +72,6 @@ class _HomePeriodState extends State<HomePeriod> {
     }
   }
 
-  // void kuchBhi() async {
-  //   DateTime? lastPeriodDate = await PreferencesManager.getLastPeriodDate();
-  //   int cycleLength = await PreferencesManager.getCycleLength();
-  //   int periodDuration = await PreferencesManager.getPeriodDuration();
-  //
-  //   DateTime futureDate = lastPeriodDate!.add(Duration(days: cycleLength));
-  //
-  //   PreferencesManager.setPredictedDate(futureDate);
-  //
-  //   if (futureDate.compareTo(currentDate) > 0) {
-  //     setState(() {
-  //       abc = futureDate.difference(currentDate).inDays;
-  //       periodText = "Period starts in";
-  //     });
-  //   } else if (currentDate.compareTo(futureDate) > 0) {
-  //     setState(() {
-  //       abc = currentDate.difference(futureDate).inDays;
-  //       periodText = "You are in";
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

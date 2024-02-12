@@ -14,13 +14,23 @@ class AppLockScreen extends StatefulWidget {
 
 class _AppLockScreenState extends State<AppLockScreen> {
 
+  String userName = 'User';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     _pinCode();
+
+    _getUsername();
   }
+  _getUsername() async{
+    String name = await PreferencesManager.getUserName();
+    setState(() {
+      userName = name;
+    });
+  }
+
 
   String pin = '';
   _pinCode() async{
@@ -115,7 +125,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text('Hello, User',
+                    Text('Hello, $userName',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,

@@ -251,10 +251,10 @@ class _DataCalendarState extends State<DataCalendar> {
           //   specialDatesTextStyle: const TextStyle(color: Colors.white),
           // ),
 
-          monthCellStyle: DateRangePickerMonthCellStyle(textStyle: TextStyle(fontSize: 17)),
+          monthCellStyle: DateRangePickerMonthCellStyle(textStyle: TextStyle(fontSize: 18)),
 
 
-          headerStyle: DateRangePickerHeaderStyle(textStyle: TextStyle(fontSize: 24), textAlign: TextAlign.center),
+          headerStyle: DateRangePickerHeaderStyle(textStyle: TextStyle(fontSize: 20), textAlign: TextAlign.center),
           monthViewSettings: DateRangePickerMonthViewSettings(enableSwipeSelection: false),
 
 
@@ -297,7 +297,7 @@ class _DataCalendarState extends State<DataCalendar> {
       //   MaterialPageRoute(builder: (context) => DataCalendarList(selectedDate : selectedDate!)),
       // );
       if(selectedDate!.isBefore(DateTime.now())) {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => DataCalendarList(selectedDate : selectedDate!)),
         );

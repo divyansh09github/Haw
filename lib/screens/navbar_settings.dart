@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/lock_screen.dart';
+import 'package:haw/screens/settings_appinfo.dart';
 import 'package:haw/screens/settings_help.dart';
 import 'package:haw/screens/settings_termsandconditions.dart';
 
@@ -16,6 +17,7 @@ class _NavbarSettingsState extends State<NavbarSettings> {
 
   Color backgroundColor = const Color(0xFFFFDFE9);
   bool _appLockEnabled = false;
+  bool isPinSet = false;
 
   @override
   void initState() {
@@ -23,10 +25,16 @@ class _NavbarSettingsState extends State<NavbarSettings> {
     setLock();
     super.initState();
 
-
+    _isPin();
 
   }
 
+  _isPin() async{
+  bool pin = await PreferencesManager.getIsPinSet();
+  setState(() {
+    isPinSet = pin;
+  });
+}
   setLock() async{
     bool abc = await PreferencesManager.getIsLockEnabled();
     setState(() {
@@ -71,7 +79,7 @@ class _NavbarSettingsState extends State<NavbarSettings> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(50, 30, 0, 20),
-                child: Text("Privacy & Security", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                child: Text("Privacy & Security", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),),
               ),
             ],
           ),
@@ -122,7 +130,7 @@ class _NavbarSettingsState extends State<NavbarSettings> {
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: ListTile(
-              title: Text('Set Pin'),
+              title: isPinSet ? Text('Reset Pin') : Text('Set Pin'),
 
               leading: Icon(Icons.pin),
               // Image.asset("assets/images/signoutnavbaricon.png",
@@ -185,7 +193,12 @@ class _NavbarSettingsState extends State<NavbarSettings> {
               //   height: 25,
               // ),
               iconColor: Color(0xFFFF608B),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AppInfo()),
+                );
+              },
             ),
           ),
 

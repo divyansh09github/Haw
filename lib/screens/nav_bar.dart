@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/blogs.dart';
 import 'package:haw/screens/data_calendar_list.dart';
 import 'package:haw/screens/get_started_page.dart';
@@ -22,11 +23,19 @@ class _NavBarState extends State<NavBar>{
 
   Color backgroundColor = const Color(0xFFFFDFE9);
 
+  String userName = 'User';
   @override
   void initState(){
-
+    super.initState();
+    _getUsername();
   }
 
+  _getUsername() async{
+    String name = await PreferencesManager.getUserName();
+    setState(() {
+      userName = name;
+    });
+  }
   _signOut() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
@@ -46,7 +55,7 @@ class _NavBarState extends State<NavBar>{
         children: [
           UserAccountsDrawerHeader(
             accountName: Text('', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)),
-            accountEmail: Text('Hello, Username', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)),
+            accountEmail: Text('Hello, $userName', style: TextStyle(color: Color(0xFFFF608B), fontSize: 20, fontWeight: FontWeight.w500)),
             currentAccountPicture: Container(
               width: 130,
               height: 130,
@@ -146,6 +155,7 @@ class _NavBarState extends State<NavBar>{
                     style: TextStyle(
                       color: Color(0xFFFF608B),
                       fontSize: 12,
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                 ),
@@ -172,6 +182,7 @@ class _NavBarState extends State<NavBar>{
                   style: TextStyle(
                     color: Color(0xFFFF608B),
                     fontSize: 12,
+                    fontWeight: FontWeight.w600
                   ),
                 ),
               ),

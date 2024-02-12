@@ -587,6 +587,18 @@ class _ProfileEditState extends State<ProfileEdit> {
 
     _getStates();
 
+    print(widget.profileData);
+    setState(() {
+      _email.value = TextEditingValue(text: widget.profileData['show_user'][0]['email'] ?? "");
+      _name.value = TextEditingValue(text: widget.profileData['show_user'][0]['name'] ?? "");
+      _dob.value = TextEditingValue(text: widget.profileData['show_user'][0]['dob'] ?? "");
+      _height.value = TextEditingValue(text: widget.profileData['show_user'][0]['height'] ?? "");
+      _weight.value = TextEditingValue(text: widget.profileData['show_user'][0]['weight'] ?? "");
+      _phone.value = TextEditingValue(text: widget.profileData['show_user'][0]['phone_number'] ?? "");
+
+      _selectedMaritalStatus = widget.profileData['show_user'][0]['marital_status'] ?? "";
+      _selectedRegion = widget.profileData['show_user'][0]['state_name'] ?? "";
+    });
   }
   // Define a variable to store the selected image file
   File? _selectedImageFile;
@@ -601,13 +613,65 @@ class _ProfileEditState extends State<ProfileEdit> {
   final TextEditingController _dob = TextEditingController();
   final TextEditingController _height = TextEditingController();
   final TextEditingController _weight = TextEditingController();
-  final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+
+
+  DateTime? _toDate;
+  bool toDatePicked = false;
+  void _toDatePicker() {
+    // backgroundColor: Color(0xFFFF608B);
+    showDatePicker(
+      context: context,
+      initialDate: DateTime(DateTime.now().year - 10),
+      firstDate: DateTime(DateTime.now().year - 100),
+      lastDate: DateTime(DateTime.now().year - 10),
+
+      initialEntryMode: DatePickerEntryMode
+          .calendar, // Ensure calendar view for customization
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Color(0xFFFF608B), // Set background color here
+              onPrimary: Colors.white, // Adjust text color if needed
+            ),
+          ),
+          child: child!,
+        );
+      },
+    ).then((pickedDate) {
+      // Check if no date is selected
+      if (pickedDate == null) {
+        return;
+      }
+      String daystr = pickedDate.day.toString();
+      String monthstr = pickedDate.month.toString();
+      String year = pickedDate.year.toString();
+      if (pickedDate.day < 10) {
+        daystr = '0${pickedDate.day.toString()}';
+      }
+      if (pickedDate.month < 10) {
+        monthstr = '0${pickedDate.month.toString()}';
+      }
+      setState(() {
+        // promotion.endDate='$daystr-$monthstr-$year';
+        toDatePicked = true;
+        _toDate = pickedDate;
+        _dob.text = DateFormat('yyyy-MM-dd').format(_toDate!);
+      });
+
+      // print(formattedDate);
+      // print(_toDate);
+      // print(toDatePicked);
+    });
+  }
 
   void validateForm() async{
 
     print(_selectedImageFile);
 
-    await PostAPIService().saveProfileImage(_selectedImageFile);
+    // await PostAPIService().saveProfileImage(_selectedImageFile);
     if(_formKey.currentState!.validate()){
       print("validate");
 
@@ -619,7 +683,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         region: _selectedRegion.toString(),
           height: _height.text,
           weight : _weight.text,
-          phone: _phoneNumber.text,
+          phone: _phone.text,
       );
 
 
@@ -627,15 +691,28 @@ class _ProfileEditState extends State<ProfileEdit> {
       // show some message on success save
       const snackDemo = SnackBar(
         dismissDirection: DismissDirection.startToEnd,
-        padding: EdgeInsets.all(10),
-        content: Text('Saved'),
-        backgroundColor: Color(0xBAFF608B),
+        padding: EdgeInsets.all(7),
+        content: Text(
+          'Profile updated',
+          style: TextStyle(color: Color(0xFF972633)),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
         elevation: 10,
         behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 10),
+        duration: Duration(seconds: 2),
         margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackDemo);
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
     }
     // print(_selectedRegion);
 
@@ -699,12 +776,16 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   }
 
+  bool edited = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
 
       body:Form(
+        onChanged: () {
+          edited = true;
+        },
         key: _formKey, // Assign the global key to the Form
         child:Column(
         children: [
@@ -817,174 +898,157 @@ class _ProfileEditState extends State<ProfileEdit> {
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Username",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
+                  SizedBox(height: 5,),
+                  //Name field
                   SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: SizedBox(
-                      width:
-                          MediaQuery.of(context).size.width * 0.8, // Set width
-                      height: 30, // Set height
-                      child: Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(8),
-                        child: TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction, // Validate on every change
-                          controller: _name,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Name is Required';
-                            } else if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
-                              return 'Please enter only letters and spaces';
-                            }else if (value.length > 24) { // Check for character limit
-                              return 'Name cannot exceed 25 characters';
-                            }
-                            return null;
-                          },
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]')),
-                            LengthLimitingTextInputFormatter(25), // Enforce character limit during input
-                          ],
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: widget.profileData['show_user'][0]['name'].toString(),
-                            // labelText: '100',
-                            // labelStyle: const TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                  15), // Match border radius with material
-                              borderSide:
-                                  BorderSide.none, // Remove the default border
-                            ),
-                            contentPadding: const EdgeInsets.only(
-                                left: 20.0, top: 10.0, right: 10.0),
-                          ),
-                        ),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: TextFormField(
+                      cursorColor: Color(0xffFF608B),
+                      // focusNode: focusNodeE,
+                      // obscureText: true,
+                      textCapitalization: TextCapitalization.words, // Capitalize first letter of each word
+                      autovalidateMode: AutovalidateMode
+                          .onUserInteraction, // Validate on every change
+                      controller: _name,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Name is Required';
+                        } else if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+                          return 'Please enter only letters and spaces';
+                        } else if (value.length > 24) {
+                          // Check for character limit
+                          return 'Name cannot exceed 25 characters';
+                        }
+                        return null;
+                      },
+                      inputFormatters: [
+
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'[a-zA-Z ]')),
+                        LengthLimitingTextInputFormatter(
+                            25), // Enforce character limit during input
+                      ],
+                      decoration: InputDecoration(
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        labelStyle:
+                        TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                        focusColor: Color(0xffFF608B),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFF608B)),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10))),
+                        // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        labelText: 'Your Name',
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30,),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Date Of Birth",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
+                  //DOB field
                   SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: SizedBox(
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
-                      height: 30, // Set height
-                      child: Material(
-                          elevation: 2,
-                          borderRadius: BorderRadius.circular(8),
-                          child: TextFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction, // Validate on every change
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'DOB is Required';
-                              } else if (!isValidDate(value)) { // Validate date format
-                                return 'Please enter a valid date in DD-MM-YYYY format';
-                              }
-                              return null;
-                            },
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: TextFormField(
+                      cursorColor: Color(0xffFF608B),
+                      // focusNode: focusNodeE,
+                      // obscureText: true,
+                      // maxLength: 10,
 
-                            controller: _dob,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: '${widget.profileData['show_user'][0]['dob']}',
-                              // labelText: '100',
-                              // labelStyle: const TextStyle(color: Colors.black),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                    15), // Match border radius with material
-                                borderSide: BorderSide
-                                    .none, // Remove the default border
-                              ),
-                              contentPadding: const EdgeInsets.only(
-                                  left: 20.0, top: 10.0, right: 10.0),
-// Use IntrinsicHeight to wrap the column widget
-//                             suffixIcon: IntrinsicHeight(
-//                               child: Column(
-//                                 mainAxisSize: MainAxisSize.min,
-//                                 children: <Widget>[
-//
-//                                   // SizedBox(height: 20.0),
-//
-//                                   IconButton(
-//                                       onPressed: () => _selectedDate,
-//                                       icon: Icon(Icons.calendar_month, size: 24.0,color: Color(0xFFFF608B))
-//                                   ),
-//
-//                                 ],
-//                               ),
-//                             ),
-                            ),
-                          )),
+                      autovalidateMode: AutovalidateMode
+                          .onUserInteraction, // Validate on every change
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'DOB is Required';
+                        } else if (!isValidDate(value)) {
+                          // Validate date format
+                          return 'Please enter a valid date in DD-MM-YYYY format';
+                        }
+                        return null;
+                      },
+
+                      controller: _dob,
+                      readOnly:
+                      true, // Make field read-only to enforce date picker usage
+                      decoration: InputDecoration(
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(color: Color(0xffFF0000))),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(color: Color(0xffFF0000))),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          labelStyle:
+                          TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                          focusColor: Color(0xffFF608B),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffFF608B)),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(10))),
+                          // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                          labelText: 'DOB',
+                          suffixIcon: IconButton(
+                            onPressed:
+                            _toDatePicker, // Use the function directly
+                            icon: Icon(Icons.calendar_month,
+                                size: 26, color: Color(0xFFFF608B)),
+                          )
+                      ),
                     ),
                   ),
+                  SizedBox(height: 30,),
 
-                  SizedBox(height: 20),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Marital Status",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  //Marital field
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Container(
-                    //
-                      height: 30, // increase the height of the dropdown
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
-                      // set the background color of the dropdown
+                      height: 48, // Increase height for better visibility
+                      width: MediaQuery.of(context).size.width *
+                          0.8, // Adjust width for balance
+                      // padding: const EdgeInsets.symmetric(horizontal: 10), // Create internal padding
                       decoration: BoxDecoration(
                         color: Colors
                             .white, // the background color of the decoration
                         border: Border.all(
-                            color: Colors.white,
+                            color: Colors.black12,
                             width: 1), // the border of the decoration
                         borderRadius: BorderRadius.circular(
                             8), // the border radius of the decoration
-                        boxShadow: [
-                          // the box shadow of the decoration
-                          BoxShadow(
-                            color: Colors.grey, // the color of the shadow
-                            offset: Offset(0, 2), // the offset of the shadow
-                            blurRadius: 4, // the blur radius of the shadow
-                          ),
-                        ],
+                        // boxShadow: [
+                        //   // the box shadow of the decoration
+                        //   BoxShadow(
+                        //     color: Colors.grey, // the color of the shadow
+                        //     offset: Offset(0, 2), // the offset of the shadow
+                        //     blurRadius: 4, // the blur radius of the shadow
+                        //   ),
+                        // ],
                       ),
-                      child: DropdownButtonHideUnderline( // Remove underline more efficiently
-                        child: ButtonTheme( // Align text with button theme
+                      child: DropdownButtonHideUnderline(
+                        // Remove underline more efficiently
+                        child: ButtonTheme(
+                          // Align text with button theme
                           alignedDropdown: true,
                           child: DropdownButton<String>(
                             isExpanded: true,
@@ -994,71 +1058,67 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 _selectedMaritalStatus = newValue;
                               });
                             },
-                            items: marital
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,
-                                  style: TextStyle(fontSize: 16), // Consistent text size
-                                ),
-                              );
-                            }).toList(),
+                            items: marital.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                          fontSize: 16,fontWeight: FontWeight.normal), // Consistent text size
+                                    ),
+                                  );
+                                }).toList(),
                             hint: Text(
-                              // "Marital status",
-                              widget.profileData['show_user'][0]['marital_status'] != null
-                                  ? widget.profileData['show_user'][0]['marital_status'].toString()
-                                  : 'Marital Status',
-                              style: TextStyle(color: Colors.grey.shade600), // Hint text color
+                              "Marital status",
+                              style: TextStyle(
+                                  color: Color(0xffFF608B), fontSize: 15
+                              ), // Hint text color
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
+                  SizedBox(height: 30,),
 
-                  SizedBox(height: 20),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Region",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  //Region field
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Container(
-                      height: 30, // increase the height of the dropdown
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
+                      height: 40, // increase the height of the dropdown
+                      width: MediaQuery.of(context).size.width *
+                          0.8, // Adjust width for balance
                       // set the background color of the dropdown
                       decoration: BoxDecoration(
                         color: Colors
                             .white, // the background color of the decoration
                         border: Border.all(
-                            color: Colors.white,
+                            color: Colors.black12,
                             width: 1), // the border of the decoration
                         borderRadius: BorderRadius.circular(
                             8), // the border radius of the decoration
-                        boxShadow: [
-                          // the box shadow of the decoration
-                          BoxShadow(
-                            color: Colors.grey, // the color of the shadow
-                            offset: Offset(0, 2), // the offset of the shadow
-                            blurRadius: 4, // the blur radius of the shadow
-                          ),
-                        ],
+                        // boxShadow: [
+                        //   // the box shadow of the decoration
+                        //   BoxShadow(
+                        //     color: Colors.grey, // the color of the shadow
+                        //     offset: Offset(0, 2), // the offset of the shadow
+                        //     blurRadius: 4, // the blur radius of the shadow
+                        //   ),
+                        // ],
                       ),
                       child: DropdownButton<String>(
                         value: _selectedRegion, // Initially selected state
-                        items: states.map<DropdownMenuItem<String>>((String value) {
+                        items: states
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value),
+                            child: Text(value,
+                              style: TextStyle(
+                                  fontSize: 16,fontWeight: FontWeight.normal),
+                            ),
+
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -1071,226 +1131,201 @@ class _ProfileEditState extends State<ProfileEdit> {
                         underline:
                         Container(), // remove the default underline of the dropdown
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        // hint: Text("Select Region"),
-                        hint: Text(widget.profileData['show_user'][0]['state_name'] != null
-                            ? widget.profileData['show_user'][0]['state_name'].toString()
-                            : 'State',style: TextStyle(color: Colors.grey.shade600),),
+                        hint: Text("Select Region",
+                            style: TextStyle(
+                                color: Color(0xffFF608B), fontSize: 15
+                            )),
                       ),
                     ),
                   ),
+                  SizedBox(height: 30,),
 
-                  SizedBox(height: 20),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Height",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
+                  //Height field
                   SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: SizedBox(
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
-                      height: 30, // Set height
-                      child: Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(15),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          controller: _height,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: TextFormField(
+                      cursorColor: Color(0xffFF608B),
+                      // focusNode: focusNodeE,
+                      // obscureText: true,
+                      maxLength: 3,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      controller: _height,
+                      decoration: InputDecoration(
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        labelStyle:
+                        TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                        focusColor: Color(0xffFF608B),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFF608B)),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10))),
+                        // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        labelText: 'Height (cms)',
+                        counterText: '',
+                        counterStyle: const TextStyle(color: Colors.transparent),
 
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            // hintText: 'Height (in cms)',
-                            hintText: widget.profileData['show_user'][0]['height'] != null
-                                ? '${widget.profileData['show_user'][0]['height']}'
-                                : 'Height',
-                            // labelText: '100',
-                            // labelStyle: const TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                  8), // Match border radius with material
-                              borderSide:
-                                  BorderSide.none, // Remove the default border
-                            ),
-                            contentPadding: const EdgeInsets.only(
-                                left: 20.0, top: 10.0, right: 10.0),
-                          ),
-                        ),
                       ),
                     ),
                   ),
+                  SizedBox(height: 30,),
 
-                  SizedBox(height: 20),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Weight",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
+                  //Weight field
                   SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: SizedBox(
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
-                      height: 30, // Set height
-                      child: Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(15),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          controller: _weight,
-
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            // hintText: 'Weight',
-                            hintText: widget.profileData['show_user'][0]['height'] != null
-                                ? '${widget.profileData['show_user'][0]['height']}'
-                                : 'Weight',
-                            // labelText: '100',
-                            // labelStyle: const TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                  8), // Match border radius with material
-                              borderSide:
-                                  BorderSide.none, // Remove the default border
-                            ),
-                            contentPadding: const EdgeInsets.only(
-                                left: 20.0, top: 10.0, right: 10.0),
-                          ),
-                        ),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: TextFormField(
+                      cursorColor: Color(0xffFF608B),
+                      // focusNode: focusNodeE,
+                      // obscureText: true,
+                      maxLength: 6,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d{0,3}(\.\d{0,2})?$')), // Allow up to 3 digits, optional decimal, and up to 2 decimal digits
+                      ],
+                      controller: _weight,
+                      decoration: InputDecoration(
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        labelStyle:
+                        TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                        focusColor: Color(0xffFF608B),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFF608B)),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10))),
+                        // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        labelText: 'Weight (kg/s)',
+                        counterText: '',
+                        counterStyle: const TextStyle(color: Colors.transparent),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
+                      validator: (value) {
+                        if (value!.length > 6) {
+                          return 'Weight cannot exceed 6 characters.';
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Phone Number",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                        } else if (double.parse(value) > 200) {
+                          return 'Weight cannot exceed 200.';
+                        }
+                        return null; // Valid weight
+                      },
                     ),
                   ),
+                  SizedBox(height: 30,),
+
+                  //Phone number field
                   SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: SizedBox(
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
-                      height: 30, // Set height
-                      child: Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(8),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Phone number is required';
-                            } else if (value.length < 10) {
-                              return 'Phone number must be at least 10 digits long';
-                            } else if (value.length > 10) {
-                              return 'Phone number cannot exceed 15 digits';
-                            } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                              return 'Phone number can only contain digits';
-                            }
-                            return null; // Valid phone number
-                          },
-                          controller: _phoneNumber,
-                          decoration: InputDecoration(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: TextFormField(
+                      cursorColor: Color(0xffFF608B),
+                      // focusNode: focusNodeE,
+                      // obscureText: true,
+                      maxLength: 10,
 
-                            filled: true,
-                            fillColor: Colors.white,
-                            // hintText: '1234567890',
-                            hintText: widget.profileData['show_user'][0]['height'] != null
-                                ? '${widget.profileData['show_user'][0]['height']}'
-                                : 'Phone number',
-                            // labelText: '1234567890',
-                            // labelStyle: const TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                  15), // Match border radius with material
-                              borderSide:
-                                  BorderSide.none, // Remove the default border
-                            ),
-                            contentPadding: const EdgeInsets.only(
-                                left: 20.0, top: 10.0, right: 10.0),
-                          ),
-                        ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      controller: _phone,
+                      decoration: InputDecoration(
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        labelStyle:
+                        TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                        focusColor: Color(0xffFF608B),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFF608B)),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10))),
+                        // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        labelText: 'Phone Number',
+
+                        counterText: '',
+                        counterStyle: const TextStyle(color: Colors.transparent),
                       ),
                     ),
                   ),
+                  SizedBox(height: 30,),
 
-                  SizedBox(height: 20),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "Email",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                  ),
+                  //Email field
                   SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: SizedBox(
-                      width:
-                      MediaQuery.of(context).size.width * 0.8, // Set width
-                      height: 30, // Set height
-                      child: Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(8),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            enabled: false,
-                            filled: true,
-                            fillColor: Colors.white,
-                            // hintText: 'usermail@gmail.com',
-                            hintText:  '${widget.profileData['show_user'][0]['email']}' ?? 'Email',
-                            // labelText: 'usermail@gmail.com',
-                            // labelStyle: const TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                  15), // Match border radius with material
-                              borderSide:
-                                  BorderSide.none, // Remove the default border
-                            ),
-                            contentPadding: const EdgeInsets.only(
-                                left: 20.0, top: 10.0, right: 10.0),
-                          ),
-                        ),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: TextFormField(
+                      cursorColor: Color(0xffFF608B),
+                      enabled: false,
+                      controller: _email,
+                      decoration: InputDecoration(
+                        disabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffFF0000))),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        labelStyle:
+                        TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                        focusColor: Color(0xffFF608B),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFF608B)),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10))),
+                        // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                        labelText: 'Email',
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30,),
+
 
                   // Padding(
                   //   padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -1378,25 +1413,30 @@ class _ProfileEditState extends State<ProfileEdit> {
           //   children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: SizedBox(
+            child: edited ? SizedBox(
               width: 356,
               height: 45,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to the next page when the button is pressed
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => ProfileEdit()),
-                  // );
-
-                  // editProfileDrawer(context);
                   validateForm();
-
                 },
                 style: ButtonStyle(
                   elevation: MaterialStatePropertyAll(8),
-
                   backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
+                ),
+                child: Text('Save', style: TextStyle(fontSize: 24.0, color: Colors.white),),
+              ),
+            ) : SizedBox(
+              width: 356,
+              height: 45,
+              child: ElevatedButton(
+                onPressed: () {
+                  validateForm();
+                },
+                style: ButtonStyle(
+                  elevation: MaterialStatePropertyAll(8),
+                  backgroundColor: MaterialStateProperty.all(Color(0xffffb7cb)), // Use backgroundColor to change the background color
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))), // Use shape to change the border radius
                 ),
                 child: Text('Save', style: TextStyle(fontSize: 24.0, color: Colors.white),),

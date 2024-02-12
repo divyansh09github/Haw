@@ -34,18 +34,30 @@ class _BlogsState extends State<Blogs> {
   loadingProcess() {
     Future.delayed(Duration(seconds: 5), () {
       // After 10 seconds, show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          dismissDirection: DismissDirection.startToEnd,
-          padding: EdgeInsets.all(10),
-          content: Text('Low internet Connection'),
-          backgroundColor: Color(0xBAFF608B),
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 4),
-          margin: EdgeInsets.all(15),
+      const snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(7),
+        content: Text(
+          'Low internet connection',
+          style: TextStyle(color: Color(0xFF972633)),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
         ),
       );
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
 
       // Navigate to another page after 8 seconds (5 seconds for loading + 3 seconds for snackbar)
       Future.delayed(Duration(seconds: 3), () {
@@ -78,7 +90,7 @@ class _BlogsState extends State<Blogs> {
     setState(() {
       blogLen = blogsData['show_blogs']['blogs'].length;
     });
-    // print('abc $apiUrl/public/${blogsData['image']}');
+    print(blogsData);
   }
 
   // _getBlogSlides(int blogId) async {
@@ -200,11 +212,10 @@ class _BlogsState extends State<Blogs> {
           //   },
           // );
 
-
           int blogId = data['blog_id'];
 
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => BlogContent(blogId: blogId)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => BlogContent(blogId: blogId)));
         },
 
         // onTap: () {
@@ -226,14 +237,14 @@ class _BlogsState extends State<Blogs> {
               child: Card(
                 elevation: 5,
                 shadowColor: Colors.black,
-                color: Colors.white,
+                color: backgroundColor,
                 child: Stack(
                   children: [
                     SizedBox(
                       height: 100,
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         // crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           // Column(
@@ -292,15 +303,26 @@ class _BlogsState extends State<Blogs> {
                                               //     fit: BoxFit.contain,
                                               //   ),
                                               // ),
-                                              ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            child: Image.network(
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(8),
+                                            child: data['image'] != null
+                                                ? Image.network(
                                               '$apiUrl/public/${data['image']}',
-                                              // 'assets/images/blogImage.png',
+                                              fit: BoxFit.contain,
+                                              errorBuilder: (context, error, stackTrace) {
+                                                // Handle image loading errors gracefully
+                                                return Image.asset(
+                                                  'assets/images/blogImage.png', // Replace with your placeholder image
+                                                  fit: BoxFit.contain,
+                                                );
+                                              },
+                                            )
+                                                : Image.asset(
+                                              'assets/images/blogImage.png', // Replace with your "no image" image
                                               fit: BoxFit.contain,
                                             ),
-                                          )),
+                                          ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -309,16 +331,18 @@ class _BlogsState extends State<Blogs> {
                           ),
 
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.6,
                                   child: Text(
                                     data['title'],
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
+                                    maxLines: 3,
                                     softWrap: false,
                                     style: TextStyle(
                                       fontSize: 16,
@@ -331,20 +355,24 @@ class _BlogsState extends State<Blogs> {
                             ],
                           ),
 
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('25 Jan, 2024',
-                                    style: TextStyle(
-                                      letterSpacing: 0.72,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    )),
-                              ),
-                            ],
-                          ),
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.end ,
+                          //   crossAxisAlignment: CrossAxisAlignment.center,
+                          //   children: [
+                          //     Padding(
+                          //       padding: const EdgeInsets.all(8.0),
+                          //       child: Container(
+                          //         width: 70,
+                          //         child: Text('25 Jan, 2024',
+                          //             style: TextStyle(
+                          //               letterSpacing: 0.72,
+                          //               fontSize: 10,
+                          //               fontWeight: FontWeight.w400,
+                          //             )),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),
@@ -368,8 +396,7 @@ class _BlogsState extends State<Blogs> {
                         "assets/images/arrow_blog_forward.png",
                         width: 25,
                         height: 25,
-                      )
-                  ),
+                      )),
                 ),
               ),
             ),
@@ -391,7 +418,7 @@ class _BlogsState extends State<Blogs> {
   Widget build(BuildContext context) {
     return showPage
         ? Scaffold(
-            backgroundColor: backgroundColor,
+            backgroundColor: Colors.white,
             body: Column(
               children: [
                 Stack(

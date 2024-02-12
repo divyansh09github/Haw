@@ -394,7 +394,7 @@ class _ProfileState extends State<Profile> {
     // }
     
     return isLoading ? Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
 
       body:
         // SingleChildScrollView(
@@ -558,12 +558,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
 
               //Age Row
               // Row(
@@ -625,7 +625,6 @@ class _ProfileState extends State<Profile> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                            fontFamily: 'Inria Sans',
                             fontWeight: FontWeight.w300,
                             height: 0,
                             letterSpacing: 0.96,
@@ -636,12 +635,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -674,7 +673,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
@@ -712,12 +711,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -750,12 +749,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -788,12 +787,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -919,12 +918,12 @@ class _ProfileState extends State<Profile> {
               // ),
 
 
-              SizedBox(height: 5,),
+              SizedBox(height: 10,),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Divider()
               ),
-              SizedBox(height: 100,),
+              SizedBox(height: 50,),
               //Edit button
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

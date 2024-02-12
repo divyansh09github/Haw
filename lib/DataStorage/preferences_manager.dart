@@ -94,6 +94,16 @@ class PreferencesManager{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('userToken');
   }
+  //Username
+  static Future<String> getUserName() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('name') ?? "";
+  }
+
+  static Future<void> setUserName(String name) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', name);
+  }
 
   // Signup Screen
 

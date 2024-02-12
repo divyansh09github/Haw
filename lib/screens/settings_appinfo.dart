@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/services/get_api.dart';
 
-class SettingTermsNConditions extends StatefulWidget {
-  const SettingTermsNConditions({super.key});
+class AppInfo extends StatefulWidget {
+  const AppInfo({super.key});
 
   @override
-  State<SettingTermsNConditions> createState() => _SettingTermsNConditionsState();
+  State<AppInfo> createState() => _AppInfoState();
 }
 
-class _SettingTermsNConditionsState extends State<SettingTermsNConditions> {
-
+class _AppInfoState extends State<AppInfo> {
 
   @override
   void initState() {
@@ -26,7 +25,7 @@ class _SettingTermsNConditionsState extends State<SettingTermsNConditions> {
   _fetchTnC() async{
 
     try {
-      final data = await GetAPIService().fetchTermsAndConditions();
+      final data = await GetAPIService().fetchInfo();
       if (data.isNotEmpty) {
         setState(() {
           tncData = data;
@@ -187,7 +186,7 @@ class _SettingTermsNConditionsState extends State<SettingTermsNConditions> {
         ],
       ),
     )
-    : Scaffold(
+        : Scaffold(
       //Implement loader
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

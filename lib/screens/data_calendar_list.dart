@@ -87,12 +87,13 @@ class _DataCalendarListState extends State<DataCalendarList> {
           },
           child: Container(
 
-            decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(2),
-                ),
-                border: Border.all(width: 1, color: backgroundColor)),
+            // decoration: BoxDecoration(
+            //     color: backgroundColor,
+            //     borderRadius: BorderRadius.all(
+            //       Radius.circular(2),
+            //     ),
+            //     border: Border.all(width: 1, color: backgroundColor)
+            // ),
             child: Card(
               elevation: 5,
               shadowColor: Colors.black,
@@ -101,7 +102,16 @@ class _DataCalendarListState extends State<DataCalendarList> {
                 children: [
                   AnimatedContainer(
                     decoration: ShapeDecoration(
-                      color: data['period_day'] ? Color(0xFFFFB1CA) : Colors.lightBlueAccent,
+                      gradient: data['period_day'] ? LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: <Color>[Color(0xFFFF5389), Color(0xFFFF5389)])
+                      : LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: <Color>[Color(0xFFFF5389), Colors.white])
+                      ,
+                      // color: data['period_day'] ? Color(0xFFFFB1CA) : Colors.lightBlueAccent,
                       shape: RoundedRectangleBorder(
                         // side: BorderSide(width: 1, color: Color(0xFFffd1de)),
                         borderRadius: BorderRadius.circular(5),
@@ -134,7 +144,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                         decoration: BoxDecoration(
                                             border: Border(
                                                 right: BorderSide(
-                                                    color: Color(0xFFF593AE),
+                                                    color: Colors.white,
                                                     width: 3))),
                                         child:
                                         // Center(child: Text(data['day'].toString().padLeft(2, '0'),
@@ -237,10 +247,10 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: data['flow']['selected'] ? Color(0xFFFA8997) : Colors.grey
+                                                    color: Color(0xFFFA8997)
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
+                                                    BorderRadius.circular(8),
                                               ),
                                               shadows: [
                                                 BoxShadow(
@@ -272,10 +282,10 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: data['feelings']['selected'] ? Color(0xFF6BD6CF) : Colors.grey
+                                                    color: Color(0xFF6BD6CF)
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
+                                                    BorderRadius.circular(8),
                                               ),
                                               shadows: [
                                                 BoxShadow(
@@ -306,10 +316,10 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: data['liveliness']['selected'] ? Color(0xFFFFE28C): Colors.grey
+                                                    color: Color(0xFFFFE28C)
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
+                                                    BorderRadius.circular(8),
                                               ),
                                               shadows: [
                                                 BoxShadow(
@@ -340,10 +350,10 @@ class _DataCalendarListState extends State<DataCalendarList> {
                                               shape: RoundedRectangleBorder(
                                                 side: BorderSide(
                                                     width: 3,
-                                                    color: data['energy']['selected'] ? Color(0xFFA3B971) : Colors.grey
+                                                    color: Color(0xFFA3B971)
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
+                                                    BorderRadius.circular(8),
                                               ),
                                               shadows: [
                                                 BoxShadow(
@@ -475,6 +485,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                     //   semanticLabel: 'Text to announce in accessibility modes',
                     // )
                     Image.asset(
+                      color: Colors.black,
                   "assets/images/three_dots.png",
                   width: 18,
                   height: 18,
@@ -492,7 +503,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
   @override
   Widget build(BuildContext context) {
     return showPage ? Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           SizedBox(
@@ -566,7 +577,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
       ),
     )
     : Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       //Implement loader
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

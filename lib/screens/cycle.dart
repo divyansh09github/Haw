@@ -47,7 +47,7 @@ class _CycleState extends State<Cycle> {
     }
     else{
       setState(() {
-        cycleLength = 25;
+        cycleLength = 28;
       });
     }
     await PostAPIService().saveCycleLength(cycleLength);

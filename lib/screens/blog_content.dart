@@ -65,18 +65,30 @@ class _BlogContentState extends State<BlogContent> {
   loadingProcess() {
     Future.delayed(Duration(seconds: 5), () {
       // After 10 seconds, show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          dismissDirection: DismissDirection.startToEnd,
-          padding: EdgeInsets.all(10),
-          content: Text('Low internet Connection'),
-          backgroundColor: Color(0xBAFF608B),
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 4),
-          margin: EdgeInsets.all(15),
+      const snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(7),
+        content: Text(
+          'Low internet connection',
+          style: TextStyle(color: Color(0xFF972633)),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
         ),
       );
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
 
       // Navigate to another page after 8 seconds (5 seconds for loading + 3 seconds for snackbar)
       Future.delayed(Duration(seconds: 3), () {
@@ -212,7 +224,7 @@ class _BlogContentState extends State<BlogContent> {
   Widget build(BuildContext context) {
     return showPage
         ? Scaffold(
-            backgroundColor: backgroundColor,
+            backgroundColor: Colors.white,
             body: Column(
               children: [
                 SizedBox(
@@ -269,7 +281,7 @@ class _BlogContentState extends State<BlogContent> {
                   width: MediaQuery.of(context).size.width * 0.85,
                   height: MediaQuery.of(context).size.height * 0.8,
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.white),
+                      border: Border.all(width: 3, color: backgroundColor),
                       borderRadius: BorderRadius.circular(10)),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -303,7 +315,7 @@ class _BlogContentState extends State<BlogContent> {
             ),
           )
         : Scaffold(
-            backgroundColor: backgroundColor,
+            backgroundColor: Colors.white,
             //Implement loader
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
