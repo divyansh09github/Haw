@@ -391,82 +391,15 @@ class _DataCalendarListState extends State<DataCalendarList> {
           right: 9, // Right edge of the card
           top: -20, // Top edge of the card
           child: GestureDetector(
-            onTap: () async{
+            onTap: () {
+
               print("hello");
 
-              bool? result = await showDialog<bool>(
-                context: context,
-                builder: (context) => AlertDialog(
+              bool clickable = widget.selectedDate.isBefore(DateTime.now());
 
-                  backgroundColor: Color(0xFFFFC3D6),
-                  title: Text('You want to add/edit the data?'),
-                  titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300,letterSpacing: 1.20,color: Colors.black),
-                  // content: dialogContent('Are you sure you want to proceed?'),
-                  // content: Text("You want to add/edit the data?"),
-                  actions: [
+               clickable ? _threeDotFunc() : showSnackBar();
 
-                    Container(
-                      height : 40,
-                      width: 90,
-                      decoration: ShapeDecoration(
-                        color:  Color(0xFFFF608B),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context, false), // No button
-                        child: Text('No', style: TextStyle(color:  Colors.white, fontSize: 18, fontWeight: FontWeight.w400),),
-                      ),
-                    ),
-                    SizedBox(width: 80,),
-                    Container(
-                      height : 40,
-                      width: 90,
-                      decoration: ShapeDecoration(
-                        color:  Color(0xFFFF608B),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context, true), // Yes button
-                        child: Text('Yes', style: TextStyle(color:  Colors.white, fontSize: 18, fontWeight: FontWeight.w400),),
-                      ),
-                    ),
 
-                  ],
-                ),
-              );
-
-              if (result ?? false) {
-                // Do something if the user taps Yes
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeTabScreen(homeIndex: 2)),
-                );
-                print("Yes");
-              } else {
-                // Do something if the user taps No (or cancels the dialog)
-                print("no");
-              }
 
             },
             child: SizedBox(
@@ -498,6 +431,110 @@ class _DataCalendarListState extends State<DataCalendarList> {
       ],
     );
     // );
+  }
+
+  _threeDotFunc() async{
+    bool? result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+
+        backgroundColor: Color(0xFFFFC3D6),
+        title: Text('You want to add/edit the data?'),
+        titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300,letterSpacing: 1.20,color: Colors.black),
+        // content: dialogContent('Are you sure you want to proceed?'),
+        // content: Text("You want to add/edit the data?"),
+        actions: [
+
+          Container(
+            height : 40,
+            width: 90,
+            decoration: ShapeDecoration(
+              color:  Color(0xFFFF608B),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+              shadows: [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: TextButton(
+              onPressed: () => Navigator.pop(context, false), // No button
+              child: Text('No', style: TextStyle(color:  Colors.white, fontSize: 18, fontWeight: FontWeight.w400),),
+            ),
+          ),
+          SizedBox(width: 80,),
+          Container(
+            height : 40,
+            width: 90,
+            decoration: ShapeDecoration(
+              color:  Color(0xFFFF608B),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+              shadows: [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: TextButton(
+              onPressed: () => Navigator.pop(context, true), // Yes button
+              child: Text('Yes', style: TextStyle(color:  Colors.white, fontSize: 18, fontWeight: FontWeight.w400),),
+            ),
+          ),
+
+        ],
+      ),
+    );
+
+    if (result ?? false) {
+      // Do something if the user taps Yes
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomeTabScreen(homeIndex: 2)),
+      );
+      print("Yes");
+    } else {
+      // Do something if the user taps No (or cancels the dialog)
+      print("no");
+    }
+  }
+  void showSnackBar() {
+    final snackBar = SnackBar(
+      dismissDirection: DismissDirection.startToEnd,
+      padding: EdgeInsets.all(7),
+      content: Center(
+        child: Text(
+          "You can't choose a future date.",
+          style: TextStyle(color: Color(0xFF972633)),
+        ),
+      ),
+      backgroundColor: Color(0xFFfedbd5),
+      elevation: 10,
+      behavior: SnackBarBehavior.floating,
+      duration: Duration(seconds: 2),
+      margin: EdgeInsets.all(15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+          bottomLeft: Radius.circular(15),
+          bottomRight: Radius.circular(15),
+        ),
+      ),
+    );
+
+    // Ensure `ScaffoldMessenger` is accessible using a valid `context`
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override

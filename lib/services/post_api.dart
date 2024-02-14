@@ -18,15 +18,15 @@ class PostAPIService{
     var token = await PreferencesManager.getUserToken();
     print(length);
 
-    // final response = await http.post(
-    //     Uri.parse('$apiUrl/api/save-cycle-length?'
-    //         'id=$userId'
-    //         '&token=$token'
-    //         '&average_cycle_length=$length'),
-    //     headers: {"Content-Type": "application/json"}
-    //     );
-    //
-    //     print(response.body);
+    final response = await http.post(
+        Uri.parse('$apiUrl/api/save-cycle-length?'
+            'id=$userId'
+            '&token=$token'
+            '&average_cycle_length=$length'),
+        headers: {"Content-Type": "application/json"}
+        );
+
+        print(response.body);
   }
 
   Future savePeriodDay(DateTime date) async{

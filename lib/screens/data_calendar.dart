@@ -200,7 +200,7 @@ class _DataCalendarState extends State<DataCalendar> {
           selectionMode: DateRangePickerSelectionMode.multiRange,
           // initialSelectedDates: _initialSelectedDates, // Use the initialized list
           minDate: DateTime.utc(2023),
-          maxDate: DateTime.now().add(Duration(days: 90)),
+          maxDate: DateTime.now().add(Duration(days: 365)),
 
 
 

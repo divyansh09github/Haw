@@ -24,8 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
   initState() {
     super.initState();
 
-    _initialScreen();
 
+
+    Future.delayed(Duration(milliseconds: 6000)).then((_) {
+      // Function to call after 2 seconds
+      _initialScreen();
+    });
   }
 
   _checkLock() async{
@@ -106,8 +110,15 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Splash Screen", style: TextStyle(fontSize: 30),),
+            // Text("Splash Screen", style: TextStyle(fontSize: 30),),
+            Center(
+                child: Image.asset("assets/images/splashScreen.gif",
+                  height: MediaQuery.of(context).size.height * 0.5,
+                )
+            ),
           ],
         ),
       ),

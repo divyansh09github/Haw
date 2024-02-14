@@ -153,7 +153,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text('$userName',
+                    Text(userName,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
