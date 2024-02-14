@@ -27,7 +27,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
     Future.delayed(Duration(milliseconds: 6000)).then((_) {
-      // Function to call after 2 seconds
       _initialScreen();
     });
   }
@@ -108,6 +107,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -115,8 +115,11 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             // Text("Splash Screen", style: TextStyle(fontSize: 30),),
             Center(
-                child: Image.asset("assets/images/splashScreen.gif",
-                  height: MediaQuery.of(context).size.height * 0.5,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Image.asset("assets/images/splashScreen.gif",
+                    fit: BoxFit.fitHeight,
+                  ),
                 )
             ),
           ],
