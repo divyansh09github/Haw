@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/home_tab_screen.dart';
+import 'package:haw/services/get_api.dart';
 
 class AppLockScreen extends StatefulWidget {
   const AppLockScreen({super.key});
@@ -22,7 +24,33 @@ class _AppLockScreenState extends State<AppLockScreen> {
 
     _pinCode();
 
+    _getNameImageAPI();
     _getUsername();
+  }
+
+  late Map<String, dynamic> nameImageData = {};
+  String error = '';
+  bool isLoading = false;
+
+
+  _getNameImageAPI() async{
+    try {
+      final data = await GetAPIService().fetchUserNameImage();
+      setState(() {
+        nameImageData = data;
+        isLoading = true;
+        error = '';
+      });
+      await PreferencesManager.setUserName(nameImageData['name']);
+
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        error = 'Failed to fetch Profile: $e';
+      });
+    }
+
+    print(nameImageData['name']);
   }
   _getUsername() async{
     String name = await PreferencesManager.getUserName();
@@ -89,7 +117,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Stack(
@@ -125,7 +153,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text('Hello, $userName',
+                    Text('$userName',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -140,10 +168,20 @@ class _AppLockScreenState extends State<AppLockScreen> {
                           border: Border.all(color: Colors.white, width: 4)),
                       child: Padding(
                         padding: const EdgeInsets.all(0),
-                        child: Image.asset(
-                          'assets/images/profileimage.png', // Replace with your second image path
-                          fit: BoxFit.fill,
+                        child:
+                        nameImageData['image'] != null
+                            ? Image.network(
+                          '$apiUrl/public/${nameImageData['image']}',
+                          fit: BoxFit.cover,
+                        )
+                            : Image.asset(
+                          'assets/images/profileimage.png',
+                          fit: BoxFit.cover,
                         ),
+                        // Image.asset(
+                        //   'assets/images/profileimage.png', // Replace with your second image path
+                        //   fit: BoxFit.fill,
+                        // ),
                       ),
                     ),
                   ],
@@ -168,7 +206,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                             decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(
-                                        color: Colors.white, width: 4))),
+                                        color: Color(0xFFFF608B), width: 4))),
                             child: digits.length > i ? Center(child: Text(digits[i].toString(), style: TextStyle(fontSize: 25,color: Color(0xFFFF608B),fontWeight: FontWeight.w600),)) : Text(""),
                           ),
                         // Container(

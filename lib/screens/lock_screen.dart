@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/navbar_settings.dart';
+import 'package:haw/services/get_api.dart';
 
 class LockScreen extends StatefulWidget {
   const LockScreen({super.key});
@@ -19,7 +21,33 @@ class _LockScreenState extends State<LockScreen> {
     // TODO: implement initState
     super.initState();
 
+    _getNameImageAPI();
     _getUsername();
+  }
+
+  late Map<String, dynamic> nameImageData = {};
+  String error = '';
+  bool isLoading = false;
+
+
+  _getNameImageAPI() async{
+    try {
+      final data = await GetAPIService().fetchUserNameImage();
+      setState(() {
+        nameImageData = data;
+        isLoading = true;
+        error = '';
+      });
+      await PreferencesManager.setUserName(nameImageData['name']);
+
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        error = 'Failed to fetch Profile: $e';
+      });
+    }
+
+    print(nameImageData['name']);
   }
 
   _getUsername() async{
@@ -72,9 +100,11 @@ class _LockScreenState extends State<LockScreen> {
         const snackDemo = SnackBar(
           dismissDirection: DismissDirection.startToEnd,
           padding: EdgeInsets.all(7),
-          content: Text(
-            "Passcode set successfully",
-            style: TextStyle(color: Color(0xFF972633)),
+          content: Center(
+            child: Text(
+              "Passcode set successfully",
+              style: TextStyle(color: Color(0xFF972633)),
+            ),
           ),
           backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
           elevation: 10,
@@ -103,9 +133,11 @@ class _LockScreenState extends State<LockScreen> {
         const snackDemo = SnackBar(
           dismissDirection: DismissDirection.startToEnd,
           padding: EdgeInsets.all(7),
-          content: Text(
-            "Passcode doesn't match",
-            style: TextStyle(color: Color(0xFF972633)),
+          content: Center(
+            child: Text(
+              "Passcode doesn't match",
+              style: TextStyle(color: Color(0xFF972633)),
+            ),
           ),
           backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
           elevation: 10,
@@ -190,7 +222,7 @@ class _LockScreenState extends State<LockScreen> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text('Hello, $userName',
+                    Text(userName,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -205,10 +237,20 @@ class _LockScreenState extends State<LockScreen> {
                           border: Border.all(color: Colors.white, width: 4)),
                       child: Padding(
                         padding: const EdgeInsets.all(0),
-                        child: Image.asset(
-                          'assets/images/profileimage.png', // Replace with your second image path
-                          fit: BoxFit.fill,
+                        child:
+                        nameImageData['image'] != null
+                            ? Image.network(
+                          '$apiUrl/public/${nameImageData['image']}',
+                          fit: BoxFit.cover,
+                        )
+                            : Image.asset(
+                          'assets/images/profileimage.png',
+                          fit: BoxFit.cover,
                         ),
+                        // Image.asset(
+                        //   'assets/images/profileimage.png', // Replace with your second image path
+                        //   fit: BoxFit.fill,
+                        // ),
                       ),
                     ),
                   ],
@@ -330,7 +372,7 @@ class _LockScreenState extends State<LockScreen> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
                           onPressed: () {
-                            _addValue(0);
+                            firstTime ? _addValue(0) : _addSecondValue(0);
                           },
                           child: Text('0',
                               style: TextStyle(

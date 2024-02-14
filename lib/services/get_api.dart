@@ -32,15 +32,16 @@ class GetAPIService{
 
     try {
       final response = await http.get(Uri.parse(
-          "$apiUrl/api/show-symptoms?"
-              "id=$userId"
-              "&date=$formattedDate")
-      ); // Use toIso8601String for date formatting
+          "http://ehoaapp.techexposys.com/api/show-symptoms/"
+              "$userId/"
+              "$token/"
+              "$formattedDate")
+      );
 
       if (response.statusCode == 200) {
         final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
         error = false;
-        // print(albumData);
+        print("symptome: $albumData");
         return albumData;
       } else {
         // Handle error based on response status code
@@ -337,6 +338,34 @@ class GetAPIService{
     }
 
   }
+  Future<Map<String, dynamic>> fetchUserNameImage() async{
+
+    var userId = await PreferencesManager.getUserId();
+    var token = await PreferencesManager.getUserToken();
+
+    try {
+      final response = await http.get(Uri.parse(
+          "http://ehoaapp.techexposys.com/api/image-profile/"
+              "$userId/"
+              "$token"));
+
+      if (response.statusCode == 200) {
+        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        error = false;
+        // print(albumData);
+        return albumData;
+      } else {
+        // Handle error based on response status code
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors
+      // throw Exception('API request failed: $e');
+      return albums;
+    }
+
+  }
+
 
   Future<Map<String, dynamic>> fetchHomeScreen() async{
     var userId = await PreferencesManager.getUserId();

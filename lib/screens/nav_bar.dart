@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/blogs.dart';
 import 'package:haw/screens/data_calendar_list.dart';
 import 'package:haw/screens/get_started_page.dart';
@@ -9,6 +10,8 @@ import 'package:haw/screens/login_screen.dart';
 import 'package:haw/screens/navbar_settings.dart';
 import 'package:haw/screens/pinput_screen.dart';
 import 'package:haw/screens/profile.dart';
+import 'package:haw/services/get_api.dart';
+import 'package:haw/services/post_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NavBar extends StatefulWidget {
@@ -27,19 +30,42 @@ class _NavBarState extends State<NavBar>{
   @override
   void initState(){
     super.initState();
-    _getUsername();
+
+
+    _getNameImageAPI();
+  }
+  late Map<String, dynamic> nameImageData = {};
+  String error = '';
+  bool isLoading = false;
+
+
+  _getNameImageAPI() async{
+    try {
+      final data = await GetAPIService().fetchUserNameImage();
+      setState(() {
+        nameImageData = data;
+        isLoading = true;
+        error = '';
+      });
+      await PreferencesManager.setUserName(nameImageData['name']);
+
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        error = 'Failed to fetch Profile: $e';
+      });
+    }
+
+    print(nameImageData['name']);
   }
 
-  _getUsername() async{
-    String name = await PreferencesManager.getUserName();
-    setState(() {
-      userName = name;
-    });
-    print(userName);
-  }
+
   _signOut() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
+
+    var response = await PostAPIService().logOutUser();
+
     _navigateToGetStarted();
   }
 
@@ -56,22 +82,40 @@ class _NavBarState extends State<NavBar>{
         children: [
           UserAccountsDrawerHeader(
             accountName: Text('', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)),
-            accountEmail: Text('Hello, $userName', style: TextStyle(color: Color(0xFFFF608B), fontSize: 20, fontWeight: FontWeight.w500)),
-            currentAccountPicture: Container(
-              width: 130,
-              height: 130,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 4), // Add border to the circle
-              ),
-              child: ClipOval(
-                child: Image.network(
-                  'https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png',
-                  fit: BoxFit.cover,
-                  width: 110,
-                  height: 110,
+            accountEmail:
+            isLoading ? Text("Hello ${nameImageData['name']?.split(' ')[0] ?? "Username"}", style: TextStyle(color: Color(0xFFFF608B), fontSize: 20, fontWeight: FontWeight.w500))
+            : Text("", style: TextStyle(color: Color(0xFFFF608B), fontSize: 20, fontWeight: FontWeight.w500)),
+            //Round profile image container
+            currentAccountPicture: Column(
+              children: [
+                // SizedBox(height: 4,),
+                Container(
+                  // width: 130,
+                  // height: 130,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 4), // Add border to the circle
+                  ),
+                  child: ClipOval(
+                    child: nameImageData['image'] != null
+                        ? Image.network(
+                      '$apiUrl/public/${nameImageData['image']}',
+                      fit: BoxFit.cover,
+                    )
+                        : Image.asset(
+                      'assets/images/profileimage.png',
+                      fit: BoxFit.cover,
+                    ),
+                    // child:
+                    // Image.network(
+                    //   'https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png',
+                    //   fit: BoxFit.cover,
+                    //   width: 60,
+                    //   height: 60,
+                    // ),
+                  ),
                 ),
-              ),
+              ],
             ),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -79,6 +123,7 @@ class _NavBarState extends State<NavBar>{
                 image: AssetImage('assets/images/navbarHeader.jpg'), // Replace with your actual image path
                 fit: BoxFit.fill, // Ensures image covers the entire background
               ),
+
               // You can add background image if needed
               // image: DecorationImage(
               //   fit: BoxFit.cover,

@@ -316,6 +316,7 @@ import 'package:haw/screens/analysis.dart';
 import 'package:haw/screens/bottom_nav_bar.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/nav_bar.dart';
+import 'package:haw/screens/navbar_settings.dart';
 import 'package:haw/screens/profile_edit.dart';
 import 'package:haw/services/get_api.dart';
 
@@ -340,11 +341,11 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
 
-    _getProfile();
+    getProfile();
 
   }
 
-  _getProfile() async{
+  getProfile() async{
     try {
       final data = await GetAPIService().fetchProfile();
       setState(() {
@@ -366,32 +367,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    
-    // void editProfileDrawer(BuildContext context){
-    //   showModalBottomSheet(
-    //     elevation: 10,
-    //     isScrollControlled: true,
-    //     enableDrag: true,
-    //     showDragHandle: true,
-    //     backgroundColor: Colors.transparent,  // Set the background color to transparent
-    //       context: context,
-    //       builder: (context) {
-    //         return Container(
-    //           decoration: BoxDecoration(
-    //             color: backgroundColor,  // Set your desired background color
-    //             borderRadius: BorderRadius.only(
-    //               topLeft: Radius.circular(40.0),  // Adjust the radius as needed
-    //               topRight: Radius.circular(40.0),  // Adjust the radius as needed
-    //             ),
-    //           ),
-    //           height: MediaQuery.of(context).size.height * 0.8,
-    //
-    //         );
-    //   },
-    //   );
-    // }
     
     return isLoading ? Scaffold(
       backgroundColor: Colors.white,
@@ -447,6 +422,10 @@ class _ProfileState extends State<Profile> {
                     GestureDetector(
                       onTap: (){
                         Navigator.pop(context);
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => NavbarSettings()),
+                        // );
                       },
                       child: Image.asset("assets/images/backArrowWhite.png",
                         height: 25,
@@ -934,7 +913,7 @@ class _ProfileState extends State<Profile> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Navigate to the next page when the button is pressed
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => ProfileEdit(profileData: profileData)),
                         );

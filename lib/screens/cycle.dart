@@ -33,6 +33,7 @@ class _CycleState extends State<Cycle> {
   int defaultDays = 28;
   final TextEditingController _numberPickerController =
       TextEditingController(); // Declare the controller
+  final TextEditingController textController = TextEditingController();
 
   _notSure() async {
     await PostAPIService().saveCycleLength(defaultDays);
@@ -152,17 +153,17 @@ class _CycleState extends State<Cycle> {
                               onDoubleTap: () {
                                 setState(() {
                                   isEditable = true;
-                                  _numberPickerController.text = cycleLength
+                                  textController.text = cycleLength
                                       .toString(); // Set initial value
                                 });
                               },
-                              child: isEditable
+                              child: false
                                   ? SizedBox(
                                       height: 30,
                                       width: 50,
                                       child: TextFormField(
                                         textAlign: TextAlign.center,
-                                        controller: _numberPickerController,
+                                        controller: textController,
                                         keyboardType: TextInputType.number,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.digitsOnly
@@ -177,11 +178,11 @@ class _CycleState extends State<Cycle> {
                                         onEditingComplete: () {
                                           setState(() {
                                             if (int.tryParse(
-                                                    _numberPickerController
+                                                textController
                                                         .text) !=
                                                 null) {
                                               cycleLength = int.parse(
-                                                  _numberPickerController.text);
+                                                  textController.text);
                                             }
 
                                             isEditable = false;

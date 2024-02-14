@@ -555,6 +555,7 @@
 //   }
 // }
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -670,12 +671,10 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   void validateForm() async{
 
-    print(_selectedImageFile);
-
-    // await PostAPIService().saveProfileImage(_selectedImageFile);
     if(_formKey.currentState!.validate()){
       print("validate");
 
+      imageEdited ? _uploadImage() : null;
 
       await PreferencesManager.setProfileVariables(
         name: _name.text,
@@ -693,9 +692,11 @@ class _ProfileEditState extends State<ProfileEdit> {
       const snackDemo = SnackBar(
         dismissDirection: DismissDirection.startToEnd,
         padding: EdgeInsets.all(7),
-        content: Text(
-          'Profile updated',
-          style: TextStyle(color: Color(0xFF972633)),
+        content: Center(
+          child: Text(
+            'Profile updated',
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
         ),
         backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
         elevation: 10,
@@ -711,12 +712,98 @@ class _ProfileEditState extends State<ProfileEdit> {
           ),
         ),
       );
-
       ScaffoldMessenger.of(context)
           .showSnackBar(snackDemo);
+
     }
     // print(_selectedRegion);
 
+  }
+
+  _uploadImage() async{
+    print(_selectedImageFile);
+
+    try{
+      var response = await PostAPIService().saveProfileImage(_selectedImageFile);
+
+      if (response.statusCode != 200) {
+        // Handle non-200 responses
+        var body = jsonDecode(response.body);
+        if (body is Map && body.containsKey('error')) {
+          var snackDemo = SnackBar(
+            dismissDirection: DismissDirection.startToEnd,
+            padding: EdgeInsets.all(10),
+            content: Center(
+              child: Text(
+                "${body['error']}",
+                style: TextStyle(color: Color(0xFF972633)),
+              ),
+            ),
+            backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+            elevation: 10,
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 4),
+            margin: EdgeInsets.all(15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15), // Customize corner radius as needed
+              ),
+            ),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackDemo);
+
+        } else {
+          // Handle unexpected response format
+          print("Unexpected response format: ${response.body}");
+          // Display a generic error message to the user
+        }
+      } else if (response.statusCode == 200){
+        // Assuming a valid JSON response
+        // print(_name.text);
+        // await PreferencesManager.setUserName(_name.text);
+        try {
+          // final body = jsonDecode(response.body);
+          var snackDemo = SnackBar(
+            dismissDirection: DismissDirection.startToEnd,
+            padding: EdgeInsets.all(10),
+            content: Center(
+              child: Text(
+                "Image Uploaded",
+                style: TextStyle(color: Color(0xFF972633)),
+              ),
+            ),
+            backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+            elevation: 10,
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 4),
+            margin: EdgeInsets.all(15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15), // Customize corner radius as needed
+              ),
+            ),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackDemo);
+          print("Image uploaded");
+
+
+        } catch (e) {
+          // Handle JSON decoding errors
+          print("Error decoding JSON response: $e");
+        }
+      }
+    }
+    catch(e){
+      print("Error during API call: $e");
+    }
   }
 
   bool isValidDate(String date) {
@@ -773,11 +860,14 @@ class _ProfileEditState extends State<ProfileEdit> {
     {
       marital.add(maritalData['show_marital_status'][i]['marital_status'].toString());
     }
-    // print(marital);
+    print("marital: $statesData");
 
   }
 
-  bool edited = false;
+  bool formEdited = false;
+  bool imageEdited = false;
+  bool regionEdited = false;
+  bool maritalEdited = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -785,7 +875,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
       body:Form(
         onChanged: () {
-          edited = true;
+          formEdited = true;
         },
         key: _formKey, // Assign the global key to the Form
         child:Column(
@@ -843,6 +933,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                           // Update selected image file
                           setState(() {
+                            imageEdited = true;
                             _selectedImageFile = File(newImageFile.path);
                           });
                           print(newImageFile.name);
@@ -1060,6 +1151,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             value: _selectedMaritalStatus,
                             onChanged: (String? newValue) {
                               setState(() {
+                                maritalEdited = true;
                                 _selectedMaritalStatus = newValue;
                               });
                             },
@@ -1128,6 +1220,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                         }).toList(),
                         onChanged: (String? newValue) {
                           setState(() {
+                            regionEdited = true;
                             _selectedRegion = newValue!;
                             // Perform actions based on the selected state
                           });
@@ -1418,7 +1511,7 @@ class _ProfileEditState extends State<ProfileEdit> {
           //   children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: edited ? SizedBox(
+            child: formEdited || imageEdited || maritalEdited || regionEdited ? SizedBox(
               width: 356,
               height: 45,
               child: ElevatedButton(

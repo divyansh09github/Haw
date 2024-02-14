@@ -203,7 +203,7 @@ class _PeriodDurationState extends State<PeriodDuration> {
               )
                   : ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Color(0x3DFF608B)),
+                  backgroundColor: MaterialStatePropertyAll(Color(0xffffb7cb)),
                   minimumSize: MaterialStateProperty.all(Size(100, 40)), // Width and height
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

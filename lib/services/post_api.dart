@@ -6,6 +6,7 @@ import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
 
 class PostAPIService{
 
@@ -17,15 +18,15 @@ class PostAPIService{
     var token = await PreferencesManager.getUserToken();
     print(length);
 
-    final response = await http.post(
-        Uri.parse('$apiUrl/api/save-cycle-length?'
-            'id=$userId'
-            '&token=$token'
-            '&average_cycle_length=$length'),
-        headers: {"Content-Type": "application/json"}
-        );
-
-        print(response.body);
+    // final response = await http.post(
+    //     Uri.parse('$apiUrl/api/save-cycle-length?'
+    //         'id=$userId'
+    //         '&token=$token'
+    //         '&average_cycle_length=$length'),
+    //     headers: {"Content-Type": "application/json"}
+    //     );
+    //
+    //     print(response.body);
   }
 
   Future savePeriodDay(DateTime date) async{
@@ -70,13 +71,14 @@ class PostAPIService{
 
     String formattedDate = DateFormat('yyyy-MM-dd').format(dob);
 
+
     final response = await http.post(Uri.parse(
         'http://ehoaapp.techexposys.com/api/save-deatils?'
             'id=$userId'
             '&token=$token'
             '&name=$name'
             '&dob=$formattedDate'
-            '&age=26'
+            '&phone=$phone'
             '&marital_status=$marital'
             '&height=$height'
             '&weight=$weight'
@@ -113,47 +115,74 @@ class PostAPIService{
     print(response.body);
   }
 
-  Future saveProfileImage(File? imageFile) async{
+  Future<http.Response> saveProfileImage(File? imageFile) async{
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
 
     print(token);
     print(userId);
 
-    final data = jsonEncode({'id': userId, 'password': token, 'image': imageFile?.path,});
-
-    final response = await http.post(Uri.parse(
-        "http://ehoaapp.techexposys.com/api/save-profile-image"),
-        body: data,
-        headers: {"Content-Type": "application/json"}
+    // Create a multipart request
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("http://ehoaapp.techexposys.com/api/update-profile-image"),
     );
-    print('image storage : ${response.body}');
 
+    // Add user id and token as fields
+    request.fields['id'] = userId.toString();
+    request.fields['token'] = token!;
+
+    // Add image file to the request
+    var imageStream = http.ByteStream(imageFile!.openRead());
+    var imageLength = await imageFile.length();
+    var multipartFile = http.MultipartFile(
+      'image',
+      imageStream,
+      imageLength,
+      filename: imageFile.path.split('/').last,
+    );
+    request.files.add(multipartFile);
+
+    // Send the request and await for response
+    var response = await request.send();
+
+    // Get the response from the server
+    var responseData = await response.stream.transform(utf8.decoder).join();
+
+    // Print the response
+    print('image storage : ${response.statusCode}');
+    print('img Response: $responseData');
+
+    // Return the response
+    return http.Response.fromStream(response);
   }
 
-  Future saveTrackSymptoms(List<int> feelings, List<int> liveliness, int flow, int energy, DateTime date) async{
+  Future saveTrackSymptoms(List<dynamic> feelings, List<dynamic> liveliness, dynamic flow, dynamic energy, DateTime date) async{
     // Getting all values:
     // final data = await PreferencesManager.getSymptoms();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
 
-    print(liveliness);
+
+
+    print("flow: $flow ");
+    print(flow.runtimeType);
+    print("energy : $energy");
     print(energy.runtimeType);
+    print("feelings: $feelings");
+    print(feelings.runtimeType);
+    print("liveliness : $liveliness");
+    print(liveliness.runtimeType);
     // String liveliness = data['liveliness'].map((number) => number.toString()).join(',');
     // String feelings = data['feelings'].map((number) => number.toString()).join(',');
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
+    final data = jsonEncode({"symptoms": liveliness,"emotions": feelings,"date":formattedDate,"energy":energy,"menstrual_flow":flow,"id":userId,"token":token});
     final response = await http.post(Uri.parse(
-        '$apiUrl/api/save-symptoms?'
-            'id=$userId'
-            '&token=$token'
-            '&menstrual_flow=${flow <= 0 ? null : flow}'
-            '&symptoms[]=$liveliness'
-            '&energy=${energy <= 0 ? null : energy}'
-            '&emotions[]=$feelings'
-            '&date=$formattedDate'
-    ),
+        'http://ehoaapp.techexposys.com/api/save-symptoms'
+    ),body: data,
         headers: {"Content-Type": "application/json"}
+        // headers: {"Content-Type": "application/json","Authorization": "Bearer $token"}
     );
 
     print(response.body);
@@ -173,6 +202,25 @@ class PostAPIService{
     final response = await http.post(
         Uri.parse('http://ehoaapp.techexposys.com/api/create-user'),
         body: data,
+        headers: {"Content-Type": "application/json"});
+
+    // if(response.statusCode == 200)
+    //   {
+    //     return response;
+    //   }
+    // else {
+    //   return response;
+    // }
+    return response;
+  }
+
+  Future<http.Response> logOutUser() async{
+
+    var userId = await PreferencesManager.getUserId();
+    var token = await PreferencesManager.getUserToken();
+
+    final response = await http.post(
+        Uri.parse('http://ehoaapp.techexposys.com/api/logout/?id=$userId&token=$token'),
         headers: {"Content-Type": "application/json"});
 
     // if(response.statusCode == 200)

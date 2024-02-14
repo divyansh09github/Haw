@@ -175,8 +175,9 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
 
     if (_formKey.currentState!.validate()) {
 
+      _uploadImage();
+
       try {
-        // await PostAPIService().saveProfileImage(_selectedImageFile);
 
         var response = await PostAPIService().saveSignUpQuestions(_name.text, _toDate!, _selectedMaritalStatus.toString(), _selectedRegion.toString(), _height.text, _weight.text, _email.text, _phone.text);
 
@@ -187,9 +188,11 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
             var snackDemo = SnackBar(
               dismissDirection: DismissDirection.startToEnd,
               padding: EdgeInsets.all(10),
-              content: Text(
-                "${body['error']['height'][0]}",
-                style: TextStyle(color: Color(0xFF972633)),
+              content: Center(
+                child: Text(
+                  "${body['error']['height'][0]}",
+                  style: TextStyle(color: Color(0xFF972633)),
+                ),
               ),
               backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
               elevation: 10,
@@ -215,7 +218,8 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
           }
         } else if (response.statusCode == 200){
           // Assuming a valid JSON response
-          await PreferencesManager.setUserName(_name.text);
+          // print(_name.text);
+          // await PreferencesManager.setUserName(_name.text);
           try {
             // final body = jsonDecode(response.body);
 
@@ -238,6 +242,92 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
       }
     }
     // print(_selectedRegion);
+  }
+
+  _uploadImage() async{
+    print(_selectedImageFile);
+
+    try{
+      var response = await PostAPIService().saveProfileImage(_selectedImageFile);
+
+      if (response.statusCode != 200) {
+        // Handle non-200 responses
+        var body = jsonDecode(response.body);
+        if (body is Map && body.containsKey('error')) {
+          var snackDemo = SnackBar(
+            dismissDirection: DismissDirection.startToEnd,
+            padding: EdgeInsets.all(10),
+            content: Center(
+              child: Text(
+                "${body['error']}",
+                style: TextStyle(color: Color(0xFF972633)),
+              ),
+            ),
+            backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+            elevation: 10,
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 4),
+            margin: EdgeInsets.all(15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15), // Customize corner radius as needed
+              ),
+            ),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackDemo);
+
+        } else {
+          // Handle unexpected response format
+          print("Unexpected response format: ${response.body}");
+          // Display a generic error message to the user
+        }
+      } else if (response.statusCode == 200){
+        // Assuming a valid JSON response
+        // print(_name.text);
+        // await PreferencesManager.setUserName(_name.text);
+        try {
+          // final body = jsonDecode(response.body);
+          var snackDemo = SnackBar(
+            dismissDirection: DismissDirection.startToEnd,
+            padding: EdgeInsets.all(10),
+            content: Center(
+              child: Text(
+                "Image Uploaded",
+                style: TextStyle(color: Color(0xFF972633)),
+              ),
+            ),
+            backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+            elevation: 10,
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 4),
+            margin: EdgeInsets.all(15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15), // Customize corner radius as needed
+              ),
+            ),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackDemo);
+          print("Image uploaded");
+
+
+        } catch (e) {
+          // Handle JSON decoding errors
+          print("Error decoding JSON response: $e");
+        }
+      }
+    }
+    catch(e){
+      print("Error during API call: $e");
+    }
   }
 
   void _navigate() {
@@ -588,33 +678,59 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
-                        height: 48, // Increase height for better visibility
+                        // height: 48, // Increase height for better visibility
                         width: MediaQuery.of(context).size.width *
                             0.8, // Adjust width for balance
                         // padding: const EdgeInsets.symmetric(horizontal: 10), // Create internal padding
-                        decoration: BoxDecoration(
-                          color: Colors
-                              .white, // the background color of the decoration
-                          border: Border.all(
-                              color: Colors.black12,
-                              width: 1), // the border of the decoration
-                          borderRadius: BorderRadius.circular(
-                              8), // the border radius of the decoration
-                          // boxShadow: [
-                          //   // the box shadow of the decoration
-                          //   BoxShadow(
-                          //     color: Colors.grey, // the color of the shadow
-                          //     offset: Offset(0, 2), // the offset of the shadow
-                          //     blurRadius: 4, // the blur radius of the shadow
-                          //   ),
-                          // ],
-                        ),
+                        // decoration: BoxDecoration(
+                        //   color: Colors
+                        //       .white, // the background color of the decoration
+                        //   border: Border.all(
+                        //       color: Colors.black12,
+                        //       width: 1), // the border of the decoration
+                        //   borderRadius: BorderRadius.circular(
+                        //       8), // the border radius of the decoration
+                        //   // boxShadow: [
+                        //   //   // the box shadow of the decoration
+                        //   //   BoxShadow(
+                        //   //     color: Colors.grey, // the color of the shadow
+                        //   //     offset: Offset(0, 2), // the offset of the shadow
+                        //   //     blurRadius: 4, // the blur radius of the shadow
+                        //   //   ),
+                        //   // ],
+                        // ),
                         child: DropdownButtonHideUnderline(
                           // Remove underline more efficiently
                           child: ButtonTheme(
                             // Align text with button theme
                             alignedDropdown: true,
-                            child: DropdownButton<String>(
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                      borderSide: BorderSide(color: Color(0xffFF0000))),
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                      borderSide: BorderSide(color: Color(0xffFF0000))),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  labelStyle:
+                                  TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                                  focusColor: Color(0xffFF608B),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                      borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xffFF608B)),
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                                  // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                                  labelText: 'Marital Status',
+
+                              ),
                               isExpanded: true,
                               value: _selectedMaritalStatus,
                               onChanged: (String? newValue) {
@@ -633,12 +749,18 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                                       ),
                                     );
                                   }).toList(),
-                              hint: Text(
-                                "Marital status",
-                                style: TextStyle(
-                                    color: Color(0xffFF608B), fontSize: 15
-                                ), // Hint text color
-                              ),
+                              // hint: Text(
+                              //   "Marital status",
+                              //   style: TextStyle(
+                              //       color: Color(0xffFF608B), fontSize: 15
+                              //   ), // Hint text color
+                              // ),
+                              validator: (value) {
+                                if (value == null) {
+                                  return "Marital status is required"; // Error message
+                                }
+                                return null; // No error
+                              },
                             ),
                           ),
                         ),
@@ -651,28 +773,54 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
-                        height: 40, // increase the height of the dropdown
+                        // height: 40, // increase the height of the dropdown
                         width: MediaQuery.of(context).size.width *
                             0.8, // Adjust width for balance
                         // set the background color of the dropdown
-                        decoration: BoxDecoration(
-                          color: Colors
-                              .white, // the background color of the decoration
-                          border: Border.all(
-                              color: Colors.black12,
-                              width: 1), // the border of the decoration
-                          borderRadius: BorderRadius.circular(
-                              8), // the border radius of the decoration
-                          // boxShadow: [
-                          //   // the box shadow of the decoration
-                          //   BoxShadow(
-                          //     color: Colors.grey, // the color of the shadow
-                          //     offset: Offset(0, 2), // the offset of the shadow
-                          //     blurRadius: 4, // the blur radius of the shadow
-                          //   ),
-                          // ],
-                        ),
-                        child: DropdownButton<String>(
+                        // decoration: BoxDecoration(
+                        //   color: Colors
+                        //       .white, // the background color of the decoration
+                        //   border: Border.all(
+                        //       color: Colors.black12,
+                        //       width: 1), // the border of the decoration
+                        //   borderRadius: BorderRadius.circular(
+                        //       8), // the border radius of the decoration
+                        //   // boxShadow: [
+                        //   //   // the box shadow of the decoration
+                        //   //   BoxShadow(
+                        //   //     color: Colors.grey, // the color of the shadow
+                        //   //     offset: Offset(0, 2), // the offset of the shadow
+                        //   //     blurRadius: 4, // the blur radius of the shadow
+                        //   //   ),
+                        //   // ],
+                        // ),
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: Color(0xffFF0000))),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: Color(0xffFF0000))),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            labelStyle:
+                            TextStyle(color: Color(0xffFF608B), fontSize: 15),
+                            focusColor: Color(0xffFF608B),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xffFF608B)),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                            // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                            labelText: 'Region',
+
+                          ),
                           value: _selectedRegion, // Initially selected state
                           items: states
                               .map<DropdownMenuItem<String>>((String value) {
@@ -685,6 +833,12 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
 
                             );
                           }).toList(),
+                          validator: (value) {
+                            if (value == null) {
+                              return "Region is required"; // Error message
+                            }
+                            return null; // No error
+                          },
                           onChanged: (String? newValue) {
                             setState(() {
                               _selectedRegion = newValue!;
@@ -692,13 +846,13 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                             });
                           },
                           isExpanded: true,
-                          underline:
-                          Container(), // remove the default underline of the dropdown
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          hint: Text("Select Region",
-                              style: TextStyle(
-                                  color: Color(0xffFF608B), fontSize: 15
-                              )),
+                          // underline:
+                          // Container(), // remove the default underline of the dropdown
+                          // padding: const EdgeInsets.symmetric(horizontal: 15),
+                          // hint: Text("Select Region",
+                          //     style: TextStyle(
+                          //         color: Color(0xffFF608B), fontSize: 15
+                          //     )),
                         ),
                       ),
                     ),
@@ -791,11 +945,13 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                           counterStyle: const TextStyle(color: Colors.transparent),
                         ),
                         validator: (value) {
-                          if (value!.length > 6) {
-                            return 'Weight cannot exceed 6 characters.';
-
-                          } else if (double.parse(value) > 200) {
-                            return 'Weight cannot exceed 200.';
+                          try {
+                            double weight = double.parse(value!);
+                            if (weight < 0 || weight > 300) {
+                              return "Weight must be between 0 and 300.";
+                            }
+                          } catch (e) {
+                            return null;
                           }
                           return null; // Valid weight
                         },

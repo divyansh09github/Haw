@@ -68,9 +68,11 @@ class _BlogContentState extends State<BlogContent> {
       const snackDemo = SnackBar(
         dismissDirection: DismissDirection.startToEnd,
         padding: EdgeInsets.all(7),
-        content: Text(
-          'Low internet connection',
-          style: TextStyle(color: Color(0xFF972633)),
+        content: Center(
+          child: Text(
+            'Low internet connection',
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
         ),
         backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
         elevation: 10,

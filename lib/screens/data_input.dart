@@ -64,32 +64,33 @@ class _DataInputState extends State<DataInput> {
       });
     }
 
-    List<int> symptoms = [];
+    print("dtt: ${symptomsData['show_symptoms']['symptoms'].runtimeType}");
+    List<dynamic> symptoms = [];
     if(data['show_symptoms'] != null && data['show_symptoms']['symptoms'] != null){
       print(data['show_symptoms']['symptoms'].runtimeType);
       for (var i in data['show_symptoms']['symptoms']) {
-        print(i);
-        symptoms.add(int.tryParse(i) ?? 0);
+        // print(i);
+        symptoms.add(i);
       }
     }
 
-    List<int> feelings = [];
+    List<dynamic> feelings = [];
     if(data['show_symptoms'] != null && data['show_symptoms']['emotions'] != null){
       for (var i in data['show_symptoms']['emotions']) {
         // print(i);
-        feelings.add(int.tryParse(i) ?? 0);
+        feelings.add(i);
       }
     }
 
     if(data['show_symptoms'] != null && data['show_symptoms']['menstrual_flow'] != null){
       setState(() {
-        selectedFlowIndex = int.parse(data['show_symptoms']['menstrual_flow']);
+        selectedFlowIndex = data['show_symptoms']['menstrual_flow'];
       });
     }
 
     if(data['show_symptoms'] != null && data['show_symptoms']['energy'] != null){
       setState(() {
-        selectedEnergyIndex = int.parse(data['show_symptoms']['energy']);
+        selectedEnergyIndex = data['show_symptoms']['energy'];
       });
     }
     setState(() {
@@ -97,7 +98,7 @@ class _DataInputState extends State<DataInput> {
       feelingsIndexes = feelings;
     });
 
-    // print('symp: ${symptomsData['show_symptoms']}');
+    print('symp: ${symptomsData['show_symptoms']}');
   }
 
   late Map<String, dynamic> energyData = {};
@@ -131,7 +132,7 @@ class _DataInputState extends State<DataInput> {
   }
 
   //Flow buttons functionality
-  var selectedFlowIndex;
+  dynamic selectedFlowIndex;
   void _onTapFlow(int index) {
     if (selectedFlowIndex == index) {
       selectedFlowIndex = -1;
@@ -142,7 +143,7 @@ class _DataInputState extends State<DataInput> {
     }
   }
 
-  var selectedEnergyIndex;
+  dynamic selectedEnergyIndex;
   void _onTapEnergy(int index) {
     if (selectedEnergyIndex == index) {
       selectedEnergyIndex = -1;
@@ -211,7 +212,7 @@ class _DataInputState extends State<DataInput> {
   }
 
   //Liveliness buttons functionality
-  List<int> livelinessIndexes = [];
+  List<dynamic> livelinessIndexes = [];
   var boolLiveliness = false;
 
   void _onTapLiveliness(int index) {
@@ -225,18 +226,32 @@ class _DataInputState extends State<DataInput> {
       });
     } else {
       // Handle limit reached, e.g., display a message or feedback
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          dismissDirection: DismissDirection.startToEnd,
-          padding: EdgeInsets.all(10),
-          content: Text('You can only select up to 5 Liveliness'),
-          backgroundColor: Color(0xBAFF608B),
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 4),
-          margin: EdgeInsets.all(15),
+      const snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(7),
+        content: Center(
+          child: Text(
+            'You can only select up to 5 Liveliness',
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
         ),
       );
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
     }
   }
 
@@ -295,7 +310,7 @@ class _DataInputState extends State<DataInput> {
   }
 
   //Feelings buttons functionality
-  List<int> feelingsIndexes = [];
+  List<dynamic> feelingsIndexes = [];
   var boolFeelings = false;
 
   void _onTapFeelings(int index) {
@@ -309,18 +324,32 @@ class _DataInputState extends State<DataInput> {
       });
     } else {
       // Handle limit reached, e.g., display a message or feedback
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          dismissDirection: DismissDirection.startToEnd,
-          padding: EdgeInsets.all(10),
-          content: Text('You can only select up to 5 feelings'),
-          backgroundColor: Color(0xBAFF608B),
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 4),
-          margin: EdgeInsets.all(15),
+      const snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(7),
+        content: Center(
+          child: Text(
+            'You can only select up to 5 feelings',
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
         ),
       );
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
     }
   }
 
@@ -1406,9 +1435,11 @@ class _DataInputState extends State<DataInput> {
                                   const snackDemo = SnackBar(
                                     dismissDirection: DismissDirection.startToEnd,
                                     padding: EdgeInsets.all(7),
-                                    content: Text(
-                                      'Data Saved',
-                                      style: TextStyle(color: Color(0xFF972633)),
+                                    content: Center(
+                                      child: Text(
+                                        'Data Saved',
+                                        style: TextStyle(color: Color(0xFF972633)),
+                                      ),
                                     ),
                                     backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
                                     elevation: 10,
@@ -1497,9 +1528,11 @@ class _DataInputState extends State<DataInput> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(180.0),
-                      child: Image.network(
-                          "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+                      padding: const EdgeInsets.all(0.0),
+                      child:
+                          Center(child: Image.asset("assets/images/TES_Moon.gif")),
+                      // Image.network(
+                      //     "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
                     ),
                   ],
                 ),

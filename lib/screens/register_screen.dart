@@ -44,9 +44,11 @@ class _RegisterUserState extends State<RegisterUser> {
          var snackDemo = SnackBar(
            dismissDirection: DismissDirection.startToEnd,
            padding: EdgeInsets.all(10),
-           content: Text(
-             "${body['error']['email'][0]}",
-             style: TextStyle(color: Color(0xFF972633)),
+           content: Center(
+             child: Text(
+               "${body['error']['email'][0]}",
+               style: TextStyle(color: Color(0xFF972633)),
+             ),
            ),
            backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
            elevation: 10,
@@ -69,9 +71,11 @@ class _RegisterUserState extends State<RegisterUser> {
          var snackDemo = SnackBar(
            dismissDirection: DismissDirection.startToEnd,
            padding: EdgeInsets.all(10),
-           content: Text(
-             "Get ready to unlock a world of possibilities!",
-             style: TextStyle(color: Color(0xFF972633)),
+           content: Center(
+             child: Text(
+               "Get ready to unlock a world of possibilities!",
+               style: TextStyle(color: Color(0xFF972633)),
+             ),
            ),
            backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
            elevation: 10,

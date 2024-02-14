@@ -16,6 +16,7 @@ import 'package:haw/services/get_api.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'dart:ui' as ui;
 
 class HomePeriod extends StatefulWidget {
   const HomePeriod({super.key});
@@ -28,6 +29,12 @@ class HomePeriod extends StatefulWidget {
 }
 class ChartData {
   ChartData(this.x, this.y, this.color);
+  final String x;
+  final double y;
+  final Color color;
+}
+class ChartData1 {
+  ChartData1(this.x, this.y, this.color);
   final String x;
   final double y;
   final Color color;
@@ -82,6 +89,13 @@ class _HomePeriodState extends State<HomePeriod> {
     ChartData('3', 9, Color(0xFF02AC92)),
     ChartData('4', 5, Color(0xFFFBA77C)),
     ChartData('5', 3, Color(0xFFC72D2D))
+  ];
+  final List<ChartData1> chartData1 = [
+    ChartData1('a', 7, Color(0x70FC5F88)),
+    ChartData1('b', 4, Color(0x70C67492)),
+    ChartData1('c', 9, Color(0x7002AC92)),
+    ChartData1('d', 5, Color(0x70FBA77C)),
+    ChartData1('e', 3, Color(0x70C72D2D))
   ];
 
   @override
@@ -164,13 +178,14 @@ class _HomePeriodState extends State<HomePeriod> {
                 SizedBox(height: 30,),
 
                 SfCircularChart(
+
                   borderWidth: 0,
                     series: <CircularSeries>[
                       // Renders doughnut chart
                       DoughnutSeries<ChartData, String>(
-                          animationDuration: 5,
+                          animationDuration: 10,
                           radius: "100%",
-                          innerRadius: "60%",
+                          innerRadius: "80%",
                           dataSource: chartData,
                           pointColorMapper:(ChartData data,  _) => data.color,
                           xValueMapper: (ChartData data, _) => data.x,
@@ -179,20 +194,41 @@ class _HomePeriodState extends State<HomePeriod> {
                     ],
                   annotations: [
                     CircularChartAnnotation(
-                      widget: Container(
-                        height: 100,
-                        width: 100,
-                        child: Column(
-                          children: [
-                            Image.asset("assets/images/medium.png", height: 50, width: 50,),
-                            Text("Today is your Day 01.", textAlign: TextAlign.center),
-                          ],
-                        ),
-                      )
+                      widget: SfCircularChart(
+
+                        borderWidth: 0,
+                        series: <CircularSeries>[
+                          // Renders doughnut chart
+                          DoughnutSeries<ChartData1, String>(
+                              animationDuration: 5,
+                              radius: "79.9%",
+                              innerRadius: "60%",
+                              dataSource: chartData1,
+                              pointColorMapper:(ChartData1 data,  _) => data.color,
+                              xValueMapper: (ChartData1 data, _) => data.x,
+                              yValueMapper: (ChartData1 data, _) => data.y
+                          )
+                        ],
+                        annotations: [
+                          CircularChartAnnotation(
+                              widget: Container(
+                                height: 100,
+                                width: 100,
+                                child: Column(
+                                  children: [
+                                    Image.asset("assets/images/medium.png", height: 50, width: 50,),
+                                    Text("Today is your Day 01.", textAlign: TextAlign.center),
+                                  ],
+                                ),
+                              )
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
 
+                SizedBox(height: 20,),
                 //Log Symptoms Text
                 GestureDetector(
                   onTap: () {

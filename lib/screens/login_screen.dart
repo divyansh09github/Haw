@@ -69,9 +69,11 @@ class _LoginUserState extends State<LoginUser> {
             var snackDemo = SnackBar(
               dismissDirection: DismissDirection.startToEnd,
               padding: EdgeInsets.all(10),
-              content: Text(
-                "We've missed you",
-                style: TextStyle(color: Color(0xFF972633)),
+              content: Center(
+                child: Text(
+                  "We've missed you",
+                  style: TextStyle(color: Color(0xFF972633)),
+                ),
               ),
               backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
               elevation: 10,
@@ -92,6 +94,8 @@ class _LoginUserState extends State<LoginUser> {
 
             await PreferencesManager.setUserId(body['user_id']);
             await PreferencesManager.setUserToken(body['token']);
+            await PreferencesManager.setUserName(body['name']);
+            // await PreferencesManager.setUserImage(body['image']);
 
 
             _navigate();
