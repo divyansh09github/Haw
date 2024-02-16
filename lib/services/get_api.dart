@@ -373,7 +373,9 @@ class GetAPIService{
 
     try {
       final response = await http.get(Uri.parse(
-          "http://ehoaapp.techexposys.com/api/home-screen/$userId"));
+          "http://ehoaapp.techexposys.com/api/home-screen/"
+              "$userId/"
+              "$token"));
 
       if (response.statusCode == 200) {
         final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
