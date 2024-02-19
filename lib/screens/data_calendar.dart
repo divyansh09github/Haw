@@ -78,8 +78,8 @@ class _DataCalendarState extends State<DataCalendar> {
         PickerDateRange(DateTime.parse(predictionData['predictions'][1]['start_date']), DateTime.parse(predictionData['predictions'][1]['end_date'])),
         PickerDateRange(DateTime.parse(predictionData['predictions'][2]['start_date']), DateTime.parse(predictionData['predictions'][2]['end_date'])),
         PickerDateRange(DateTime.parse(predictionData['predictions'][3]['start_date']), DateTime.parse(predictionData['predictions'][3]['end_date'])),
-        PickerDateRange(DateTime.parse(predictionData['predictions'][4]['start_date']), DateTime.parse(predictionData['predictions'][4]['end_date'])),
-        PickerDateRange(DateTime.parse(predictionData['predictions'][5]['start_date']), DateTime.parse(predictionData['predictions'][5]['end_date'])),
+        // PickerDateRange(DateTime.parse(predictionData['predictions'][4]['start_date']), DateTime.parse(predictionData['predictions'][4]['end_date'])),
+        // PickerDateRange(DateTime.parse(predictionData['predictions'][5]['start_date']), DateTime.parse(predictionData['predictions'][5]['end_date'])),
       ];
     });
 
@@ -308,7 +308,7 @@ class _DataCalendarState extends State<DataCalendar> {
       else{
         _controller.selectedRanges = _selectedRanges;
 
-        const snackDemo = SnackBar(
+        var snackDemo = SnackBar(
           dismissDirection: DismissDirection.startToEnd,
           padding: EdgeInsets.all(7),
           content: Center(

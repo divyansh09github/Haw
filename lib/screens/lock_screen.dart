@@ -239,14 +239,22 @@ class _LockScreenState extends State<LockScreen> {
                         padding: const EdgeInsets.all(0),
                         child:
                         nameImageData['image'] != null
-                            ? Image.network(
-                          '$apiUrl/public/${nameImageData['image']}',
-                          fit: BoxFit.cover,
-                        )
-                            : Image.asset(
-                          'assets/images/profileimage.png',
-                          fit: BoxFit.cover,
+                            ? CircleAvatar(
+                          backgroundImage: NetworkImage('$apiUrl/public/${nameImageData['image']}'),
+                          radius: 100,
+                        ) : CircleAvatar(
+                          backgroundImage: AssetImage('assets/images/profileimage.png',),
+                          radius: 100,
                         ),
+                        // nameImageData['image'] != null
+                        //     ? Image.network(
+                        //   '$apiUrl/public/${nameImageData['image']}',
+                        //   fit: BoxFit.cover,
+                        // )
+                        //     : Image.asset(
+                        //   'assets/images/profileimage.png',
+                        //   fit: BoxFit.cover,
+                        // ),
                         // Image.asset(
                         //   'assets/images/profileimage.png', // Replace with your second image path
                         //   fit: BoxFit.fill,

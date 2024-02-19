@@ -73,6 +73,18 @@ class PreferencesManager{
     await prefs.setString('predicted_date', predictedDate.toIso8601String());
   }
 
+  static Future<DateTime?> getDataInputDate() async{
+    final prefs = await SharedPreferences.getInstance();
+    final date = prefs.getString('datainput_date');
+    // Parse the string into a DateTime, handling potential null values
+    return date == null ? null : DateTime.parse(date);
+  }
+
+  static Future<void> setDataInputDate(DateTime date) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('datainput_date', date.toIso8601String());
+  }
+
   //User Id and Token
 
   static Future<void> setUserId(int value) async{

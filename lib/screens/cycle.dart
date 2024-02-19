@@ -196,7 +196,7 @@ class _CycleState extends State<Cycle> {
                                           color: Colors.black, fontSize: 25),
                                       itemCount: 1,
                                       value: cycleLength,
-                                      minValue: 25,
+                                      minValue: 1,
                                       maxValue: 35,
                                       onChanged: (value) => setState(() {
                                         isSelectedDays = true;

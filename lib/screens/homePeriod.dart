@@ -8,6 +8,7 @@ import 'package:haw/screens/calender.dart';
 import 'package:haw/screens/cycle.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/get_started_page.dart';
+import 'package:haw/screens/home_tab_screen.dart';
 import 'package:haw/screens/nav_bar.dart';
 import 'package:haw/screens/period_duration.dart';
 import 'package:haw/screens/sign_up.dart';
@@ -67,7 +68,7 @@ class _HomePeriodState extends State<HomePeriod> {
   late Map<String, dynamic> homeScreenData = {};
   String error = '';
   bool isLoading = false;
-
+  late double angle;
   String moonImgPath = '';
   _apiService() async {
     try {
@@ -95,7 +96,10 @@ class _HomePeriodState extends State<HomePeriod> {
       });
     }
 
-    print(homeScreenData);
+    setState(() {
+      angle = 360/double.parse(homeScreenData['data'][0]['average_cycle_length']);
+    });
+    print(angle.runtimeType);
   }
   loadingProcess(){
     Future.delayed(Duration(seconds: 5), () {
@@ -136,6 +140,7 @@ class _HomePeriodState extends State<HomePeriod> {
       // });
     });
   }
+
 
 
   final List<ChartData> chartData = [
@@ -301,7 +306,7 @@ class _HomePeriodState extends State<HomePeriod> {
                           dataSource: chartData,
                           pointColorMapper: (ChartData data, _) => data.color,
                           xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y)
+                          yValueMapper: (ChartData data, _) => data.y*angle)
                     ],
                     annotations: [
                       CircularChartAnnotation(
@@ -310,14 +315,14 @@ class _HomePeriodState extends State<HomePeriod> {
                           series: <CircularSeries>[
                             // Renders doughnut chart
                             DoughnutSeries<ChartData1, String>(
-                                animationDuration: 5,
+                                animationDuration: 10,
                                 radius: "79.9%",
                                 innerRadius: "70%",
                                 dataSource: chartData1,
                                 pointColorMapper: (ChartData1 data, _) =>
                                     data.color,
                                 xValueMapper: (ChartData1 data, _) => data.x,
-                                yValueMapper: (ChartData1 data, _) => data.y)
+                                yValueMapper: (ChartData1 data, _) => data.y*angle)
                           ],
                           annotations: [
                             CircularChartAnnotation(
@@ -357,7 +362,11 @@ class _HomePeriodState extends State<HomePeriod> {
                   //Log Symptoms Text
                   GestureDetector(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DataInput()));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomeTabScreen(homeIndex: 2)),
+                      );
                     },
                     child: Text(
                       "Log your symptoms?",
@@ -370,7 +379,15 @@ class _HomePeriodState extends State<HomePeriod> {
                   ),
 
                   //Four Coloured Icons Row
-                  Row(
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeTabScreen(homeIndex: 2)),
+                        );
+                      },
+                      child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
@@ -426,7 +443,7 @@ class _HomePeriodState extends State<HomePeriod> {
                         ),
                       ),
                     ],
-                  ),
+                  )),
                 ], // Children
               ),
             ),

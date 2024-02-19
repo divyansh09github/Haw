@@ -86,37 +86,49 @@ class _NavBarState extends State<NavBar>{
             isLoading ? Text("Hello ${nameImageData['name']?.split(' ')[0] ?? "Username"}", style: TextStyle(color: Color(0xFFFF608B), fontSize: 20, fontWeight: FontWeight.w500))
             : Text("", style: TextStyle(color: Color(0xFFFF608B), fontSize: 20, fontWeight: FontWeight.w500)),
             //Round profile image container
-            currentAccountPicture: Column(
-              children: [
-                // SizedBox(height: 4,),
-                Container(
-                  // width: 130,
-                  // height: 130,
-                  decoration: BoxDecoration(
+            currentAccountPicture: Container(
+                decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 4), // Add border to the circle
-                  ),
-                  child: ClipOval(
-                    child: nameImageData['image'] != null
-                        ? Image.network(
-                      '$apiUrl/public/${nameImageData['image']}',
-                      fit: BoxFit.cover,
-                    )
-                        : Image.asset(
-                      'assets/images/profileimage.png',
-                      fit: BoxFit.cover,
-                    ),
-                    // child:
-                    // Image.network(
-                    //   'https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png',
-                    //   fit: BoxFit.cover,
-                    //   width: 60,
-                    //   height: 60,
-                    // ),
-                  ),
-                ),
-              ],
-            ),
+                    border: Border.all(color: Colors.white, width: 4)),
+                child:nameImageData['image'] != null
+                ? CircleAvatar(
+              backgroundImage: NetworkImage('$apiUrl/public/${nameImageData['image']}'),
+              radius: 100,
+            ) : CircleAvatar(
+              backgroundImage: AssetImage('assets/images/profileimage.png',),
+              radius: 100,
+            )),
+            // Column(
+            //   children: [
+            //     // SizedBox(height: 4,),
+            //     Container(
+            //       // width: 130,
+            //       // height: 130,
+            //       decoration: BoxDecoration(
+            //         shape: BoxShape.circle,
+            //         border: Border.all(color: Colors.white, width: 4), // Add border to the circle
+            //       ),
+            //       child: ClipOval(
+            //         child: nameImageData['image'] != null
+            //             ? Image.network(
+            //           '$apiUrl/public/${nameImageData['image']}',
+            //           fit: BoxFit.cover,
+            //         )
+            //             : Image.asset(
+            //           'assets/images/profileimage.png',
+            //           fit: BoxFit.cover,
+            //         ),
+            //         // child:
+            //         // Image.network(
+            //         //   'https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png',
+            //         //   fit: BoxFit.cover,
+            //         //   width: 60,
+            //         //   height: 60,
+            //         // ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             decoration: BoxDecoration(
               color: Colors.white,
               image: DecorationImage(

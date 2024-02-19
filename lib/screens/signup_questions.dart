@@ -636,6 +636,9 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                           return null;
                         },
 
+                        onTap: () {
+                          _toDatePicker();
+                        },
                         controller: _dob,
                         readOnly:
                         true, // Make field read-only to enforce date picker usage

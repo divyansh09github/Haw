@@ -822,6 +822,22 @@ class _ProfileEditState extends State<ProfileEdit> {
       return false;
     }
   }
+  bool validateWeight(String value) {
+    if (value.isEmpty) {
+      return true; // Or handle null/empty values
+    }
+
+    try {
+      double weight = double.parse(value);
+      if (weight > 200) {
+        return false; // Weight exceeds limit
+      }
+    } on FormatException {
+      return false; // Invalid format
+    }
+
+    return true; // Valid weight
+  }
 
   String? _selectedMaritalStatus; // nullable to initially represent no selection
   String? _selectedRegion;
@@ -1076,6 +1092,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                         }
                         return null;
                       },
+                      onTap: () {
+                        _toDatePicker();
+                      },
 
                       controller: _dob,
                       readOnly:
@@ -1325,15 +1344,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                         counterText: '',
                         counterStyle: const TextStyle(color: Colors.transparent),
                       ),
-                      validator: (value) {
-                        if (value!.length > 6) {
-                          return 'Weight cannot exceed 6 characters.';
-
-                        } else if (double.parse(value) > 200) {
-                          return 'Weight cannot exceed 200.';
-                        }
-                        return null; // Valid weight
-                      },
+                      validator: (value) => !validateWeight(value!)
+                          ? 'Invalid weight (max 200).'
+                          : null,
                     ),
                   ),
                   SizedBox(height: 30,),

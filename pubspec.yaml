@@ -40,7 +40,7 @@ dependencies:
   mime_type: ^1.0.0
   image_picker: ^1.0.7
   http_multi_server: ^3.2.1
-
+  webview_flutter: ^4.7.0
 
 
 #flutter_launcher_icons:

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/home_tab_screen.dart';
 import 'package:haw/services/get_api.dart';
@@ -395,9 +396,23 @@ class _DataCalendarListState extends State<DataCalendarList> {
 
               print("hello");
 
-              bool clickable = widget.selectedDate.isBefore(DateTime.now());
+              // bool clickable = widget.selectedDate.isBefore(DateTime.now());
+              int month = widget.selectedDate.month;
+              int day = data['day'];
+              if(month < DateTime.now().month){
+                _threeDotFunc();
+              }
+              else if(month == DateTime.now().month){
+                if(day <= DateTime.now().day){
+                  _threeDotFunc();
+                }else{
+                  showSnackBar();
+                }
+              }
 
-               clickable ? _threeDotFunc() : showSnackBar();
+              // bool clickable = widget.selectedDate.month.;
+              //
+              //  clickable ? _threeDotFunc() : showSnackBar();
 
 
 
@@ -409,7 +424,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                   .centerRight, // Center horizontally within the SizedBox
               child: Padding(
                 // Add padding to adjust the icon position within the card border
-                padding: EdgeInsets.only(right: 0), // Pad from the right edge
+                padding: EdgeInsets.all(15), // Pad from the right edge
                 child:
                     // Icon(
                     //   Icons.,
@@ -443,6 +458,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
         titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300,letterSpacing: 1.20,color: Colors.black),
         // content: dialogContent('Are you sure you want to proceed?'),
         // content: Text("You want to add/edit the data?"),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
         actions: [
 
           Container(
@@ -467,7 +483,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
               child: Text('No', style: TextStyle(color:  Colors.white, fontSize: 18, fontWeight: FontWeight.w400),),
             ),
           ),
-          SizedBox(width: 80,),
+          // SizedBox(width: 50,),
           Container(
             height : 40,
             width: 90,
@@ -497,6 +513,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
 
     if (result ?? false) {
       // Do something if the user taps Yes
+      // await PreferencesManager.setDataInputDate();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -508,6 +525,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
       print("no");
     }
   }
+
   void showSnackBar() {
     final snackBar = SnackBar(
       dismissDirection: DismissDirection.startToEnd,

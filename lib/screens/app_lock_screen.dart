@@ -153,11 +153,11 @@ class _AppLockScreenState extends State<AppLockScreen> {
                 left: (MediaQuery.of(context).size.width - 120) / 2,
                 child: Column(
                   children: [
-                    Text(userName,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w400)),
+                    // Text(userName,
+                    //     style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 24,
+                    //         fontWeight: FontWeight.w400)),
                     SizedBox(
                       height: 20,
                     ),
@@ -169,15 +169,27 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child:
-                        nameImageData['image'] != null
-                            ? Image.network(
-                          '$apiUrl/public/${nameImageData['image']}',
-                          fit: BoxFit.cover,
-                        )
-                            : Image.asset(
-                          'assets/images/profileimage.png',
-                          fit: BoxFit.cover,
-                        ),
+                        Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 4)),
+                            child:nameImageData['image'] != null
+                                ? CircleAvatar(
+                              backgroundImage: NetworkImage('$apiUrl/public/${nameImageData['image']}'),
+                              radius: 100,
+                            ) : CircleAvatar(
+                              backgroundImage: AssetImage('assets/images/profileimage.png',),
+                              radius: 100,
+                            )),
+                        // nameImageData['image'] != null
+                        //     ? Image.network(
+                        //   '$apiUrl/public/${nameImageData['image']}',
+                        //   fit: BoxFit.contain,
+                        // )
+                        //     : Image.asset(
+                        //   'assets/images/profileimage.png',
+                        //   fit: BoxFit.contain,
+                        // ),
                         // Image.asset(
                         //   'assets/images/profileimage.png', // Replace with your second image path
                         //   fit: BoxFit.fill,
@@ -274,6 +286,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                         return Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
                             onPressed: () {
                               // print('Button ${index + 1} pressed');
                               _addValue(index+1);
