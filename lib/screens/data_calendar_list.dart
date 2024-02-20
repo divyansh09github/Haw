@@ -453,7 +453,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
       context: context,
       builder: (context) => AlertDialog(
 
-        backgroundColor: Color(0xFFFFC3D6),
+        backgroundColor: Colors.white,
         title: Text('You want to add/edit the data?'),
         titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300,letterSpacing: 1.20,color: Colors.black),
         // content: dialogContent('Are you sure you want to proceed?'),

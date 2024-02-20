@@ -535,7 +535,7 @@ class _SignUpQuestionsState extends State<SignUpQuestions> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text("Change Picture",
+                      Text("Profile Picture",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,

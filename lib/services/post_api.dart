@@ -91,7 +91,7 @@ class PostAPIService{
     return response;
   }
 
-  Future saveProfileEdit() async{
+  Future<http.Response> saveProfileEdit() async{
     var profileVariables = await PreferencesManager.getProfileVariables();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
@@ -112,7 +112,9 @@ class PostAPIService{
     ),
         headers: {"Content-Type": "application/json"}
     );
-    print(response.body);
+    print(response.statusCode);
+
+    return response;
   }
 
   Future<http.Response> saveProfileImage(File? imageFile) async{

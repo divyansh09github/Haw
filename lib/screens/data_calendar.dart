@@ -284,15 +284,16 @@ class _DataCalendarState extends State<DataCalendar> {
   }
 
   void selectionChanged(DateRangePickerSelectionChangedArgs args) {
-    // _controller.selectedRanges = _selectedRanges;
+    _controller.selectedRanges = _selectedRanges;
     // var abc = args.value[args.value.length-1];
     // print(abc);
     // // print(args.value.length-1);
     // // Navigator.push(context,MaterialPageRoute(builder: (context) => DataInput()),);
 
     if (args.value.isNotEmpty && args.value.last is PickerDateRange) {
+      _controller.selectedRanges = _selectedRanges;
       var selectedDate = (args.value.last as PickerDateRange).startDate;
-      print('Selected Date1: $selectedDate');
+      print('Selected Date1: ${selectedDate}');
 
       // Navigator.pushReplacement(
       //   context,

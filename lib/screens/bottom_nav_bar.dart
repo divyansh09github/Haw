@@ -243,7 +243,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             height: MediaQuery.of(context).size.height * 0.09,
             color: bottombgcolor,
             child: TabBar(
-
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorPadding: EdgeInsets.only(bottom: 6),
               indicatorColor: Colors.white,
               tabs: [
                 Tab(
@@ -365,6 +366,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
           ), // TabBar,
           body: TabBarView(
+
             children: [
               HomePeriod(),
               DataCalendar(),

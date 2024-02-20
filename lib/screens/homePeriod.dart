@@ -336,9 +336,9 @@ class _HomePeriodState extends State<HomePeriod> {
                                     decoration: BoxDecoration(
                                       boxShadow: [
                                       BoxShadow(
-                                        color: Colors.blue,
+                                        color: Colors.pink,
                                         offset: Offset(0, 0),
-                                        blurRadius: 40,
+                                        blurRadius: 50,
                                         spreadRadius: 0,
                                       )
                                     ],
@@ -355,7 +355,7 @@ class _HomePeriodState extends State<HomePeriod> {
                                 // ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top:8.0),
+                                    padding: const EdgeInsets.only(top:15.0),
                                     child: Text(
                                         "${homeScreenData['data'][0]['message']}",style: TextStyle(fontSize: 11),
                                         textAlign: TextAlign.center),
@@ -427,7 +427,7 @@ class _HomePeriodState extends State<HomePeriod> {
                                 Border.all(width: 5, color: Color(0xff6BD6CF))),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Image.asset("assets/images/Loved.png"),
+                          child: Image.asset("assets/images/loved1.png"),
                         ),
                       ),
                       Container(
@@ -440,7 +440,7 @@ class _HomePeriodState extends State<HomePeriod> {
                                 Border.all(width: 5, color: Color(0xffFFE28C))),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Image.asset("assets/images/jointPain.png"),
+                          child: Image.asset("assets/images/noPain.png"),
                         ),
                       ),
                       Container(
@@ -453,7 +453,7 @@ class _HomePeriodState extends State<HomePeriod> {
                                 Border.all(width: 5, color: Color(0xffA3B971))),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Image.asset("assets/images/highEnergy.png"),
+                          child: Image.asset("assets/images/veryLowEnergy 5.png"),
                         ),
                       ),
                     ],

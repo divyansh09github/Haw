@@ -9,6 +9,8 @@ import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/services/get_api.dart';
 
 import '../DataStorage/preferences_manager.dart';
+import 'package:haw/services/get_api.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 // Import other libraries or packages here
 
@@ -32,6 +34,21 @@ class _TermsState extends State<Terms> {
 
     _fetchTAndC();
   }
+
+  final controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.disabled)
+    ..setNavigationDelegate(NavigationDelegate(
+
+      onNavigationRequest: (request) {
+        // Allow if URL matches the specified `allowedUrl`
+        if (request.url.toString() == "https://haaw.in") {
+          return NavigationDecision.navigate; // Allow navigation
+        } else {
+          return NavigationDecision.prevent; // Block navigation
+        }
+      },
+    ))
+    ..loadRequest(Uri.parse('https://haaw.in/terms-conditions/')); // Load the webpage
 
   String error = '';
   bool isLoading = false;
@@ -110,183 +127,130 @@ class _TermsState extends State<Terms> {
   Widget build(BuildContext context) {
 // Return a Scaffold widget that provides a basic layout for your page
     return isLoading ? Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 60),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(25, 10, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // mainAxisSize: MainAxisSize.min,
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Center(
+              child: Column(
                 children: [
-                  Text(
-                    tncData['show_app_info'][0]['title'],
-                    // "Terms & Conditions",
-                    style:
-                    TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                  SizedBox(height: 20,),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: [
+                  //     GestureDetector(
+                  //       onTap: () {
+                  //         Navigator.pop(context);
+                  //       },
+                  //       child:
+                  //       Padding(
+                  //         padding: const EdgeInsets.only(left: 30,bottom: 10),
+                  //         child:
+                  //         Image.asset(
+                  //           "assets/images/arrowPinkback.png",
+                  //           height: 25,
+                  //           width: 25,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     // Text(tncData['show_app_info'][0]['title'], style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+                  //     SizedBox(),
+                  //     SizedBox(
+                  //       width: 25,
+                  //     ),
+                  //   ],
+                  // ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                    height: MediaQuery.of(context).size.height * 0.83,
+                    width: MediaQuery.of(context).size.height * 0.9,
+                    child: WebViewWidget(
+                        controller: controller),
                   ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween, // Align children to the top
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Text(
-                            //   "What is Lorem Ipsum?",
-                            //   style:
-                            //       TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-                            // ),
-                            SizedBox(height: 5,),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.85,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  tncData['show_app_info'][0]['long_description'],textAlign: TextAlign.justify,
-                                  // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                                softWrap: true,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w400, fontSize: 16,letterSpacing: 0.96,),
-                                ),
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: _isChecked,
+                            onChanged: (newValue) => setState(() => _isChecked = newValue!),
+                            activeColor: Color( 0xFFFF608B),
+
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.70,
+                            child: Text('I have read and agree to the Terms & Conditions.',textAlign: TextAlign.left,maxLines: 2,softWrap: true,
+                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                             ),
-                            SizedBox(height: 15,),
-                            // Text(
-                            //   "Why do we use it?",
-                            //   style:
-                            //   TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-                            // ),
-                            // SizedBox(height: 10,),
-                            // Container(
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.all(8.0),
-                            //     child: Text("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and",
-                            //       softWrap: true,
-                            //       style:
-                            //       TextStyle(fontWeight: FontWeight.w400, fontSize: 16,letterSpacing: 0.96,),
-                            //     ),
-                            //
-                            //   ),
-                            // ),
-                          ],
+                          ),
+                          // ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.85,
+                          height: 45,
+                          child: ElevatedButton(
+                            onPressed: () async {
+
+                              if(_isChecked) {
+                                setInitialScreen('signUpQuestionsScreen');
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpQuestions()),
+                                );
+                              }
+                              else{
+                                const snackDemo = SnackBar(
+                                  dismissDirection: DismissDirection.startToEnd,
+                                  padding: EdgeInsets.all(7),
+                                  content: Center(
+                                    child: Text(
+                                      'Agree to our policies for the best app experience & personalized features.',
+                                      style: TextStyle(color: Color(0xFF972633)),
+                                    ),
+                                  ),
+                                  backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+                                  elevation: 10,
+                                  behavior: SnackBarBehavior.floating,
+                                  duration: Duration(seconds: 2),
+                                  margin: EdgeInsets.all(15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15),
+                                      bottomLeft: Radius.circular(15),
+                                      bottomRight: Radius.circular(15), // Customize corner radius as needed
+                                    ),
+                                  ),
+                                );
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackDemo);
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
+                              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      25.0))), // Use shape to change the border radius
+                            ),
+                            child: Text(
+                              'Next',
+                              style:
+                              TextStyle(fontSize: 22.0, color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
 
-            ),
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Column(
-                children: [
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                          value: _isChecked,
-                          onChanged: (newValue) => setState(() => _isChecked = newValue!),
-                          activeColor: Color( 0xFFFF608B),
-
-                        ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            child: Text('I have read and agree to the Terms & Conditions and Privacy Policy.',textAlign: TextAlign.left,maxLines: 2,softWrap: true,
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                            ),
-                          ),
-                        // ),
-                      ],
-                    ),
-                  ),
-
-
-                  // Padding(
-                  //   padding: const EdgeInsets.all(12.0),
-                  //   child:
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: SizedBox(
-                        width: 300,
-                        height: 45,
-                        child: ElevatedButton(
-                          onPressed: () async {
-
-                            if(_isChecked) {
-                              setInitialScreen('signUpQuestionsScreen');
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUpQuestions()),
-                              );
-                            }
-                            else{
-                              const snackDemo = SnackBar(
-                                dismissDirection: DismissDirection.startToEnd,
-                                padding: EdgeInsets.all(7),
-                                content: Center(
-                                  child: Text(
-                                    'Agree to our policies for the best app experience & personalized features.',
-                                    style: TextStyle(color: Color(0xFF972633)),
-                                  ),
-                                ),
-                                backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
-                                elevation: 10,
-                                behavior: SnackBarBehavior.floating,
-                                duration: Duration(seconds: 2),
-                                margin: EdgeInsets.all(15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    topRight: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15),
-                                    bottomRight: Radius.circular(15), // Customize corner radius as needed
-                                  ),
-                                ),
-                              );
-
-                                  ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackDemo);
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Color(0xFFFF608B)), // Use backgroundColor to change the background color
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    25.0))), // Use shape to change the border radius
-                          ),
-                          child: Text(
-                            'Next',
-                            style:
-                            TextStyle(fontSize: 22.0, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  // ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
+            ))
     )
     : Scaffold(
       //Implement loader

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/constants/constants.dart';
 import 'package:haw/screens/blogs.dart';
+import 'package:haw/screens/data_calendar_1.dart';
 import 'package:haw/screens/data_calendar_list.dart';
 import 'package:haw/screens/get_started_page.dart';
 import 'package:haw/screens/lock_screen.dart';
@@ -165,10 +166,10 @@ class _NavBarState extends State<NavBar>{
             iconColor: Color(0xFFFF608B),
             title: Text('Report'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => DataCalendarList()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DCalendar()),
+              );
             },
           ),
           ListTile(

@@ -687,36 +687,68 @@ class _ProfileEditState extends State<ProfileEdit> {
       );
 
 
-      PostAPIService().saveProfileEdit();
-      // show some message on success save
-      const snackDemo = SnackBar(
-        dismissDirection: DismissDirection.startToEnd,
-        padding: EdgeInsets.all(7),
-        content: Center(
-          child: Text(
-            'Profile updated',
-            style: TextStyle(color: Color(0xFF972633)),
-          ),
-        ),
-        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
-        elevation: 10,
-        behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 2),
-        margin: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15), // Customize corner radius as needed
-          ),
-        ),
-      );
-      ScaffoldMessenger.of(context)
-          .showSnackBar(snackDemo);
+      try {
+
+        var response = await PostAPIService().saveProfileEdit();
+
+        print(response.statusCode);
+        if (response.statusCode != 200) {
+          // Handle non-200 responses
+          var body = jsonDecode(response.body);
+          if (body is Map && body.containsKey('error')) {
+            var snackDemo = SnackBar(
+              dismissDirection: DismissDirection.startToEnd,
+              padding: EdgeInsets.all(10),
+              content: Center(
+                child: Text(
+                  "${body['error']}",
+                  style: TextStyle(color: Color(0xFF972633)),
+                ),
+              ),
+              backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+              elevation: 10,
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 4),
+              margin: EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15), // Customize corner radius as needed
+                ),
+              ),
+            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(snackDemo);
+
+          } else {
+            // Handle unexpected response format
+            print("Unexpected response format: ${response.body}");
+            // Display a generic error message to the user
+          }
+        } else if (response.statusCode == 200){
+          // Assuming a valid JSON response
+          // print(_name.text);
+          // await PreferencesManager.setUserName(_name.text);
+          try {
+            // final body = jsonDecode(response.body);
+
+            print("Profile Updated");
+
+
+          } catch (e) {
+            // Handle JSON decoding errors
+            print("Error decoding JSON response: $e");
+          }
+        }
+      } catch (e) {
+        // Handle network errors or other exceptions
+        print("Error during API call: $e");
+        // Display a generic error message to the user
+      }
 
     }
-    // print(_selectedRegion);
 
   }
 
@@ -772,7 +804,7 @@ class _ProfileEditState extends State<ProfileEdit> {
             padding: EdgeInsets.all(10),
             content: Center(
               child: Text(
-                "Image Uploaded",
+                "Profile Picture",
                 style: TextStyle(color: Color(0xFF972633)),
               ),
             ),
@@ -975,18 +1007,21 @@ class _ProfileEditState extends State<ProfileEdit> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 4),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(60), // Half of the container width for perfect circle
-                          child: _selectedImageFile != null
-                              ? Image.file(_selectedImageFile!, width: 120, height: 120, fit: BoxFit.cover,)
-                              : widget.profileData['show_user']?[0]?['image'] != null
-                              ? Image.network(
-                            '$apiUrl/public/${widget.profileData['show_user']?[0]?['image']}',
-                            fit: BoxFit.cover,
-                          )
-                              : Image.asset(
-                            'assets/images/profileimage.png',
-                            fit: BoxFit.cover,
+                        child: ClipOval(
+                          child: SizedBox(
+                            width: 112, // Adjusted width to account for border width
+                            height: 112, // Adjusted height to account for border width
+                            child: _selectedImageFile != null
+                                ? Image.file(_selectedImageFile!, width: 120, height: 120, fit: BoxFit.cover,)
+                                : widget.profileData['show_user']?[0]?['image'] != null
+                                ? Image.network(
+                              '$apiUrl/public/${widget.profileData['show_user']?[0]?['image']}',
+                              fit: BoxFit.cover,
+                            )
+                                : Image.asset(
+                              'assets/images/profileimage.png',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
