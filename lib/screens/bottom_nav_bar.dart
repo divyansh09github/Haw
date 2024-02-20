@@ -18,8 +18,9 @@ import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/screens/terms&conditions.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key, required this.homeIndex});
+  const BottomNavBar({super.key, required this.homeIndex, required this.initDate});
 
+  final DateTime initDate;
   final int homeIndex;
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -281,7 +282,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         ),
                         // Flexible( // Wrap text if it overflows
                         //   child:
-                          Text(
+                          Text(overflow: TextOverflow.clip,
                             "Calendar",
                             style: TextStyle(
                               fontSize: 10,
@@ -363,11 +364,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ],
             ),
           ), // TabBar,
-          body: const TabBarView(
+          body: TabBarView(
             children: [
               HomePeriod(),
               DataCalendar(),
-              DataInput(),
+              DataInput(initDate: widget.initDate),
               Analysis(),
               NavBar(),
             ],

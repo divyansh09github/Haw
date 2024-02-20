@@ -12,8 +12,9 @@ import 'package:haw/screens/signup_questions.dart';
 import 'package:haw/screens/terms&conditions.dart';
 
 class HomeTabScreen extends StatefulWidget {
-  HomeTabScreen({super.key, required this.homeIndex});
+  HomeTabScreen({super.key, required this.homeIndex, required this.initDate});
 
+  final DateTime initDate;
   final int homeIndex;
   @override
   State<HomeTabScreen> createState() => _HomeTabScreenState();
@@ -105,6 +106,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavBar(homeIndex: widget.homeIndex,);
+    return BottomNavBar(homeIndex: widget.homeIndex, initDate: widget.initDate,);
   }
 }

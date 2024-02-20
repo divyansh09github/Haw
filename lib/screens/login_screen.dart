@@ -122,7 +122,7 @@ class _LoginUserState extends State<LoginUser> {
     setInitialScreen('homeTabScreen');
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => HomeTabScreen(homeIndex: 0,)),
+      MaterialPageRoute(builder: (context) => HomeTabScreen(homeIndex: 0, initDate: DateTime.now())),
           (Route<dynamic> route) => false,
     );
   }

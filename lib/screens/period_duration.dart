@@ -51,7 +51,7 @@ class _PeriodDurationState extends State<PeriodDuration> {
     setInitialScreen('homeTabScreen');
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => HomeTabScreen( homeIndex: 0,)),
+      MaterialPageRoute(builder: (context) => HomeTabScreen( homeIndex: 0, initDate: DateTime.now())),
           (Route<dynamic> route) => false,
     );
   }

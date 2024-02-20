@@ -187,7 +187,7 @@ class _DataCalendarState extends State<DataCalendar> {
         appBar: AppBar(
               centerTitle: true,
               title: Padding(
-                padding: const EdgeInsets.only(top: 40.0),
+                padding: const EdgeInsets.only(top: 30.0),
                 child: const Text('Calender', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),),
               ),
             ),

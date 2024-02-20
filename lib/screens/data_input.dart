@@ -11,8 +11,9 @@ import 'package:haw/services/post_api.dart';
 import 'package:intl/intl.dart';
 
 class DataInput extends StatefulWidget {
-  const DataInput({super.key});
+  const DataInput({super.key, required this.initDate});
 
+  final DateTime initDate;
   @override
   State<DataInput> createState() => _DataInputState();
 }
@@ -64,7 +65,7 @@ class _DataInputState extends State<DataInput> {
       });
     }
 
-    print("dtt: ${symptomsData['show_symptoms']['symptoms'].runtimeType}");
+    // print("dtt: ${symptomsData['show_symptoms']['symptoms'].runtimeType}");
     List<dynamic> symptoms = [];
     if(data['show_symptoms'] != null && data['show_symptoms']['symptoms'] != null){
       print(data['show_symptoms']['symptoms'].runtimeType);

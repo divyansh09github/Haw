@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
 
-    Future.delayed(Duration(milliseconds: 6000)).then((_) {
+    Future.delayed(Duration(milliseconds: 10000)).then((_) {
       _initialScreen();
     });
   }
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
         case 'homeTabScreen':
           {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomeTabScreen(homeIndex: 0,)));  // navigate to getStarted Screen
+                context, MaterialPageRoute(builder: (context) => HomeTabScreen(homeIndex: 0, initDate: DateTime.now())));  // navigate to getStarted Screen
             break;
           }
         // case 'signUpScreen':

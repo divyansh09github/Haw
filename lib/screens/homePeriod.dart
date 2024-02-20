@@ -327,11 +327,22 @@ class _HomePeriodState extends State<HomePeriod> {
                           annotations: [
                             CircularChartAnnotation(
                                 widget: Container(
+                                  color: Colors.transparent,
                               height: 100,
                               width: 100,
                               child: Column(
                                 children: [
                                   Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.blue,
+                                        offset: Offset(0, 0),
+                                        blurRadius: 40,
+                                        spreadRadius: 0,
+                                      )
+                                    ],
+                                    ),
                                     child: Image.network(
                                       "$apiUrl/public/${homeScreenData['data'][0]['moon']}",
                                       height: 50,
@@ -343,9 +354,12 @@ class _HomePeriodState extends State<HomePeriod> {
                                 //   width: 50,
                                 // ),
                                   ),
-                                  Text(
-                                      "${homeScreenData['data'][0]['message']}",style: TextStyle(fontSize: 11),
-                                      textAlign: TextAlign.center),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top:8.0),
+                                    child: Text(
+                                        "${homeScreenData['data'][0]['message']}",style: TextStyle(fontSize: 11),
+                                        textAlign: TextAlign.center),
+                                  ),
 
                                 ],
                               ),
@@ -365,7 +379,7 @@ class _HomePeriodState extends State<HomePeriod> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HomeTabScreen(homeIndex: 2)),
+                            builder: (context) => HomeTabScreen(homeIndex: 2, initDate: DateTime.now())),
                       );
                     },
                     child: Text(
@@ -384,7 +398,7 @@ class _HomePeriodState extends State<HomePeriod> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => HomeTabScreen(homeIndex: 2)),
+                              builder: (context) => HomeTabScreen(homeIndex: 2, initDate: DateTime.now())),
                         );
                       },
                       child: Row(

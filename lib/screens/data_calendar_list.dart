@@ -517,7 +517,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => HomeTabScreen(homeIndex: 2)),
+            builder: (context) => HomeTabScreen(homeIndex: 2, initDate: DateTime.now(),)),
       );
       print("Yes");
     } else {
@@ -575,7 +575,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => HomeTabScreen(homeIndex: 1)),
+                        builder: (context) => HomeTabScreen(homeIndex: 1, initDate: DateTime.now(),)),
                   );
                 },
                 child:

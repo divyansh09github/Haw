@@ -18,7 +18,7 @@ import 'package:haw/screens/test.dart';
 class AppRoutes {
 
   static const String analysisScreen = '/analysis';
-  static const String dataInputScreen = '/data_input';
+  // static const String dataInputScreen = '/data_input';
   static const String navBarScreen = '/nav_bar';
   static const String profileScreen = 'profile';
   // static const String profileEditScreen = 'ProfileEdit';
@@ -35,7 +35,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
 
     analysisScreen: (context) => Analysis(),
-    dataInputScreen: (context) => DataInput(),
+    // dataInputScreen: (context) => DataInput(),
     navBarScreen: (context) => NavBar(),
     profileScreen: (context) => Profile(),
     // profileEditScreen: (context) => ProfileEdit(),
