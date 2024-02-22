@@ -255,7 +255,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         Image.asset(
                           width: 30,
                           height: 30,
-                          'assets/images/cycleIcon.png', // Replace with your image path
+                          'assets/images/cycleIcon.png', // Replace with your image pa th
                           fit: BoxFit.cover, // Adjust image fit as needed
                           semanticLabel: "Cycle",
                         ),

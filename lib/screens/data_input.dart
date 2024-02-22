@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
@@ -497,7 +499,67 @@ class _DataInputState extends State<DataInput> {
     //     energy: selectedEnergyIndex,
     //     date: currentDate);
 
-    await PostAPIService().saveTrackSymptoms(feelingsIndexes, livelinessIndexes, selectedFlowIndex, selectedEnergyIndex, currentDate);
+    var response = await PostAPIService().saveTrackSymptoms(feelingsIndexes, livelinessIndexes, selectedFlowIndex, selectedEnergyIndex, currentDate);
+
+    final body = jsonDecode(response.body);
+
+    if(response.statusCode != 200){
+      print(body['error']);
+
+      var snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(10),
+        content: Center(
+          child: Text(
+            "${body['error']}",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
+        ),
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
+    }
+    else if(response.statusCode == 200){
+      var snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(10),
+        content: Center(
+          child: Text(
+            "Traits updated",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
+        ),
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
+
+    }
   }
 
   @override
@@ -1433,32 +1495,6 @@ class _DataInputState extends State<DataInput> {
                                 onPressed: () {
                                   saveFunction();
                                   // print("hello");
-                                  const snackDemo = SnackBar(
-                                    dismissDirection: DismissDirection.startToEnd,
-                                    padding: EdgeInsets.all(7),
-                                    content: Center(
-                                      child: Text(
-                                        'Data Saved',
-                                        style: TextStyle(color: Color(0xFF972633)),
-                                      ),
-                                    ),
-                                    backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
-                                    elevation: 10,
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: Duration(seconds: 2),
-                                    margin: EdgeInsets.all(15),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
-                                        bottomLeft: Radius.circular(15),
-                                        bottomRight: Radius.circular(15), // Customize corner radius as needed
-                                      ),
-                                    ),
-                                  );
-
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackDemo);
                                 },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(

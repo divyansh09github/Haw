@@ -119,7 +119,8 @@ class _AppInfoState extends State<AppInfo> {
                 ),
                 // ),
               ),
-              Text(tncData['show_app_info'][0]['title'], style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+              // Text(tncData['show_app_info'][0]['title'], style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400),),
+              SizedBox(width: 150,),
               SizedBox(
                 width: 25,
               ),
@@ -129,42 +130,55 @@ class _AppInfoState extends State<AppInfo> {
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween, // Align children to the top
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child:
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Text(
-                        //   "What is Lorem Ipsum?",
-                        //   style:
-                        //       TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-                        // ),
-                        SizedBox(height: 5,),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.85,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              tncData['show_app_info'][0]['long_description'],textAlign: TextAlign.justify,
-                              // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                              softWrap: true,
-                              style:
-                              TextStyle(fontWeight: FontWeight.w400, fontSize: 16,letterSpacing: 0.96,),
+
+                        SizedBox(height: 180,),
+                        Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child:
+                                Image.asset("assets/images/blood logo haaw.png",
+                                  height: 100,
+                                  width: 100,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
+                        Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Haaw",
+                              style:
+                                  TextStyle(fontWeight: FontWeight.w500, fontSize: 24),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Version 1.0.9",
+                              style:
+                              TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                        // SizedBox(height: 20,),
+
                         SizedBox(height: 15,),
-                        // Text(
-                        //   "Why do we use it?",
-                        //   style:
-                        //   TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-                        // ),
+                        Text(
+                          "2023-2024 Haaw Inc.",
+                          style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                        ),
                         // SizedBox(height: 10,),
                         // Container(
                         //   child: Padding(
@@ -179,9 +193,7 @@ class _AppInfoState extends State<AppInfo> {
                         // ),
                       ],
                     ),
-                  ),
-                ],
-              ),
+
             ),
 
           ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
@@ -38,13 +40,79 @@ class _PeriodDurationState extends State<PeriodDuration> {
     //     periodLength = 7;
     //   });
     // }
-    await PostAPIService().savePeriodDuration(periodLength);
-    _navigate();
+    var response = await PostAPIService().savePeriodDuration(periodLength);
+    final body = jsonDecode(response.body);
+
+    if(response.statusCode != 200){
+      print(body['error']);
+
+      var snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(10),
+        content: Center(
+          child: Text(
+            "${body['error']}",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
+        ),
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
+    }
+    else if(response.statusCode == 200){
+      _navigate();
+    }
   }
 
   _notSure() async{
-    await PostAPIService().savePeriodDuration(defaultDays);
-    _navigate();
+    var response = await PostAPIService().savePeriodDuration(periodLength);
+    final body = jsonDecode(response.body);
+
+    if(response.statusCode != 200){
+      print(body['error']);
+
+      var snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(10),
+        content: Center(
+          child: Text(
+            "${body['error']}",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
+        ),
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
+    }
+    else if(response.statusCode == 200){
+      _navigate();
+    }
   }
 
   _navigate(){

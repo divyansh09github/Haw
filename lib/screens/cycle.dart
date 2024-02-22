@@ -36,8 +36,42 @@ class _CycleState extends State<Cycle> {
   final TextEditingController textController = TextEditingController();
 
   _notSure() async {
-    await PostAPIService().saveCycleLength(defaultDays);
-    _navigate();
+    var response = await PostAPIService().saveCycleLength(cycleLength);
+    final body = jsonDecode(response.body);
+
+    if(response.statusCode != 200){
+      print(body['error']);
+
+      var snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(10),
+        content: Center(
+          child: Text(
+            "${body['error']}",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
+        ),
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
+    }
+    else if(response.statusCode == 200){
+      print("success");
+      _navigate();
+    }
   }
 
   _nextButton() async {
@@ -51,8 +85,43 @@ class _CycleState extends State<Cycle> {
     //     cycleLength = 25;
     //   });
     // }
-    await PostAPIService().saveCycleLength(cycleLength);
-    _navigate();
+    var response = await PostAPIService().saveCycleLength(cycleLength);
+    final body = jsonDecode(response.body);
+
+    if(response.statusCode != 200){
+      print(body['error']);
+
+      var snackDemo = SnackBar(
+        dismissDirection: DismissDirection.startToEnd,
+        padding: EdgeInsets.all(10),
+        content: Center(
+          child: Text(
+            "${body['error']}",
+            style: TextStyle(color: Color(0xFF972633)),
+          ),
+        ),
+        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15), // Customize corner radius as needed
+          ),
+        ),
+      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackDemo);
+    }
+    else if(response.statusCode == 200){
+      print("success");
+      _navigate();
+    }
+
   }
 
   _navigate() {

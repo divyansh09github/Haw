@@ -360,11 +360,11 @@ class _RegisterUserState extends State<RegisterUser> {
                     //Image
                     Positioned(
                       top:
-                          -20, // Adjust as needed to position half inside/outside
+                          15, // Adjust as needed to position half inside/outside
                       child: SizedBox(
-                        width: 250,
-                        height: 200,
-                        child: Image.asset('assets/images/finaldrop.png'),
+                        width: 170,
+                        height: 120,
+                        child: Image.asset('assets/images/blood logo haaw.png'),
                       ),
                     ),
 

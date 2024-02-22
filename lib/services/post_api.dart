@@ -12,7 +12,7 @@ class PostAPIService{
 
 
 
-  Future saveCycleLength(int length) async {
+  Future<http.Response> saveCycleLength(int length) async {
     // var length = await PreferencesManager.getCycleLength();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
@@ -27,9 +27,10 @@ class PostAPIService{
         );
 
         print(response.body);
+    return response;
   }
 
-  Future savePeriodDay(DateTime date) async{
+  Future<http.Response> savePeriodDay(DateTime date) async{
     // DateTime? periodDate = await PreferencesManager.getLastPeriodDate();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
@@ -45,9 +46,11 @@ class PostAPIService{
         headers: {"Content-Type": "application/json"}
     );
     print(response.body);
+
+    return response;
   }
 
-  Future savePeriodDuration(int durationLength) async{
+  Future<http.Response> savePeriodDuration(int durationLength) async{
     // var durationLength = await PreferencesManager.getPeriodDuration();
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
@@ -62,6 +65,7 @@ class PostAPIService{
         headers: {"Content-Type": "application/json"}
     );
     print(response.body);
+    return response;
   }
 
   Future<http.Response> saveSignUpQuestions(String name, DateTime dob, String marital, String region, String height, String weight, String phone, String email) async{
@@ -159,7 +163,7 @@ class PostAPIService{
     return http.Response.fromStream(response);
   }
 
-  Future saveTrackSymptoms(List<dynamic> feelings, List<dynamic> liveliness, dynamic flow, dynamic energy, DateTime date) async{
+  Future<http.Response> saveTrackSymptoms(List<dynamic> feelings, List<dynamic> liveliness, dynamic flow, dynamic energy, DateTime date) async{
     // Getting all values:
     // final data = await PreferencesManager.getSymptoms();
     var userId = await PreferencesManager.getUserId();
@@ -194,6 +198,7 @@ class PostAPIService{
     // print(data['feelings']);
     // print(data['energy']);
     // print(data['liveliness']);
+    return response;
 
   }
 

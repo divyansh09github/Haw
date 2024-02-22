@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haw/core/utils/navigator_service.dart';
 import 'package:haw/routes/app-routes.dart';
-import 'package:haw/screens/analysis.dart';
-import 'package:haw/screens/data_input.dart';
-import 'package:haw/screens/homePeriod.dart';
-import 'package:haw/screens/home_tab_screen.dart';
 import 'package:haw/screens/splash_screen.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -19,17 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // routes: {"/": (context) => const DataInput(), "/Analysis":(context) => const Analysis()},
-      title: 'Haw',
+      title: 'Haaw',
       debugShowCheckedModeBanner: false,
       navigatorKey: NavigatorService.navigatorKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // initialRoute: AppRoutes.homePeriodScreen,
-      // home : HomePeriod(),
-      // home: HomeTabScreen(),
       home: SplashScreen(),
       routes: AppRoutes.routes,
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),

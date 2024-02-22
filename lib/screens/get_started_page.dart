@@ -33,18 +33,18 @@ void setInitialScreen(String value) async{
 
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
+            SizedBox(height: 0),
             Column(
               children: [
                 SizedBox(
-                  width: 393,
-                  height: 393,
-                  child: Image.asset('assets/images/finaldrop.png'),
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: Image.asset('assets/images/blood logo haaw.png'),
                 ),
               ],
             ),
 
-            // SizedBox(height: 16),
+            SizedBox(height: 0),
 
             Column(
               children: [
