@@ -90,16 +90,17 @@ class _HomePeriodState extends State<HomePeriod> {
       });
     }
 
-    if(homeScreenData['data'][0]['moon'] != null){
+
+    if(homeScreenData['data'] != null && homeScreenData['data'][0]['moon'] != null){
       setState(() {
         moonImgPath = homeScreenData['data'][0]['moon'];
       });
     }
 
-    setState(() {
-      angle = 360/double.parse(homeScreenData['data'][0]['average_cycle_length']);
-    });
-    print(angle.runtimeType);
+    // setState(() {
+    //   angle = 360/double.parse(homeScreenData['data'][0]['average_cycle_length']);
+    // });
+    // print(angle.runtimeType);
   }
   loadingProcess(){
     Future.delayed(Duration(seconds: 5), () {

@@ -276,22 +276,21 @@ class GetAPIService{
 
   }
 
-  Future<Map<String, dynamic>> fetchCalendarList(DateTime month) async{
+  Future<Map<String, dynamic>> fetchCalendarList(DateTime dt) async{
 
+    //http://ehoaapp.techexposys.com/api/calander-list-screen-user/152/12/2023/gBxU0tk0hmOytPZ3O4Y31Pwz2NIvdrQnIwCH0OIewyxk2QPdX2lX2pQqDUo9EGKK
 
 
     // print(monthNum.runtimeType);
 
     try {
-      int monthNum = month.month;
+      int monthNum = dt.month;
+      int year = dt.year;
       var userId = await PreferencesManager.getUserId();
       var token = await PreferencesManager.getUserToken();
       print("here");
       final response = await http.get(Uri.parse(
-          "http://ehoaapp.techexposys.com/api/calander-list-screen-user/"
-              "$userId/"
-              "$monthNum/"
-              "$token"));
+          "http://ehoaapp.techexposys.com/api/calander-list-screen-user/$userId/$monthNum/$year/$token"));
 
       // print(response.statusCode);
       if (response.statusCode == 200) {

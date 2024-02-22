@@ -369,7 +369,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
             children: [
               HomePeriod(),
-              DataCalendar(),
+              // DataCalendar(),
+              DCalendar(),
               DataInput(initDate: widget.initDate),
               Analysis(),
               NavBar(),

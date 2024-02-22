@@ -103,7 +103,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                 children: [
                   AnimatedContainer(
                     decoration: ShapeDecoration(
-                      gradient: data['period_day'] ? LinearGradient(
+                      gradient: bool.parse(data['period_day']) ? LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                           colors: <Color>[Color(0xFFFF5389), Color(0xFFFF5389)])
