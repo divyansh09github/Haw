@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
+import 'package:haw/screens/login_screen.dart';
 import 'package:haw/screens/terms&conditions.dart';
 import 'package:haw/services/post_api.dart';
 
@@ -15,6 +16,14 @@ class RegisterUser extends StatefulWidget {
 }
 
 class _RegisterUserState extends State<RegisterUser> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _codeController.text = "";
+  }
   bool _isPasswordVisible = true;
   bool _isPasswordVisible1 = true;
 
@@ -25,6 +34,10 @@ class _RegisterUserState extends State<RegisterUser> {
   final TextEditingController _pass1 = TextEditingController();
   final TextEditingController _pass2 = TextEditingController();
   final _formKey = GlobalKey<FormState>(); // Create a global key for the form
+  TextEditingController _codeController = TextEditingController();
+  String alertText = "";
+
+
 
   void setInitialScreen(String value) async {
     await PreferencesManager.setInitialScreen(value);
@@ -32,84 +45,325 @@ class _RegisterUserState extends State<RegisterUser> {
 
   void validateForm() async {
 
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return buildAlertBox(context, 2);
+    //   },
+    // );
+
     if (_formKey.currentState!.validate()) {
 
        var response = await PostAPIService().registerUser(_email.text, _pass2.text);
 
-       final body = jsonDecode(response.body);
+       print("ff :${response.body}");
+       // final body = await jsonDecode(response.body);
 
-       if(response.statusCode != 200){
-         print(body['error']);
+       try{
 
-         var snackDemo = SnackBar(
-           dismissDirection: DismissDirection.startToEnd,
-           padding: EdgeInsets.all(10),
-           content: Center(
-             child: Text(
-               "${body['error']['email'][0]}",
-               style: TextStyle(color: Color(0xFF972633)),
+         final body = jsonDecode(response.body);
+
+         if(response.statusCode != 200){
+
+           print(body['error']);
+
+           var snackDemo = SnackBar(
+             dismissDirection: DismissDirection.startToEnd,
+             padding: EdgeInsets.all(10),
+             content: Center(
+               child: Text(
+                 "${body['error']['email'][0]}",
+                 style: TextStyle(color: Color(0xFF972633)),
+               ),
              ),
-           ),
-           backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
-           elevation: 10,
-           behavior: SnackBarBehavior.floating,
-           duration: Duration(seconds: 4),
-           margin: EdgeInsets.all(15),
-           shape: RoundedRectangleBorder(
-             borderRadius: BorderRadius.only(
-               topLeft: Radius.circular(15),
-               topRight: Radius.circular(15),
-               bottomLeft: Radius.circular(15),
-               bottomRight: Radius.circular(15), // Customize corner radius as needed
+             backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+             elevation: 10,
+             behavior: SnackBarBehavior.floating,
+             duration: Duration(seconds: 4),
+             margin: EdgeInsets.all(15),
+             shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.only(
+                 topLeft: Radius.circular(15),
+                 topRight: Radius.circular(15),
+                 bottomLeft: Radius.circular(15),
+                 bottomRight: Radius.circular(15), // Customize corner radius as needed
+               ),
              ),
-           ),
-         );
-         ScaffoldMessenger.of(context)
-             .showSnackBar(snackDemo);
+           );
+           ScaffoldMessenger.of(context)
+               .showSnackBar(snackDemo);
+         }
+         else
+           if(response.statusCode == 200){
+
+
+           // print(response.body);
+           final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+
+           if(albumData['status'] == true){
+             print(albumData);
+             int id = albumData['user_id'];
+             print(id.runtimeType);
+             setState(() {
+               alertText = "Code has been sent to your registered email";
+               _codeController.text = "";
+             });
+             showDialog(
+               context: context,
+               builder: (BuildContext context) {
+                 return buildAlertBox(context, id);
+               },
+             );
+           }
+           else{
+             showDialog(
+               context: context,
+               builder: (BuildContext context) {
+                 return buildAlertBox2(context);
+               },
+             );
+           }
+
+         }
+         else if(response.statusCode == 400){
+           showDialog(
+             context: context,
+             builder: (BuildContext context) {
+               return buildAlertBox3(context);
+             },
+           );
+         }
+       }catch(e){
+         print(e);
        }
-       else if(response.statusCode == 200){
-         var snackDemo = SnackBar(
-           dismissDirection: DismissDirection.startToEnd,
-           padding: EdgeInsets.all(10),
-           content: Center(
-             child: Text(
-               "Get ready to unlock a world of possibilities!",
-               style: TextStyle(color: Color(0xFF972633)),
-             ),
-           ),
-           backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
-           elevation: 10,
-           behavior: SnackBarBehavior.floating,
-           duration: Duration(seconds: 4),
-           margin: EdgeInsets.all(15),
-           shape: RoundedRectangleBorder(
-             borderRadius: BorderRadius.only(
-               topLeft: Radius.circular(15),
-               topRight: Radius.circular(15),
-               bottomLeft: Radius.circular(15),
-               bottomRight: Radius.circular(15), // Customize corner radius as needed
-             ),
-           ),
-         );
-         ScaffoldMessenger.of(context)
-             .showSnackBar(snackDemo);
 
-
-         setInitialScreen('termsAndConditionScreen');
-
-         await PreferencesManager.setUserId(body['user_id']);
-         await PreferencesManager.setUserToken(body['token']);
-         // print(await PreferencesManager.getUserId());
-         // print(await PreferencesManager.getUserToken());
-         _navigate();
-
-       }
 
     }
   }
 
+
+  Widget buildAlertBox(context, int id){
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+      backgroundColor: Colors.white,
+      title: Center(child: Text('Enter Verification Code', style: TextStyle(color: Color(0xff6C6C6C),fontSize: 24),)),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.65,
+        height: MediaQuery.of(context).size.height * 0.13,
+        child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(alertText,style: TextStyle(color: Colors.red,fontSize: 17,fontWeight: FontWeight.w400),textAlign: TextAlign.center),
+            SizedBox(),
+            TextFormField(
+
+              controller: _codeController,
+              keyboardType: TextInputType.number,
+              maxLength: 6,
+              textAlign: TextAlign.center,
+              style: TextStyle(letterSpacing: 20,fontSize: 25),
+              showCursor: false,
+
+              decoration: InputDecoration(
+                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
+                errorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffFF0000))),
+                contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                labelStyle: TextStyle(color: Color(0xffDADADA),fontSize: 15),
+                focusColor: Color(0xffFF608B),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffFF608B)),borderRadius: BorderRadius.all(Radius.circular(10))),
+                // border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Color(0xffD9D9D9))),
+                labelText: 'Enter the code',
+                counterText: '',
+                counterStyle: const TextStyle(color: Colors.transparent),
+
+
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      actionsAlignment: MainAxisAlignment.center,
+      actions: <Widget>[
+        // TextButton(
+        //   onPressed: () {
+        //     Navigator.of(context).pop(); // Close the dialog
+        //   },
+        //   child: Text('Cancel'),
+        // ),
+        ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor:
+            MaterialStatePropertyAll(Color(0xFFFF608B)),
+            minimumSize: MaterialStateProperty.all(
+                Size(150, 40)), // Width and height
+            shape: MaterialStateProperty.all<
+                RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                    25.0), // Border radius
+              ),
+            ),
+            elevation: MaterialStateProperty.all(
+                5), // Adjust elevation as needed
+            shadowColor: MaterialStateProperty.all(
+                Colors.black), // Shadow color
+          ),
+          onPressed: () {
+            String code = _codeController.text;
+
+            _verification(code, id);
+
+            // Navigator.of(context).pop(); // Close the dialog
+
+          },
+          child: Text('Verify',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize:
+                  20)), // Text for the second button
+        ),
+      ],
+    );
+  }
+  Widget buildAlertBox2(context){
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+      backgroundColor: Colors.white,
+      title: Center(child: Text('You are already registered please continue to login', style: TextStyle(color: Color(0xff6C6C6C),fontSize: 24),textAlign: TextAlign.center,)),
+
+      actionsAlignment: MainAxisAlignment.center,
+      actions: <Widget>[
+        // TextButton(
+        //   onPressed: () {
+        //     Navigator.of(context).pop(); // Close the dialog
+        //   },
+        //   child: Text('Cancel'),
+        // ),
+        ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor:
+            MaterialStatePropertyAll(Color(0xFFFF608B)),
+            minimumSize: MaterialStateProperty.all(
+                Size(150, 40)), // Width and height
+            shape: MaterialStateProperty.all<
+                RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                    25.0), // Border radius
+              ),
+            ),
+            elevation: MaterialStateProperty.all(
+                5), // Adjust elevation as needed
+            shadowColor: MaterialStateProperty.all(
+                Colors.black), // Shadow color
+          ),
+          onPressed: () {
+
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => LoginUser()),
+            );
+            // Navigator.of(context).pop(); // Close the dialog
+
+          },
+          child: Text('Login',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize:
+                  20)), // Text for the second button
+        ),
+      ],
+    );
+  }
+  Widget buildAlertBox3(context){
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+      backgroundColor: Colors.white,
+      title: Center(child: Text('Invalid email, Please enter valid email', style: TextStyle(color: Color(0xff6C6C6C),fontSize: 24),textAlign: TextAlign.center,)),
+
+      actionsAlignment: MainAxisAlignment.center,
+      actions: <Widget>[
+        // TextButton(
+        //   onPressed: () {
+        //     Navigator.of(context).pop(); // Close the dialog
+        //   },
+        //   child: Text('Cancel'),
+        // ),
+        ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor:
+            MaterialStatePropertyAll(Color(0xFFFF608B)),
+            minimumSize: MaterialStateProperty.all(
+                Size(150, 40)), // Width and height
+            shape: MaterialStateProperty.all<
+                RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                    25.0), // Border radius
+              ),
+            ),
+            elevation: MaterialStateProperty.all(
+                5), // Adjust elevation as needed
+            shadowColor: MaterialStateProperty.all(
+                Colors.black), // Shadow color
+          ),
+          onPressed: () {
+
+
+            // Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => LoginUser()),
+            // );
+            Navigator.of(context).pop(); // Close the dialog
+
+          },
+          child: Text('OK',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize:
+                  20)), // Text for the second button
+        ),
+      ],
+    );
+  }
+
+
+  _verification(String code, int userId) async{
+
+       var response = await PostAPIService().emailVerify(code, userId);
+
+       // final body = await jsonDecode(response.body);
+
+       if(response.statusCode != 200){
+         final body = await jsonDecode(response.body);
+
+         print(body);
+         setState(() {
+           alertText = "Invalid OTP";
+         });
+
+
+       }
+       else if(response.statusCode == 200){
+         final body = await jsonDecode(response.body);
+
+         print("success: $body");
+         setInitialScreen('termsAndConditionScreen');
+
+         await PreferencesManager.setUserId(body['user_id']);
+         await PreferencesManager.setUserToken(body['remember_token']);
+         print(await PreferencesManager.getUserId());
+         print(await PreferencesManager.getUserToken());
+         _navigate();
+
+       }
+
+
+  }
+
   _navigate(){
-    // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Terms()),);
 
     Navigator.pushAndRemoveUntil(
       context,

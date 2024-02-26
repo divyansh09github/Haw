@@ -4,6 +4,7 @@ import 'package:haw/DataStorage/preferences_manager.dart';
 import 'package:haw/screens/data_input.dart';
 import 'package:haw/screens/home_tab_screen.dart';
 import 'package:haw/services/get_api.dart';
+import 'package:intl/intl.dart';
 
 class DataCalendarList extends StatefulWidget {
   DataCalendarList({super.key, required this.selectedDate});
@@ -65,7 +66,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
         });
       }
 
-    print('abc: $calendarListData');
+    // print('abc: $calendarListData');
 
   }
 
@@ -103,7 +104,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
                 children: [
                   AnimatedContainer(
                     decoration: ShapeDecoration(
-                      gradient: bool.parse(data['period_day']) ? LinearGradient(
+                      gradient: data['period_day'] ? LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                           colors: <Color>[Color(0xFFFF5389), Color(0xFFFF5389)])
@@ -205,13 +206,19 @@ class _DataCalendarListState extends State<DataCalendarList> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    '${data['message']}',
-                                    // "Your periods starts in 3 days.",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 0.96,
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text(
+                                      '${data['message']}',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      softWrap: false,
+                                      // "Your periods starts in 3 days.",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: 0.96,
+                                      ),
                                     ),
                                   ),
                                 )
@@ -400,11 +407,11 @@ class _DataCalendarListState extends State<DataCalendarList> {
               int month = widget.selectedDate.month;
               int day = data['day'];
               if(month < DateTime.now().month){
-                _threeDotFunc();
+                _threeDotFunc(index);
               }
               else if(month == DateTime.now().month){
                 if(day <= DateTime.now().day){
-                  _threeDotFunc();
+                  _threeDotFunc(index);
                 }else{
                   showSnackBar();
                 }
@@ -448,7 +455,7 @@ class _DataCalendarListState extends State<DataCalendarList> {
     // );
   }
 
-  _threeDotFunc() async{
+  _threeDotFunc(int index) async{
     bool? result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -514,10 +521,14 @@ class _DataCalendarListState extends State<DataCalendarList> {
     if (result ?? false) {
       // Do something if the user taps Yes
       // await PreferencesManager.setDataInputDate();
+
+      DateFormat formatter = DateFormat('yyyy-MM-dd');
+      DateTime cardDate = formatter.parse(calendarListData['month_list'][index]['date']);
+      print("gg: ${cardDate.runtimeType}");
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => HomeTabScreen(homeIndex: 2, initDate: DateTime.now(),)),
+            builder: (context) => HomeTabScreen(homeIndex: 2, initDate: cardDate,)),
       );
       print("Yes");
     } else {

@@ -41,7 +41,8 @@ class _DataInputState extends State<DataInput> {
   void initState() {
     super.initState();
 
-    currentDate = DateTime.now();
+    // currentDate = DateTime.now();
+    currentDate = widget.initDate;
     toDatePicked = false;
 
     enableSave = false;
@@ -1273,7 +1274,7 @@ class _DataInputState extends State<DataInput> {
                                   SizedBox(width: 30),
                                 ],
                               )
-                            : Column(
+                            : Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -1335,7 +1336,7 @@ class _DataInputState extends State<DataInput> {
                                   SizedBox(width: 15),
                                 ],
                               )
-                            : Column(
+                            : Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -1398,7 +1399,7 @@ class _DataInputState extends State<DataInput> {
                                   SizedBox(width: 15),
                                 ],
                               )
-                            : Column(
+                            : Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -1459,7 +1460,7 @@ class _DataInputState extends State<DataInput> {
                                   SizedBox(width: 15),
                                 ],
                               )
-                            : Column(
+                            : Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

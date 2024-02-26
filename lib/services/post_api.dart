@@ -211,13 +211,18 @@ class PostAPIService{
         body: data,
         headers: {"Content-Type": "application/json"});
 
-    // if(response.statusCode == 200)
-    //   {
-    //     return response;
-    //   }
-    // else {
-    //   return response;
-    // }
+    return response;
+  }
+
+  Future<http.Response> emailVerify(String code, int userId) async{
+
+    final data = jsonEncode({'user_id': userId, 'verified': code});
+
+    final response = await http.post(
+        Uri.parse('http://ehoaapp.techexposys.com/api/verify-email'),
+        body: data,
+        headers: {"Content-Type": "application/json"});
+
     return response;
   }
 
@@ -230,13 +235,6 @@ class PostAPIService{
         Uri.parse('http://ehoaapp.techexposys.com/api/logout/?id=$userId&token=$token'),
         headers: {"Content-Type": "application/json"});
 
-    // if(response.statusCode == 200)
-    //   {
-    //     return response;
-    //   }
-    // else {
-    //   return response;
-    // }
     return response;
   }
 

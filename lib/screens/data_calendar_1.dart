@@ -43,7 +43,7 @@ class _DCalendarState extends State<DCalendar> {
   void _scrollToCurrentMonth() {
     final int currentYear = DateTime.now().year;
     final int currentMonth = DateTime.now().month;
-    final int index = (currentYear - (_currentDate.year - 1)) * 12 + currentMonth - 1;
+    final int index = (currentYear - (_currentDate.year - 1)) * 12 + currentMonth ;
     print("abc: $index");
     // _pageController.jumpToPage(index);
     _pageController.animateToPage((index/2).floor(), duration: Duration(seconds: 1), curve: Curves.easeInOut);
@@ -67,7 +67,7 @@ class _DCalendarState extends State<DCalendar> {
         });
         WidgetsBinding.instance.addPostFrameCallback((_) {
           print("aa");
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(Duration(seconds: 0), () {
             print("bb");
             _scrollToCurrentMonth();
           });
@@ -252,6 +252,13 @@ class _DCalendarState extends State<DCalendar> {
 
     ];
 
+    // Get the first day of the month and the number of days in the month
+    final int firstDayOfMonth = DateTime(currentDate.year, currentDate.month, 1).weekday;
+    final int numberOfDaysInMonth = DateTime(currentDate.year, currentDate.month + 1, 0).day;
+
+    // Calculate the number of cells needed before the first day of the month
+    int numEmptyCells = firstDayOfMonth - 1;
+
     return Container(
       padding: EdgeInsets.all(16),
       child: Column(
@@ -263,8 +270,22 @@ class _DCalendarState extends State<DCalendar> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
+          // Display the days of the week
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(7, (index) {
+              final dayOfWeek = ((index + 1) % 7);
+              return Text(
+                DateFormat('E').format(DateTime(2024, 1, dayOfWeek)), // Use any date to get the day name
+                style: TextStyle(fontWeight: FontWeight.bold),
+              );
+            }),
+          ),
+          SizedBox(height: 20),
+          // Display the grid view for the days of the month
           GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7,
@@ -272,41 +293,43 @@ class _DCalendarState extends State<DCalendar> {
               mainAxisSpacing: 4,
             ),
             itemBuilder: (context, index) {
-              final dayOfMonth = index + 1;
-              final date = DateTime(currentDate.year, currentDate.month, dayOfMonth);
+              if (index < numEmptyCells) {
+                // Display empty cells before the first day of the month
+                return Container();
+              } else {
+                // Calculate the day of the month for the current cell
+                final dayOfMonth = index - numEmptyCells + 1;
+                final date = DateTime(currentDate.year, currentDate.month, dayOfMonth);
 
-              // Check if the date falls within any of the fetched date ranges
-              bool isInAnyRange = monthDateRanges.any((dateRange) {
-                return date.isAfter(dateRange['start']!) && date.isBefore(dateRange['end']!);
-              });
+                // Check if the date falls within any of the fetched date ranges
+                bool isInAnyRange = monthDateRanges.any((dateRange) {
+                  return date.isAfter(dateRange['start']!) && date.isBefore(dateRange['end']!);
+                });
 
-              final Color cellColor = isInAnyRange ? Colors.pink.withOpacity(0.6) : Colors.transparent;
-              return GestureDetector(
-                onTap: () {
-                  _handleDateTap(context, date);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: cellColor,
-                  ),
-                  child: Text(
-                    dayOfMonth.toString(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                final Color cellColor = isInAnyRange ? Colors.pink.withOpacity(0.6) : Colors.transparent;
+                return GestureDetector(
+                  onTap: () {
+                    _handleDateTap(context, date);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: cellColor,
+                    ),
+                    child: Text(
+                      dayOfMonth.toString(),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
             },
-            itemCount: DateTime(
-              currentDate.year,
-              currentDate.month + 1,
-              0,
-            ).day,
+            itemCount: numberOfDaysInMonth + numEmptyCells, // Include empty cells before the first day of the month
           ),
           SizedBox(height: 20),
           Divider(), // Add a divider between months

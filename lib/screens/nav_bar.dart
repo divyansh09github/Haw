@@ -71,7 +71,12 @@ class _NavBarState extends State<NavBar>{
   }
 
   _navigateToGetStarted() {
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()),);
+    // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()),);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+          (Route<dynamic> route) => false,
+    );
   }
 
     @override
@@ -166,10 +171,10 @@ class _NavBarState extends State<NavBar>{
             iconColor: Color(0xFFFF608B),
             title: Text('Report'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DCalendar()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => DCalendar()),
+              // );
             },
           ),
           ListTile(

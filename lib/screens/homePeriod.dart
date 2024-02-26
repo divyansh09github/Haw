@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haw/DataStorage/preferences_manager.dart';
@@ -71,52 +73,77 @@ class _HomePeriodState extends State<HomePeriod> {
   late double angle;
   String moonImgPath = '';
   _apiService() async {
-    try {
-      final data = await GetAPIService().fetchHomeScreen();
-      if(data.isNotEmpty) {
-        setState(() {
-          homeScreenData = data;
-          isLoading = true;
-          error = '';
-        });
-      }
-      else{
-        loadingProcess();
-      }
-    } catch (e) {
+
+    var response = await GetAPIService().fetchHomeScreen();
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
       setState(() {
-        isLoading = false;
-        error = 'Failed to fetch Profile: $e';
+        homeScreenData = data;
+        isLoading = true;
+        error = '';
       });
     }
+    else {
 
+      if(response.statusCode == 500){
+        loadingProcess("Internal server error");
+      }
+      else if(response.statusCode == 400){
+        loadingProcess("Bad request");
+      }
+      else if(response.statusCode == 404){
+        loadingProcess("Not found");
+      }
 
-    if(homeScreenData['data'] != null && homeScreenData['data'][0]['moon'] != null){
-      setState(() {
-        moonImgPath = homeScreenData['data'][0]['moon'];
-      });
     }
+    // try {
+    //   final data = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+    //   if(data.isNotEmpty) {
+    //     setState(() {
+    //       homeScreenData = data;
+    //       isLoading = true;
+    //       error = '';
+    //     });
+    //   }
+    //   else{
+    //     loadingProcess();
+    //   }
+    // } catch (e) {
+    //   setState(() {
+    //     isLoading = false;
+    //     error = 'Failed to fetch Profile: $e';
+    //   });
+    // }
+    //
+    //
+    // if(homeScreenData['data'] != null && homeScreenData['data'][0]['moon'] != null){
+    //   setState(() {
+    //     moonImgPath = homeScreenData['data'][0]['moon'];
+    //   });
+    // }
 
     // setState(() {
     //   angle = 360/double.parse(homeScreenData['data'][0]['average_cycle_length']);
     // });
     // print(angle.runtimeType);
   }
-  loadingProcess(){
-    Future.delayed(Duration(seconds: 5), () {
 
+  loadingProcess(String msg) {
+    Future.delayed(Duration(seconds: 5), () {
       _apiService();
       // After 10 seconds, show a snackbar
-      const snackDemo = SnackBar(
+      var snackDemo = SnackBar(
         dismissDirection: DismissDirection.startToEnd,
         padding: EdgeInsets.all(7),
         content: Center(
           child: Text(
-            'Low internet connection.',
+            msg,
             style: TextStyle(color: Color(0xFF972633)),
           ),
         ),
-        backgroundColor: Color(0xFFfedbd5), // Or any other desired background color
+        backgroundColor:
+            Color(0xFFfedbd5), // Or any other desired background color
         elevation: 10,
         behavior: SnackBarBehavior.floating,
         duration: Duration(seconds: 2),
@@ -126,13 +153,13 @@ class _HomePeriodState extends State<HomePeriod> {
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
             bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15), // Customize corner radius as needed
+            bottomRight:
+                Radius.circular(15), // Customize corner radius as needed
           ),
         ),
       );
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(snackDemo);
+      ScaffoldMessenger.of(context).showSnackBar(snackDemo);
 
       // Navigate to another page after 8 seconds (5 seconds for loading + 3 seconds for snackbar)
       // Future.delayed(Duration(seconds: 3), () {
@@ -141,8 +168,6 @@ class _HomePeriodState extends State<HomePeriod> {
       // });
     });
   }
-
-
 
   final List<ChartData> chartData = [
     ChartData('1', 7, Color(0xFFFF608B)),
@@ -218,7 +243,7 @@ class _HomePeriodState extends State<HomePeriod> {
                                           color: Color(0xffFF9C41), width: 8)),
                                   child: Center(
                                       child: Text(
-                                    "${homeScreenData['data'][0]['average_cycle_length']}",
+                                    "${homeScreenData['data'][0]['average_cycle_length'] ?? 0}",
                                     style: TextStyle(fontSize: 18),
                                   )),
                                 ),
@@ -247,7 +272,7 @@ class _HomePeriodState extends State<HomePeriod> {
                                           color: Color(0xffFF8CAB), width: 8)),
                                   child: Center(
                                       child: Text(
-                                    "${homeScreenData['data'][0]['average_cycle_days']}",
+                                    "${homeScreenData['data'][0]['average_cycle_days'] ?? 0}",
                                     style: TextStyle(fontSize: 18),
                                   )),
                                 ),
@@ -276,7 +301,7 @@ class _HomePeriodState extends State<HomePeriod> {
                                           color: Color(0xff5DB0CA), width: 8)),
                                   child: Center(
                                       child: Text(
-                                    "${homeScreenData['data'][0]['variation ']}",
+                                    "${homeScreenData['data'][0]['variation '] ?? 0}",
                                     style: TextStyle(fontSize: 18),
                                   )),
                                 ),
@@ -307,7 +332,7 @@ class _HomePeriodState extends State<HomePeriod> {
                           dataSource: chartData,
                           pointColorMapper: (ChartData data, _) => data.color,
                           xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y*angle)
+                          yValueMapper: (ChartData data, _) => data.y)
                     ],
                     annotations: [
                       CircularChartAnnotation(
@@ -323,45 +348,53 @@ class _HomePeriodState extends State<HomePeriod> {
                                 pointColorMapper: (ChartData1 data, _) =>
                                     data.color,
                                 xValueMapper: (ChartData1 data, _) => data.x,
-                                yValueMapper: (ChartData1 data, _) => data.y*angle)
+                                yValueMapper: (ChartData1 data, _) => data.y)
                           ],
                           annotations: [
                             CircularChartAnnotation(
                                 widget: Container(
-                                  color: Colors.transparent,
+                              color: Colors.transparent,
                               height: 100,
                               width: 100,
                               child: Column(
                                 children: [
                                   Container(
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.pink,
-                                        offset: Offset(0, 0),
-                                        blurRadius: 50,
-                                        spreadRadius: 0,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.pink,
+                                            offset: Offset(0, 0),
+                                            blurRadius: 50,
+                                            spreadRadius: 0,
+                                          )
+                                        ],
+                                      ),
+                                      child: Image.network(
+                                        "$apiUrl/public/${homeScreenData['data'][0]['moon']}",
+                                        height: 50,
+                                        width: 50,
                                       )
-                                    ],
-                                    ),
-                                    child: Image.network(
-                                      "$apiUrl/public/${homeScreenData['data'][0]['moon']}",
-                                      height: 50,
-                                      width: 50,
-                                    )
-                                //   Image.asset(
-                                //   "assets/images/medium.png",
-                                //   height: 50,
-                                //   width: 50,
-                                // ),
-                                  ),
+                                      //   Image.asset(
+                                      //   "assets/images/medium.png",
+                                      //   height: 50,
+                                      //   width: 50,
+                                      // ),
+                                      ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top:15.0),
-                                    child: Text(
-                                        "${homeScreenData['data'][0]['message']}",style: TextStyle(fontSize: 11),
-                                        textAlign: TextAlign.center),
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      child: Text(
+                                        "${homeScreenData['data'][0]['message']}",
+                                        style: TextStyle(fontSize: 11),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        softWrap: false,
+                                      ),
+                                    ),
                                   ),
-
                                 ],
                               ),
                             ))
@@ -380,7 +413,8 @@ class _HomePeriodState extends State<HomePeriod> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HomeTabScreen(homeIndex: 2, initDate: DateTime.now())),
+                            builder: (context) => HomeTabScreen(
+                                homeIndex: 2, initDate: DateTime.now())),
                       );
                     },
                     child: Text(
@@ -399,66 +433,72 @@ class _HomePeriodState extends State<HomePeriod> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => HomeTabScreen(homeIndex: 2, initDate: DateTime.now())),
+                              builder: (context) => HomeTabScreen(
+                                  homeIndex: 2, initDate: DateTime.now())),
                         );
                       },
                       child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            border:
-                                Border.all(width: 5, color: Color(0xffFB8A97))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Image.asset("assets/images/medium.png"),
-                        ),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            border:
-                                Border.all(width: 5, color: Color(0xff6BD6CF))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Image.asset("assets/images/loved1.png"),
-                        ),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            border:
-                                Border.all(width: 5, color: Color(0xffFFE28C))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Image.asset("assets/images/noPain.png"),
-                        ),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            border:
-                                Border.all(width: 5, color: Color(0xffA3B971))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Image.asset("assets/images/veryLowEnergy 5.png"),
-                        ),
-                      ),
-                    ],
-                  )),
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                    width: 5, color: Color(0xffFB8A97))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Image.asset("assets/images/medium.png"),
+                            ),
+                          ),
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                    width: 5, color: Color(0xff6BD6CF))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Image.asset("assets/images/loved1.png"),
+                            ),
+                          ),
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                    width: 5, color: Color(0xffFFE28C))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Image.asset("assets/images/noPain.png"),
+                            ),
+                          ),
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                    width: 5, color: Color(0xffA3B971))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Image.asset(
+                                  "assets/images/veryLowEnergy 5.png"),
+                            ),
+                          ),
+                        ],
+                      )),
                 ], // Children
               ),
             ),
@@ -486,7 +526,8 @@ class _HomePeriodState extends State<HomePeriod> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(160.0),
-                      child: Image.network("https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
+                      child: Image.network(
+                          "https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"),
                     ),
                   ],
                 ),

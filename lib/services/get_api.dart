@@ -366,30 +366,31 @@ class GetAPIService{
   }
 
 
-  Future<Map<String, dynamic>> fetchHomeScreen() async{
+  Future<http.Response> fetchHomeScreen() async{
     var userId = await PreferencesManager.getUserId();
     var token = await PreferencesManager.getUserToken();
 
-    try {
+    // try {
       final response = await http.get(Uri.parse(
           "http://ehoaapp.techexposys.com/api/home-screen/"
               "$userId/"
               "$token"));
-
-      if (response.statusCode == 200) {
-        final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
-        error = false;
-        // print(albumData);
-        return albumData;
-      } else {
+      //
+      // if (response.statusCode == 200) {
+      //   final albumData = jsonDecode(response.body) as Map<String, dynamic>; // Cast to Map<String, dynamic>
+      //   error = false;
+      //   // print(albumData);
+        return response;
+      // } else {
         // Handle error based on response status code
+        return response;
         throw Exception('API request failed with status code: ${response.statusCode}');
-      }
-    } catch (e) {
+      // }
+    // } catch (e) {
       // Handle network errors
       // throw Exception('API request failed: $e');
-      return albums;
-    }
+      // return albums;
+    // }
 
   }
 
